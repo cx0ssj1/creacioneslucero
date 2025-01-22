@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creaciones Lucero</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="shortcut icon" href="/img/logo/logo-no-png.png"/>
+</head>
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="/img/logo/logo.png">
+                Creaciones Lucero
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Sobre Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="py-5 text-center">
+        <div class="container">
+            <h1 class="display-4">Bienvenid@ a Creaciones Lucero</h1>
+            <p class="lead">Descubra nuestra hermosa colección de objetos de papelería.</p>
+        </div>
+    </header>
+
+    <main id="products" class="container py-5">
+        <h2 class="text-center mb-5">Nuestros productos</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Libretas</h3>
+                    </div>
+                    <div class="card-body">
+                        <img src="/placeholder.svg?height=200&width=200" alt="Notes" class="img-fluid mb-3">
+                        <p>Anota tus pensamientos con un estilo unico al personalizar tu libreta, que esperas hazlo ya</p>
+                        <button class="btn btn-primary">Comprar Libretas personalizadas</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Libretas personalizadas</h3>
+                    </div>
+                    <div class="card-body">
+                        <img src="/placeholder.svg?height=200&width=200" alt="Notes" class="img-fluid mb-3">
+                        <p>Anota tus pensamientos con estilo con nuestros hermosas Libretas de notas.</p>
+                        <a href="/html/libretas-perso.html"><button class="btn btn-primary" onclick="">Comprar Libretas</button></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Cuadernos</h3>
+                    </div>
+                    <div class="card-body">
+                        <img src="/placeholder.svg?height=200&width=200" alt="Notebooks" class="img-fluid mb-3">
+                        <p>Organiza tus ideas maravillosamente en nuestros elegantes cuadernos.</p>
+                        <button class="btn btn-primary">Comprar cuadernos</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Cuadernos personalizados</h3>
+                    </div>
+                    <div class="card-body">
+                        <img src="/placeholder.svg?height=200&width=200" alt="Personalized Notebooks" class="img-fluid mb-3">
+                        <p>Haz un Cuaderno unico, No esperes y personaliza el tuyo.</p>
+                        <button class="btn btn-primary">Comprar cuadernos personalizados</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section id="about" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="text-center mb-4">Sobre nosotros</h2>
+            <p class="text-center">Nos apasiona ofrecer artículos de papelería de alta calidad que inspiren creatividad y organización. Nuestros productos están diseñados para hacer su vida diaria más colorida y productiva.</p>
+        </div>
+    </section>
+
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Contacta con nosotros</h2>
+            <form id="contactForm">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Mensaje</label>
+                    <textarea class="form-control" id="message" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="py-3 text-center">
+        <div class="container">
+            <p>&copy; 2025 Creaciones Lucero. Reservados todos los derechos.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/script-nav.js"></script>
+    <script src="/js/script-index.js"></script>
+</body>
+</html>
