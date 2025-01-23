@@ -1,0 +1,61 @@
+  /* Estilo del contenedor del selector */
+  .custom-select {
+    position: relative;
+    width: 300px;
+    cursor: pointer;
+  }
+
+  /* Caja visible */
+  .custom-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+
+  /* Lista oculta */
+  .custom-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #E38AAE;
+    z-index: 10;
+    display: none;
+    flex-direction: column;
+    color: #fff;
+  }
+
+  /* Opciones */
+  .custom-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+  }
+
+  /* Imagen en la opción */
+  .custom-option img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 3px;
+  }
+
+  /* Hover efecto */
+  .custom-option:hover {
+    background-color: #D870A3;
+  }
+
+  /* Mostrar opciones */
+  .custom-select.open .custom-options {
+    display: flex;
+  }
+
