@@ -1,0 +1,54 @@
+:root {
+    --pink-light: #FAF3F5; /* Fondo general */
+    --pink-medium: #F7C8D6; /* Fondo de la navbar */
+    --pink-dark: #E38AAE; /* Botones principales */
+    --pink-hover: #D870A3; /* Hover de botones */
+    --gray-text: #6B6B6B; /* Texto secundario */
+    --navbar-text: #4A4A4A; /* Texto de la barra de navegación */
+}
+body {
+    background-color: var(--pink-light);
+    padding-top: 0; /* Inicial */
+    transition: 0.4s; /* Transición para suavizar el cambio */
+}
+.navbar {
+    background-color: var(--pink-medium);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030; /* Asegura que la navbar esté sobre el contenido */
+}
+.navbar-brand, .nav-link {
+    color: var(--navbar-text) !important; /* Mejor contraste */
+    font-weight: 600; /* Hace el texto más legible */
+}
+.btn-primary {
+    background-color: var(--pink-dark);
+    border-color: var(--pink-dark);
+}
+.btn-primary:hover {
+    background-color: var(--pink-hover);
+    border-color: var(--pink-hover);
+}
+.card {
+    border-color: var(--pink-medium);
+}
+.card-header {
+    background-color: var(--pink-medium);
+    color: var(--gray-text);
+}
+footer {
+    background-color: var(--pink-medium);
+    color: var(--gray-text);
+}
+.navbar-brand {
+    display: flex;
+    align-items: center; /* Alinea verticalmente el logo y el texto */
+    gap: 10px; /* Espacio entre el logo y el texto */
+}
+
+.navbar-brand img {
+    width: 50px; /* Ajusta el tamaño del logo */
+    height: 50px;
+    object-fit: contain; /* Asegura que el logo mantenga su proporción */
+}
