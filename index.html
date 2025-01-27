@@ -37,37 +37,73 @@
         </div>
     </nav>
 
-    <header id="home" class="py-5 text-center">
-        <div class="container">
-            <h1 class="display-4">Bienvenid@ a Creaciones Lucero</h1>
-            <p class="lead">Descubra nuestra hermosa colección de objetos de papelería.</p>
-        </div>
-    </header>
-
-    <section>
-        <div class="container" style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <!-- Encabezado -->
-            <h2 class="mb-4" style="font-size: 2rem; color: #333;">Novedades</h2>
-            <p class="mb-4" style="font-size: 1.1rem; color: #666;">
-                Descubre las últimas actualizaciones y novedades de Creaciones Lucero.
-                Mantente al tanto de nuestros productos y ofertas especiales.
+    <header id="home" class="py-5 text-center position-relative">
+        <div class="container position-relative z-2">
+            <h1 id="bnv" class="display-4 fw-bold">
+                📚 Bienvenid@ a <span style="color: #e75480;">Creaciones Lucero</span> 🖋️
+            </h1>
+            <p class="lead">
+                ✨ Descubre nuestra hermosa colección de objetos de papelería que inspiran creatividad. ✂️📒
             </p>
-            <!-- Carrusel -->
-            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="/img/index/carousel/1.jpg" class="d-block w-100" alt="Slide 1">
+            <a href="#products" class="btn btn-primary mt-3" id="prodcts">
+                Ver Productos 📔
+            </a>
+        </div>
+        <!-- Fondo animado -->
+        <div class="position-absolute top-0 start-0 w-100 h-100 z-1" style="background: url('https://www.transparenttextures.com/patterns/paper.png'); opacity: 0.2;"></div>
+    </header>
+    
+
+    <section id="novedades" class="py-5" style="background-color: #fdf6f6; color: #333;">
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Pedidos Personalizados ✨</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="carousel-item">
-                        <img src="/img/index/carousel/2.jpg" class="d-block w-100" alt="Slide 2">
+                    <div class="modal-body">
+                        Para pedidos personalizados, manda un mensaje al:<br>
+                        <b>📞 +56 9 8121 8751</b>.<br><br>
+                        ¡Estaremos encantados de ayudarte a crear algo único para ti! 🖋️
                     </div>
-                    <div class="carousel-item">
-                        <img src="/img/index/carousel/3.jpg" class="d-block w-100" alt="Slide 3">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="/img/index/carousel/4.jpg" class="d-block w-100" alt="Slide 4">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <a href="https://wa.link/wi3bfa" target="_blank" class="btn btn-primary">
+                            👉 Contáctame aquí
+                        </a>
                     </div>
                 </div>
+            </div>
+        </div>
+    
+        <!-- Contenedor principal -->
+        <div class="container" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <!-- Encabezado -->
+            <h2 class="mb-4 fw-bold" style="font-size: 2.5rem; color: #e75480;">🌟 Novedades 🌟</h2>
+            <p class="mb-4" style="font-size: 1.2rem; color: #555;">
+                Descubre las últimas actualizaciones y productos exclusivos de <b>Creaciones Lucero</b>. 
+                ¡No te pierdas nuestras ofertas y diseños únicos! 🖋️📒
+            </p>
+    
+            <!-- Carrusel -->
+            <div id="carouselExampleInterval" class="carousel slide mb-4" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="3000">
+                        <img src="/img/index/carousel/1.jpg" class="d-block w-100 rounded" alt="Slide 1">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="3000">
+                        <img src="/img/index/carousel/2.jpg" class="d-block w-100 rounded" alt="Slide 2">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="3000">
+                        <img src="/img/index/carousel/3.jpg" class="d-block w-100 rounded" alt="Slide 3">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="3000">
+                        <img src="/img/index/carousel/4.jpg" class="d-block w-100 rounded" alt="Slide 4">
+                    </div>
+                </div>
+                <!-- Controles del carrusel -->
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Anterior</span>
@@ -77,90 +113,115 @@
                     <span class="visually-hidden">Siguiente</span>
                 </button>
             </div>
+    
+            <!-- Botón para abrir el modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="font-size: 1.1rem; padding: 10px 20px; border-radius: 30px; background-color: #e75480; border: none;">
+                ✂️ Pedidos Personalizados
+            </button>
         </div>
     </section>
-    <main id="products" class="container py-5">
-        <h2 class="text-center mb-5">Nuestros productos</h2>
-        <div class="row">
-            <div class="col-md-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Libretas en stock</h3>
+    
+    <main id="products" class="container py-5" style="background-color: var(--pink-light); border-radius: 15px;">
+        <h2 class="text-center mb-5 fw-bold" style="font-size: 2.5rem; color: var(--pink-dark);">✨ Nuestros Productos ✨</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <!-- Producto: Libretas en stock -->
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header text-center" style="background-color: var(--pink-dark); color: white;">
+                        <h3 class="fw-bold mb-0">Libretas en stock</h3>
                     </div>
-                    <div class="card-body">
-                        <img src="/img/index/LIBRETAS.png" alt="Notes" class="img-fluid mb-3">
-                        <p>Anota tus pensamientos con estilo con nuestros hermosas Libretas de notas.</p>
-                        <a href="/html/libretas-stk.html"><button class="btn btn-primary" onclick="">Comprar Libretas</button></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Libretas personalizadas</h3>
-                    </div>
-                    <div class="card-body">
-                        <img src="/img/index/DETALLES-libretas.png" alt="Notes" class="img-fluid mb-3">
-                        <p>Anota tus pensamientos con un estilo unico al personalizar tu libreta, que esperas hazlo ya</p>
-                        <a href="/html/libretas-perso.html"><button class="btn btn-primary" onclick="">Comprar Libretas personalizadas</button></a>
+                    <div class="card-body text-center">
+                        <img src="/img/index/LIBRETAS.png" alt="Libretas" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                        <p style="color: var(--gray-text);">Anota tus pensamientos con estilo con nuestras hermosas libretas de notas.</p>
+                        <a href="/html/libretas-stk.html" class="btn" style="background-color: var(--pink-dark); color: white;">Comprar Libretas</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Cuadernos en stock</h3>
+            <!-- Producto: Libretas personalizadas -->
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header text-center" style="background-color: var(--pink-medium); color: var(--navbar-text);">
+                        <h3 class="fw-bold mb-0">Libretas personalizadas</h3>
                     </div>
-                    <div class="card-body">
-                        <img src="/img/index/CUADERNOS.png" alt="Notebooks" class="img-fluid mb-3">
-                        <p>Organiza tus ideas maravillosamente en nuestros elegantes cuadernos.</p>
-                        <a href="/html/cuadernos-stk.html"><button class="btn btn-primary" onclick="">Comprar Cuadernos</button></a>
+                    <div class="card-body text-center">
+                        <img src="/img/index/DETALLES-libretas.png" alt="Libretas personalizadas" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                        <p style="color: var(--gray-text);">Anota tus pensamientos con un estilo único al personalizar tu libreta. ¡Hazlo ya!</p>
+                        <a href="/html/libretas-perso.html" class="btn" style="background-color: var(--pink-dark); color: white;">Comprar Libretas Personalizadas</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Cuadernos personalizados</h3>
+            <!-- Producto: Cuadernos en stock -->
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header text-center" style="background-color: var(--pink-medium); color: var(--navbar-text);">
+                        <h3 class="fw-bold mb-0">Cuadernos en stock</h3>
                     </div>
-                    <div class="card-body">
-                        <img src="/img/index/DETALLES-cuadernos.png" alt="Personalized Notebooks" class="img-fluid mb-3">
-                        <p>Haz un Cuaderno unico, No esperes y personaliza el tuyo.</p>
-                        <a href="/html/cuadernos-perso.html"><button class="btn btn-primary" onclick="">Comprar Cuadernos personalizados</button></a>
+                    <div class="card-body text-center">
+                        <img src="/img/index/CUADERNOS.png" alt="Cuadernos" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                        <p style="color: var(--gray-text);">Organiza tus ideas maravillosamente en nuestros elegantes cuadernos.</p>
+                        <a href="/html/cuadernos-stk.html" class="btn" style="background-color: var(--pink-dark); color: white;">Comprar Cuadernos</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Producto: Cuadernos personalizados -->
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header text-center" style="background-color: var(--pink-dark); color: white;">
+                        <h3 class="fw-bold mb-0">Cuadernos personalizados</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="/img/index/DETALLES-cuadernos.png" alt="Cuadernos personalizados" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                        <p style="color: var(--gray-text);">Crea un cuaderno único. ¡No esperes más y personaliza el tuyo hoy mismo!</p>
+                        <a href="/html/cuadernos-perso.html" class="btn" style="background-color: var(--pink-dark); color: white;">Comprar Cuadernos Personalizados</a>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
+        
     <section id="about" class="py-5 bg-white">
         <div class="container">
-            <h2 class="text-center mb-4">Sobre nosotros</h2>
-            <p class="text-center">Nos apasiona ofrecer artículos de papelería de alta calidad que inspiren creatividad y organización. Nuestros productos están diseñados para hacer su vida diaria más colorida y productiva.</p>
+            <h2 class="text-center mb-4 fw-bold" style="font-size: 2.5rem; color: #e75480;">💡 Sobre Nosotros</h2>
+            <p class="text-center" style="font-size: 1.2rem; color: #555; max-width: 800px; margin: 0 auto; line-height: 1.8;">
+                En <b>Creaciones Lucero</b>, nos dedicamos a dar vida a tus ideas a través de <span style="color: #e75480;">productos únicos y de alta calidad</span>. 
+                Nuestra misión es inspirar creatividad y organización con cada artículo que ofrecemos. 
+                ✂️ <b>Desde libretas personalizadas hasta cuadernos exclusivos</b>, hacemos que cada detalle cuente para llenar tu día de color, estilo y funcionalidad. 🖋️
+            </p>
         </div>
     </section>
-
-    <section id="contact" class="py-5">
+    
+    <section id="contact" class="py-5" style="background-color: #fdf6f6;">
         <div class="container">
-            <h2 class="text-center mb-4">Contacta con nosotros</h2>
-            <form id="contactForm">
+            <h2 class="text-center mb-4 fw-bold" style="font-size: 2.5rem; color: #e75480;">📞 Contáctanos</h2>
+            <p class="text-center mb-4" style="font-size: 1.2rem; color: #555;">
+                ¿Tienes alguna consulta o idea especial en mente? ¡Estamos aquí para ayudarte! 💌
+            </p>
+            <form id="contactForm" style="max-width: 600px; margin: 0 auto;">
                 <div class="mb-3">
-                    <label for="name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="name" required>
+                    <label for="name" class="form-label fw-bold" style="color: #e75480;">Nombre</label>
+                    <input type="text" class="form-control shadow-sm" id="name" placeholder="Tu nombre completo" required>
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" required>
+                    <label for="email" class="form-label fw-bold" style="color: #e75480;">Email</label>
+                    <input type="email" class="form-control shadow-sm" id="email" placeholder="Tu correo electrónico" required>
                 </div>
                 <div class="mb-3">
-                    <label for="message" class="form-label">Mensaje</label>
-                    <textarea class="form-control" id="message" rows="3" required></textarea>
+                    <label for="message" class="form-label fw-bold" style="color: #e75480;">Mensaje</label>
+                    <textarea class="form-control shadow-sm" id="message" rows="4" placeholder="Escribe tu mensaje aquí" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+                <button type="submit" class="btn btn-primary w-100" style="background-color: #e75480; border: none; padding: 10px; font-size: 1.2rem; border-radius: 30px;">
+                    ✉️ Enviar mensaje
+                </button>
             </form>
+            <div class="text-center mt-5">
+                <p style="font-size: 1.1rem; color: #555;">O contáctanos directamente por WhatsApp:</p>
+                <a href="https://wa.link/wwtvgr" target="_blank" class="btn btn-success" style="font-size: 1.2rem; padding: 10px 20px; border-radius: 30px;">
+                    <i class="bi bi-whatsapp"></i> Enviar mensaje por WhatsApp
+                </a>
+            </div>
         </div>
     </section>
-
+        
     <footer class="py-3 text-center">
         <div class="container">
             <p>&copy; 2025 Creaciones Lucero. Reservados todos los derechos.</p>

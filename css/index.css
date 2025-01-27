@@ -11,6 +11,29 @@ body {
     padding-top: 0; /* Inicial */
     transition: 0.4s; /* Transición para suavizar el cambio */
 }
+
+#home{
+    background: linear-gradient(145deg, #ffefef, #ffc0cb); 
+    color: #333; 
+    overflow: hidden;
+}
+
+#bnv{
+    font-family: 'Comic Sans MS', cursive;
+}
+
+.lead{
+    font-size: 1.25rem; 
+    font-family: 'Segoe UI', sans-serif;
+}
+
+#prodcts{
+    background-color: #e75480; 
+    border: none; font-size: 1.2rem; 
+    padding: 10px 20px; 
+    border-radius: 30px;
+}
+
 .navbar {
     background-color: var(--pink-medium);
     position: fixed;
