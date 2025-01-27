@@ -12,6 +12,24 @@ body {
     transition: 0.4s; /* Transición para suavizar el cambio */
 }
 
+#imgcarousel{
+    max-height: 200px;
+    max-width: 600px; 
+    object-fit: cover;
+}
+
+.contact{
+    color: #e75480;
+}
+
+.btn-submit{
+    background-color: #e75480;
+    border: none; 
+    padding: 10px; 
+    font-size: 1.2rem; 
+    border-radius: 30px;
+}
+
 #home{
     background: linear-gradient(145deg, #ffefef, #ffc0cb); 
     color: #333; 

@@ -7,11 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="shortcut icon" href="/img/logo/logo-no-png.png"/>
+    <link rel="stylesheet" href="/css/css-plant.css">
 </head>
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/index.html">
                 <img src="/img/logo/logo.png">
                 Creaciones Lucero
             </a>
@@ -21,7 +22,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#home">Inicio</a>
+                        <a class="nav-link" href="/index.html">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#products">Productos</a>
@@ -120,7 +121,6 @@
             </button>
         </div>
     </section>
-    <!--agregar carousel a img-->
     <main id="products" class="container py-5" style="background-color: var(--pink-light); border-radius: 15px;">
         <h2 class="text-center mb-5 fw-bold" style="font-size: 2.5rem; color: var(--pink-dark);">✨ Nuestros Productos ✨</h2>
         <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -131,7 +131,19 @@
                         <h3 class="fw-bold mb-0">Libretas en stock</h3>
                     </div>
                     <div class="card-body text-center">
-                        <img src="/img/index/LIBRETAS.png" alt="Libretas" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="/img/index/LIBRETAS.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div> 
+                                <div class="carousel-item"> 
+                                    <img src="/img/index/LIBRETAS.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div> 
+                                <div class="carousel-item"> 
+                                    <img src="/img/index/LIBRETAS.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div>
+                            </div>
+                        </div>
                         <p style="color: var(--gray-text);">Anota tus pensamientos con estilo con nuestras hermosas libretas de notas.</p>
                         <a href="/html/libretas-stk.html" class="btn" style="background-color: var(--pink-dark); color: white;">Comprar Libretas</a>
                     </div>
@@ -144,7 +156,19 @@
                         <h3 class="fw-bold mb-0">Libretas personalizadas</h3>
                     </div>
                     <div class="card-body text-center">
-                        <img src="/img/index/DETALLES-libretas.png" alt="Libretas personalizadas" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="/img/index/DETALLES-libretas.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div> 
+                                <div class="carousel-item"> 
+                                    <img src="/img/index/DETALLES-libretas.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div> 
+                                <div class="carousel-item"> 
+                                    <img src="/img/index/DETALLES-libretas.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div>
+                            </div>
+                        </div>
                         <p style="color: var(--gray-text);">Anota tus pensamientos con un estilo único al personalizar tu libreta. ¡Hazlo ya!</p>
                         <a href="/html/libretas-perso.html" class="btn" style="background-color: var(--pink-dark); color: white;">Comprar Libretas Personalizadas</a>
                     </div>
@@ -157,7 +181,19 @@
                         <h3 class="fw-bold mb-0">Cuadernos en stock</h3>
                     </div>
                     <div class="card-body text-center">
-                        <img src="/img/index/CUADERNOS.png" alt="Cuadernos" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="/img/index/CUADERNOS.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div> 
+                                <div class="carousel-item"> 
+                                    <img src="/img/index/CUADERNOS.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div> 
+                                <div class="carousel-item"> 
+                                    <img src="/img/index/CUADERNOS.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div>
+                            </div>
+                        </div>
                         <p style="color: var(--gray-text);">Organiza tus ideas maravillosamente en nuestros elegantes cuadernos.</p>
                         <a href="/html/cuadernos-stk.html" class="btn" style="background-color: var(--pink-dark); color: white;">Comprar Cuadernos</a>
                     </div>
@@ -170,7 +206,19 @@
                         <h3 class="fw-bold mb-0">Cuadernos personalizados</h3>
                     </div>
                     <div class="card-body text-center">
-                        <img src="/img/index/DETALLES-cuadernos.png" alt="Cuadernos personalizados" class="img-fluid rounded mb-3" style="max-height: 200px; object-fit: cover;">
+                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="/img/index/DETALLES-cuadernos.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div> 
+                                <div class="carousel-item"> 
+                                    <img src="/img/index/DETALLES-cuadernos.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div> 
+                                <div class="carousel-item"> 
+                                    <img src="/img/index/DETALLES-cuadernos.png" id="imgcarousel" class="d-block w-100 img-fluid rounded mb-3">
+                                </div>
+                            </div>
+                        </div>
                         <p style="color: var(--gray-text);">Crea un cuaderno único. ¡No esperes más y personaliza el tuyo hoy mismo!</p>
                         <a href="/html/cuadernos-perso.html" class="btn" style="background-color: var(--pink-dark); color: white;">Comprar Cuadernos Personalizados</a>
                     </div>
@@ -196,20 +244,24 @@
             <p class="text-center mb-4" style="font-size: 1.2rem; color: #555;">
                 ¿Tienes alguna consulta o idea especial en mente? ¡Estamos aquí para ayudarte! 💌
             </p>
-            <form id="contactForm" style="max-width: 600px; margin: 0 auto;">
+            <form action="https://formsubmit.co/karlalucero62@gmail.com" method="POST" id="contactForm" style="max-width: 600px; margin: 0 auto;">
                 <div class="mb-3">
-                    <label for="name" class="form-label fw-bold" style="color: #e75480;">Nombre</label>
-                    <input type="text" class="form-control shadow-sm" id="name" placeholder="Tu nombre completo" required>
+                    <label for="name" class="form-label fw-bold contact">Nombre</label>
+                    <input type="text" id="name" name="name" class="form-control shadow-sm" placeholder="Tu nombre completo" required>
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label fw-bold" style="color: #e75480;">Email</label>
-                    <input type="email" class="form-control shadow-sm" id="email" placeholder="Tu correo electrónico" required>
+                    <label for="email" class="form-label fw-bold contact">Email</label>
+                    <input type="email" id="email" name="email" class="form-control shadow-sm" placeholder="Tu correo electrónico" required>
                 </div>
                 <div class="mb-3">
-                    <label for="message" class="form-label fw-bold" style="color: #e75480;">Mensaje</label>
-                    <textarea class="form-control shadow-sm" id="message" rows="4" placeholder="Escribe tu mensaje aquí" required></textarea>
+                    <label for="phone" class="form-label fw-bold contact">Teléfono</label>
+                    <input type="tel" id="phone" name="phone" class="form-control shadow-sm" placeholder="Tu número de teléfono" required>
+                </div>                
+                <div class="mb-3">
+                    <label for="message" class="form-label fw-bold contact">Mensaje</label>
+                    <textarea id="message" name="message" class="form-control shadow-sm" rows="4" placeholder="Escribe tu mensaje aquí" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary w-100" style="background-color: #e75480; border: none; padding: 10px; font-size: 1.2rem; border-radius: 30px;">
+                <button type="submit" class="btn btn-primary w-100 btn-submit">
                     ✉️ Enviar mensaje
                 </button>
             </form>

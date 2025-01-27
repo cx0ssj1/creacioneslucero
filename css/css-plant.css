@@ -18,6 +18,38 @@ body {
     width: 100%;
     z-index: 1030; /* Asegura que la navbar esté sobre el contenido */
 }
+.nav-item {
+    position: relative;
+    border-radius: 16px;
+    transition: 0.5s;
+}
+
+.nav-link {
+    position: relative;
+    color: #000;
+    text-decoration: none;
+}
+
+.nav-link::before {
+    content: "";
+    position: absolute;
+    bottom: -5px; /* Ajusta la distancia de la línea respecto al texto */
+    left: 50%;
+    width: 0;
+    height: 2px; /* Grosor de la línea */
+    background-color: var(--pink-hover); /* Color de la línea */
+    transition: 0.4s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::before {
+    width: 100%; /* Expande la línea completamente */
+}
+
+.nav-link:hover {
+    color: var(--pink-hover); /* Cambia el color del texto al hacer hover, opcional */
+}
+
 .navbar-brand, .nav-link {
     color: var(--navbar-text) !important; /* Mejor contraste */
     font-weight: 600; /* Hace el texto más legible */
