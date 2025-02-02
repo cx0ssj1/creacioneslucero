@@ -1,0 +1,23 @@
+:root {
+    --pink-light: #FAF3F5; /* Fondo general */
+    --pink-medium: #F7C8D6; /* Fondo de la navbar */
+    --pink-dark: #E38AAE; /* Botones principales */
+    --pink-hover: #D870A3; /* Hover de botones */
+    --gray-text: #6B6B6B; /* Texto secundario */
+    --navbar-text: #4A4A4A; /* Texto de la barra de navegación */
+}
+
+.top-table{
+    background-color: var(--pink-light);
+}
+.checkout-heading {
+    color: var(--pink-dark);
+}
+.btn-pagar {
+    background-color: var(--pink-dark);
+    border: none;
+    font-size: 1.1rem;
+}
+.btn-pagar:hover {
+    background-color: var(--pink-hover);
+}
