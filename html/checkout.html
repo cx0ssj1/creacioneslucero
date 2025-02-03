@@ -12,7 +12,16 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/css-plant.css">
     <link rel="shortcut icon" href="/img/logo/logo-no-png.png"/>
-    <link rel="stylesheet" href="/css/checkout.css">
+    <link rel="stylesheet" href="/css/checkout.css"> 
+    <!-- Dentro del <head> o antes de cerrar el body -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init({
+                publicKey: "i8FzIeKYKraCPWsiC",
+            });
+        })();
+    </script>
 </head>
 <body>
     <!-- Navbar -->
@@ -84,7 +93,7 @@
             <label for="email" class="form-label">Correo Electrónico</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
             </div>
-            <button type="submit" class="btn btn-pagar w-100">Pagar</button>
+            <button type="submit" id="button" value="Send Email" class="btn btn-pagar w-100">Pagar</button>
         </form>
         </div>
     </main>
@@ -100,5 +109,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Script del carrito -->
     <script src="/js/script-carrito.js"></script>
+    <script>
+        document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Aquí deberías llamar a la función que maneja el pago y luego enviar el correo
+            // Simulamos un pago exitoso llamando directamente a sendOrderEmail
+            sendOrderEmail();
+        });
+    </script>
 </body>
 </html>

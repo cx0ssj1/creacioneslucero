@@ -114,8 +114,8 @@
                     <div class="mb-3">
                         <select id="optionSelector" class="form-select">
                             <option value="" disabled selected>Seleccione una opción</option>
-                            <option value="custom">Tapa personalizada</option>
-                            <option value="color">Color</option>
+                            <option value="personalizada">Tapa Personalizada</option>
+                            <option value="color">Color Sólido</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -138,25 +138,13 @@
                     
                     
                     <div class="mb-3">
-                        <label class="form-label">Hoja Personalizada:</label>
-                        <!-- Selector personalizado -->
-                        <div class="custom-select" id="customSelect">
-                            <div class="custom-select-trigger">Seleccione una opción</div>
-                            <div class="custom-options">
-                                <div class="custom-option" data-value="cuadriculada">
-                                    <img src="/img/hojas/cuadriculas.png" alt="Cuadriculada">
-                                    Cuadriculada
-                                </div>
-                                <div class="custom-option" data-value="puntos">
-                                    <img src="/img/hojas/puntos.png" alt="Puntos">
-                                    Puntos
-                                </div>
-                                <div class="custom-option" data-value="lineas">
-                                    <img src="/img/hojas/lineas.png" alt="Líneas">
-                                    Líneas
-                                </div>
-                            </div>
-                        </div>
+                        <label for="tipoHoja" class="form-label">Tipo de hoja:</label>
+                        <select id="tipoHoja" class="form-select">
+                            <option value="cuadros">Cuadriculado</option>
+                            <option value="lineas">Líneas</option>
+                            <option value="puntos">Punteado</option>
+                            <option value="blanco">Blanco</option>
+                        </select>
                     </div>
                 <button class="btn btn-primary btn-lg mb-3 w-100">
                     <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
@@ -219,7 +207,7 @@
             // Limpiar contenido dinámico
             additionalOptions.innerHTML = '';
         
-            if (selectedValue === 'custom') {
+            if (selectedValue === 'personalizada') {
                 // Mostrar mensaje para tapa personalizada
                 additionalOptions.innerHTML = `
                 <p style="color: green; font-weight: bold;">
@@ -229,8 +217,8 @@
             } else if (selectedValue === 'color') {
                 // Mostrar paleta de colores
                 additionalOptions.innerHTML = `
-                <label for="colorPicker" class="form-label">Elija un color:</label>
-                <input type="color" id="colorPicker" class="form-control" style="width: 100px;">
+                <label for="colorPicker" class="form-label">Seleccione un color:</label>
+                <input type="color" class="form-control form-control-color" id="colorPicker" value="#563d7c">
                 `;
             }
             });
