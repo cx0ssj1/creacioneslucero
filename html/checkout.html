@@ -55,46 +55,98 @@
     <!-- Contenido principal -->
     <main class="container" style="padding-top: 80px; padding-bottom: 40px;">
         <h1 class="text-center my-4 checkout-heading">Checkout</h1>
-        
-        <!-- Sección de productos del carrito -->
-        <div id="checkoutCart" class="mb-5">
-        <h4 class="mb-3">Tu carrito</h4>
-        <div class="table-responsive">
-            <table class="table table-bordered align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th style="background-color: var(--pink-medium);">Imagen</th>
-                    <th style="background-color: var(--pink-medium);">Producto</th>
-                    <th style="background-color: var(--pink-medium);">Cantidad</th>
-                    <th style="background-color: var(--pink-medium);">Precio Unitario</th>
-                    <th style="background-color: var(--pink-medium);">Subtotal</th>
-                </tr>
-            </thead>
-            <tbody id="cartItems">
-                <!-- Aquí se inyectarán los productos mediante JavaScript -->
-            </tbody>
-            </table>
-        </div>
-        <div class="d-flex justify-content-end">
-            <h5 id="cartTotal" class="me-3">Total: $0</h5>
-        </div>
-        </div>
-        
-        <!-- Formulario de checkout -->
-        <div id="checkoutFormContainer">
-        <h4 class="mb-3">Datos de contacto</h4>
-        <form id="checkoutForm">
-            <div class="mb-3">
-            <label for="phone" class="form-label">Teléfono (debe comenzar con +56)</label>
-            <input type="tel" class="form-control" id="phone" name="phone" placeholder="+56XXXXXXXXX" required pattern="^\+56\d{9,}$">
-            <div class="form-text">Ejemplo: +56912345678</div>
+        <div class="row">
+            <!-- Formulario a la izquierda -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">Datos de contacto</h3>
+                        <form id="checkoutForm">
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Teléfono (debe comenzar con +56)</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="+56XXXXXXXXX" required pattern="^\+56\d{9,}$">
+                                <div class="form-text">Ejemplo: +56912345678</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+                            </div>
+                            <h4 class="mb-3">Entrega</h4>
+                            <div class="row pb-3">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Apellido" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="rut" name="rut" placeholder="Rut" maxlength="12" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Dirección" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="opcional" name="opcional" placeholder="Casa / Depto / Oficina (opcional)" required>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="city" name="city" placeholder="Comuna" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" id="region" name="region" required>
+                                        <option value="" selected disabled>Seleccione una región</option>
+                                        <option value="Arica">Arica y Parinacota</option>
+                                        <option value="Tarapaca">Tarapacá</option>
+                                        <option value="Antofagasta">Antofagasta</option>
+                                        <option value="Atacama">Atacama</option>
+                                        <option value="Coquimbo">Coquimbo</option>
+                                        <option value="Valparaiso">Valparaíso</option>
+                                        <option value="Metropolitana">Región Metropolitana de Santiago</option>
+                                        <option value="OHiggins">O'Higgins</option>
+                                        <option value="Maule">Maule</option>
+                                        <option value="Nuble">Ñuble</option>
+                                        <option value="Biobio">Biobío</option>
+                                        <option value="Araucania">La Araucanía</option>
+                                        <option value="LosRios">Los Ríos</option>
+                                        <option value="LosLagos">Los Lagos</option>
+                                        <option value="Aysen">Aysén</option>
+                                        <option value="Magallanes">Magallanes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" id="button" value="Send Email" class="btn btn-pagar w-100">Pagar</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-            <label for="email" class="form-label">Correo Electrónico</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+
+            <!-- Carrito a la derecha -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">Tu Pedido</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cartItems">
+                                    <!-- Items del carrito -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-end mt-3">
+                            <h4 id="cartTotal">Total: $0</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button type="submit" id="button" value="Send Email" class="btn btn-pagar w-100">Pagar</button>
-        </form>
         </div>
     </main>
 
@@ -115,6 +167,20 @@
             // Aquí deberías llamar a la función que maneja el pago y luego enviar el correo
             // Simulamos un pago exitoso llamando directamente a sendOrderEmail
             sendOrderEmail();
+        });
+
+        document.getElementById('rut').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\dkK]/g, '');
+            if (value.length > 1) {
+                value = value.slice(0, -1) + '-' + value.slice(-1);
+            }
+            if (value.length > 5) {
+                value = value.slice(0, -5) + '.' + value.slice(-5);
+            }
+            if (value.length > 9) {
+                value = value.slice(0, -9) + '.' + value.slice(-9);
+            }
+            e.target.value = value;
         });
     </script>
 </body>

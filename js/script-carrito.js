@@ -219,6 +219,26 @@
     }
 
     // ----------------------------
+    // Función para generar un número de pedido único (8 a 10 dígitos)
+    // ----------------------------
+    function generateUniqueOrderNumber() {
+        // Obtenemos los números de pedido ya generados (si existen)
+        let orderNumbers = JSON.parse(localStorage.getItem('orderNumbers')) || [];
+        let newNumber;
+        do {
+            // Elegir aleatoriamente una longitud entre 8 y 10 dígitos
+            const length = Math.floor(Math.random() * 3) + 8; // 8, 9 o 10 dígitos
+            const min = Math.pow(10, length - 1);
+            const max = Math.pow(10, length) - 1;
+            newNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+        } while (orderNumbers.includes(newNumber));
+        // Guardamos el nuevo número para evitar duplicados en futuras órdenes
+        orderNumbers.push(newNumber);
+        localStorage.setItem('orderNumbers', JSON.stringify(orderNumbers));
+        return newNumber;
+    }
+
+    // ----------------------------
     // Función para enviar la orden por correo (ejemplo con EmailJS)
     // ----------------------------
     function sendOrderEmail() {
@@ -253,10 +273,18 @@
                 orderDetails += `Cantidad: ${item.quantity}\n\n`;
             }
         });
-
+        
         // Datos de contacto ingresados en el formulario de checkout
         const phone = document.getElementById('phone').value.trim();
         const userEmail = document.getElementById('email').value.trim();
+        const userNames = document.getElementById('name').value.trim();
+        const userLastName = document.getElementById('lastname').value.trim();
+        const userId = document.getElementById('rut').value.trim();
+        const userAddress = document.getElementById('address').value.trim();
+        const userOpcional = document.getElementById('opcional').value.trim();
+        const userCity = document.getElementById('city').value.trim();
+        const userRegion = document.getElementById('region').value.trim();
+        const orderNumber = generateUniqueOrderNumber();
         const totalText = document.getElementById('cartTotal').textContent;
 
         // Verifica que los elementos del formulario existen y tienen valores
@@ -265,11 +293,21 @@
             return;
         }
 
+        // Generamos el número de pedido único
+
         // Parámetros para la plantilla de EmailJS (ajusta los nombres según tu plantilla)
         var templateParams = {
             order_details: orderDetails,
             user_phone: phone,
             user_email: userEmail,
+            user_names: userNames,
+            user_lastName: userLastName,
+            user_id: userId,
+            user_address: userAddress,
+            user_opcional: userOpcional,
+            user_city: userCity,
+            user_region: userRegion,
+            order_number: orderNumber,
             order_total: totalText
         };
 
