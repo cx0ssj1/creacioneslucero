@@ -201,7 +201,6 @@
             total += subtotal;
             itemsHTML += `
                 <tr>
-                    <td><img src="${item.image}" alt="${item.name}" style="width:50px; height:50px; object-fit:cover;"></td>
                     <td>${item.name}</td>
                     <td>${item.quantity}</td>
                     <td>$${item.price}</td>
@@ -210,7 +209,7 @@
             `;
         });
         cartItemsContainer.innerHTML = itemsHTML;
-        cartTotalEl.textContent = 'Total: $' + total;
+        cartTotalEl.innerHTML = 'Total: $' + total;
     }
 
     // Si la página es de checkout, se ejecuta renderCheckout()
@@ -285,7 +284,7 @@
         const userCity = document.getElementById('city').value.trim();
         const userRegion = document.getElementById('region').value.trim();
         const orderNumber = generateUniqueOrderNumber();
-        const totalText = document.getElementById('cartTotal').textContent;
+        const totalText = document.getElementById('cartTotal').textContent.replace(/Total:\s*\$/, '').trim();
 
         // Verifica que los elementos del formulario existen y tienen valores
         if (!phone || !userEmail || !totalText) {
@@ -321,6 +320,16 @@
             },
             (error) => {
                 console.log('FAILED...', error);
+            },
+        );
+        // Enviar al cliente con el mismo contenido
+        var clientParams = { ...templateParams, to_email: userEmail };
+        emailjs.send(serviceID, "template_g6xbnma", clientParams).then(
+            (response) => {
+                console.log("Correo enviado al cliente", response);
+            },
+            (error) => {
+                console.error("Error enviando al cliente", error);
             },
         );
     }
