@@ -246,6 +246,7 @@
             if (item.type === 'custom') {
                 orderDetails += `Producto Personalizado: ${item.name}\n`;
                 orderDetails += `Cantidad: ${item.quantity}\n`;
+                orderDetails += `Precio unitario: $${item.price}\n\n`;
                 orderDetails += "Detalles de Personalización:\n";
                 
                 if (item.customization.text) {
@@ -269,7 +270,8 @@
                 orderDetails += "\n";
             } else {
                 orderDetails += `Producto: ${item.name}\n`;
-                orderDetails += `Cantidad: ${item.quantity}\n\n`;
+                orderDetails += `Cantidad: ${item.quantity}\n`;
+                orderDetails += `Precio unitario: $${item.price}\n\n`;
             }
         });
         
