@@ -367,6 +367,44 @@
         });
     }
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const regionSelect = document.getElementById("region");
+        const comunaSelect = document.getElementById("city");
+
+        // Cargar JSON dinámicamente
+        fetch("/comunas-regiones.json")
+            .then(response => response.json())
+            .then(data => {
+                // Llenar el select de regiones
+                data.regiones.forEach(regionObj => {
+                    let option = document.createElement("option");
+                    option.value = regionObj.region;
+                    option.textContent = regionObj.region;
+                    regionSelect.appendChild(option);
+                });
+
+                // Evento para actualizar comunas cuando cambia la región
+                regionSelect.addEventListener("change", function () {
+                    let regionSeleccionada = this.value;
+
+                    // Limpiar opciones previas de comuna
+                    comunaSelect.innerHTML = '<option value="" selected disabled>Seleccione una comuna</option>';
+
+                    // Buscar las comunas correspondientes y agregarlas al select
+                    let regionEncontrada = data.regiones.find(r => r.region === regionSeleccionada);
+                    if (regionEncontrada) {
+                        regionEncontrada.comunas.forEach(comuna => {
+                            let option = document.createElement("option");
+                            option.value = comuna;
+                            option.textContent = comuna;
+                            comunaSelect.appendChild(option);
+                        });
+                    }
+                });
+            })
+            .catch(error => console.error("Error cargando el JSON:", error));
+    });
+
     // Exponer funciones si es necesario
     window.Cart = {
         getCart: () => cart,

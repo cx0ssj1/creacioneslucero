@@ -91,27 +91,13 @@
                             </div>
                             <div class="row pb-3">
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" id="city" name="city" placeholder="Comuna" required>
-                                </div>
-                                <div class="col-md-6">
                                     <select class="form-select" id="region" name="region" required>
                                         <option value="" selected disabled>Seleccione una región</option>
-                                        <option value="Arica">Arica y Parinacota</option>
-                                        <option value="Tarapaca">Tarapacá</option>
-                                        <option value="Antofagasta">Antofagasta</option>
-                                        <option value="Atacama">Atacama</option>
-                                        <option value="Coquimbo">Coquimbo</option>
-                                        <option value="Valparaiso">Valparaíso</option>
-                                        <option value="Metropolitana">Región Metropolitana de Santiago</option>
-                                        <option value="OHiggins">O'Higgins</option>
-                                        <option value="Maule">Maule</option>
-                                        <option value="Nuble">Ñuble</option>
-                                        <option value="Biobio">Biobío</option>
-                                        <option value="Araucania">La Araucanía</option>
-                                        <option value="LosRios">Los Ríos</option>
-                                        <option value="LosLagos">Los Lagos</option>
-                                        <option value="Aysen">Aysén</option>
-                                        <option value="Magallanes">Magallanes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" id="city" name="city" required>
+                                        <option value="" selected disabled>Seleccione una comuna</option>
                                     </select>
                                 </div>
                             </div>
@@ -162,6 +148,8 @@
     <!-- Script del carrito -->
     <script src="/js/script-carrito.js"></script>
     <script>
+
+        // rut formato
         document.getElementById('checkoutForm').addEventListener('submit', function(event) {
             event.preventDefault();
             // Aquí deberías llamar a la función que maneja el pago y luego enviar el correo
