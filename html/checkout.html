@@ -149,14 +149,14 @@
     <script src="/js/script-carrito.js"></script>
     <script>
 
-        // rut formato
         document.getElementById('checkoutForm').addEventListener('submit', function(event) {
             event.preventDefault();
             // Aquí deberías llamar a la función que maneja el pago y luego enviar el correo
             // Simulamos un pago exitoso llamando directamente a sendOrderEmail
             sendOrderEmail();
         });
-
+        
+        // rut formato
         document.getElementById('rut').addEventListener('input', function(e) {
             let value = e.target.value.replace(/[^\dkK]/g, '');
             if (value.length > 1) {

@@ -348,7 +348,7 @@
             const email = document.getElementById('email').value.trim();
             // Validar formato del teléfono chileno (ejemplo: +56912345678)
             if (!phone.match(/^\+56\d{9,}$/)) {
-                alert('Por favor, ingresa un número telefónico válido que comience con +56.');
+                alert('Por favor, ingresa un número telefónico válido que comience con +56 9 o que contenga 9 digitos sin incluir +56 9.');
                 return;
             }
             if (!email) {

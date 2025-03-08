@@ -255,30 +255,31 @@
         <p class="text-center mb-4" style="font-size: 1.2rem; color: #555;">
             ¿Tienes alguna consulta o idea especial en mente? ¡Estamos aquí para ayudarte! 💌
         </p>
-        <div class="mb-3">
-            <label for="name" class="form-label fw-bold contact">Nombre</label>
-            <input type="text" id="namee" name="name" class="form-control shadow-sm" placeholder="Tu nombre completo" required>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label fw-bold contact">Email</label>
-            <input type="email" id="emaill" name="email" class="form-control shadow-sm" placeholder="Tu correo electrónico" required>
-        </div>
-        <div class="mb-3">
-            <label for="phone" class="form-label fw-bold contact">Teléfono</label>
-            <input type="tel" id="phonee" name="phone" class="form-control shadow-sm" placeholder="Tu número de teléfono" required>
-        </div>                
+        <form id="contactForm">
             <div class="mb-3">
-            <label for="message" class="form-label fw-bold contact">Mensaje</label>
-            <textarea id="message" name="messagee" class="form-control shadow-sm" rows="4" placeholder="Escribe tu mensaje aquí" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary w-100 btn-submit">
-            ✉️ Enviar mensaje
-        </button>
+                <label for="name" class="form-label fw-bold contact">Nombre</label>
+                <input type="text" id="namee" name="name" class="form-control shadow-sm" placeholder="Tu nombre completo" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label fw-bold contact">Email</label>
+                <input type="email" id="emaill" name="email" class="form-control shadow-sm" placeholder="Tu correo electrónico" required>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label fw-bold contact">Teléfono</label>
+                <input type="tel" id="phonee" name="phone" class="form-control shadow-sm" placeholder="Tu número de teléfono" required>
+            </div>                
+            <div class="mb-3">
+                <label for="message" class="form-label fw-bold contact">Mensaje</label>
+                <textarea id="messagee" name="messagee" class="form-control shadow-sm" rows="4" placeholder="Escribe tu mensaje aquí" required></textarea>
+            </div>
+            <button type="submit" id="button" value="Send Email" class="btn btn-primary w-100 btn-submit">
+                ✉️ Enviar mensaje
+            </button>
+        </form>
         <div class="text-center mt-5">
             <p style="font-size: 1.1rem; color: #555;">O contáctanos directamente por WhatsApp:</p>
-            <a href="https://wa.link/wwtvgr" target="_blank" class="btn btn-success" 
-            style="font-size: 1.2rem; padding: 10px 20px; border-radius: 30px;">
-            <i class="bi bi-whatsapp"></i> Enviar mensaje por WhatsApp
+            <a href="https://wa.link/wwtvgr" target="_blank" class="btn btn-success" style="font-size: 1.2rem; padding: 10px 20px; border-radius: 30px;">
+                <i class="bi bi-whatsapp"></i> Enviar mensaje por WhatsApp
             </a>
         </div>
         </div>
@@ -310,6 +311,7 @@
         </div>
     </div>
 
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/script-nav.js"></script>
     <script src="/js/script-index.js"></script>
