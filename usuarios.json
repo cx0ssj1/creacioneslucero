@@ -1,0 +1,26 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "tipo": "admin",
+      "nombre": "Juan",
+      "apellido": "Perez",
+      "email": "test1@gmail.com",
+      "password": "123456"
+    },
+    {
+      "id": 2,
+      "tipo": "user",
+      "nombre": "Jose",
+      "apellido": "Parra",
+      "email": "test2@gmail.com",
+      "password": "12345678"
+    },
+    {
+      "id": 3,
+      "nombre": "carlos",
+      "email": "salvocarlos435@gmail.com",
+      "password": "car"
+    }
+  ]
+}

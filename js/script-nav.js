@@ -17,4 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Ajustar el padding-top al redimensionar la ventana
     window.addEventListener("resize", updatePadding);
+
+    
+
 });

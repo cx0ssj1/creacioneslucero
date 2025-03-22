@@ -9,36 +9,44 @@
     <link rel="shortcut icon" href="/img/logo/logo-no-png.png"/>
     <link rel="stylesheet" href="/css/css-plant.css">
     <link rel="stylesheet" href="/css/carrito.css">
+    <link rel="stylesheet" href="/css/login.css">
     <!-- Opcional: Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light">
         <div class="container">
-        <a class="navbar-brand" href="/index.html">
-            <img src="/img/logo/logo.png" alt="Logo">
-            Creaciones Lucero
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/index.html">Inicio</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#products">Productos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#about">Sobre Nosotros</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#contact">Contacto</a>
-            </li>
-            </ul>
-        </div>
+            <a class="navbar-brand" href="/index.html">
+                <img src="/img/logo/logo.png" alt="Logo">
+                Creaciones Lucero
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto" id="loginSuccessful">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Sobre Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contacto</a>
+                    </li>
+                    <!--regs-->
+                    <li class="nav-item" id="login">
+                        <a class="nav-link" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-login">iniciar sesion</a>
+                    </li>
+                    <li class="nav-item" id="register">
+                        <a class="nav-link" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-registro">Registrarse</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
     <header id="home" class="py-5 text-center position-relative">
@@ -59,27 +67,28 @@
         </div>
     </header>
 
+    <div id="modal-container"></div>
+
     <section id="novedades" class="py-5" style="background-color: #fdf6f6; color: #333;">
         <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Pedidos Personalizados ✨</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Para pedidos personalizados, manda un mensaje al:<br>
-                <b>📞 +56 9 8121 8751</b>.<br><br>
-                ¡Estaremos encantados de ayudarte a crear algo único para ti! 🖋️
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <a href="https://wa.link/wi3bfa" target="_blank" class="btn btn-primary">
-                    <i class="bi bi-whatsapp"></i> Contáctame aquí
-                </a>
-            </div>
+        <div class="modal fade" id="pedidos-perso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Pedidos Personalizados ✨</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Para pedidos personalizados, manda un mensaje al:<br>
+                    <b>📞 +56 9 8121 8751</b>.<br><br>
+                    ¡Estaremos encantados de ayudarte a crear algo único para ti! 🖋️
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <a href="https://wa.link/wi3bfa" target="_blank" class="btn btn-primary">
+                        <i class="bi bi-whatsapp"></i> Contáctame aquí
+                    </a>
+                </div>
             </div>
         </div>
         </div>
@@ -120,8 +129,7 @@
         </div>
 
         <!-- Botón para abrir el modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" 
-                style="font-size: 1.1rem; padding: 10px 20px; border-radius: 30px; background-color: #e75480; border: none;">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pedidos-perso" style="font-size: 1.1rem; padding: 10px 20px; border-radius: 30px; background-color: #e75480; border: none;">
             ✂️ Pedidos Personalizados
         </button>
         </div>
@@ -316,5 +324,6 @@
     <script src="/js/script-nav.js"></script>
     <script src="/js/script-index.js"></script>
     <script src="/js/script-carrito.js"></script>
+    <script src="/js/script-login.js"></script>
 </body>
 </html>
