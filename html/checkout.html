@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/css-plant.css">
     <link rel="shortcut icon" href="/img/logo/logo-no-png.png"/>
     <link rel="stylesheet" href="/css/checkout.css"> 
+    <link rel="stylesheet" href="/css/login.css">
     <!-- Dentro del <head> o antes de cerrar el body -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
@@ -25,39 +26,16 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="/index.html">
-                <img src="/img/logo/logo.png">
-                Creaciones Lucero
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.html">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.html#products">Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.html#about">Sobre Nosotros</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.html#contact">Contacto</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
+
+    <div id="modal-container"></div>
+    
     <!-- Contenido principal -->
-    <main class="container" style="padding-top: 80px; padding-bottom: 40px;">
+    <main class="container" style="padding-bottom: 40px;">
         <h1 class="text-center my-4 checkout-heading">Checkout</h1>
         <div class="row">
             <!-- Formulario a la izquierda -->
-            <div class="col-md-8">
+            <div class="col-md-8 pb-3">
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title mb-4">Datos de contacto</h3>
@@ -69,14 +47,14 @@
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@ejemplo.com">
                             </div>
                             <h4 class="mb-3">Entrega</h4>
-                            <div class="row pb-3">
-                                <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 pb-3">
                                     <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" required>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 pb-3">
                                     <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Apellido" required>
                                 </div>
                             </div>
@@ -89,13 +67,13 @@
                             <div class="mb-3">
                                 <input type="text" class="form-control" id="opcional" name="opcional" placeholder="Casa / Depto / Oficina (opcional)">
                             </div>
-                            <div class="row pb-3">
-                                <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 pb-3">
                                     <select class="form-select" id="region" name="region" required>
                                         <option value="" selected disabled>Seleccione una región</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 pb-3">
                                     <select class="form-select" id="city" name="city" required>
                                         <option value="" selected disabled>Seleccione una comuna</option>
                                     </select>
@@ -106,6 +84,7 @@
                     </div>
                 </div>
             </div>
+
 
             <!-- Carrito a la derecha -->
             <div class="col-md-4">
@@ -137,25 +116,13 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-3 text-center">
-        <div class="container">
-        <p>&copy; 2025 Creaciones Lucero. Reservados todos los derechos.</p>
-        </div>
-    </footer>
+    <div id="footer-container"></div>
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Script del carrito -->
     <script src="/js/script-carrito.js"></script>
     <script>
-
-        document.getElementById('checkoutForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            // Aquí deberías llamar a la función que maneja el pago y luego enviar el correo
-            // Simulamos un pago exitoso llamando directamente a sendOrderEmail
-            sendOrderEmail();
-        });
-        
         // rut formato
         document.getElementById('rut').addEventListener('input', function(e) {
             let value = e.target.value.replace(/[^\dkK]/g, '');
@@ -170,6 +137,36 @@
             }
             e.target.value = value;
         });
-    </script>
+
+        //manejar gmail
+        document.addEventListener("DOMContentLoaded", function () {
+            const loggedInUser = JSON.parse(localStorage.getItem("user"));
+            const emailInput = document.getElementById("email");
+    
+            if (loggedInUser && loggedInUser.email) {
+                emailInput.value = loggedInUser.email; // Completar con el email guardado
+                emailInput.setAttribute("readonly", true); // Evitar que lo editen
+            }
+        });
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            // Verificar si hay un usuario logueado
+            const loggedInUser = JSON.parse(localStorage.getItem("user"));
+            
+            // Si no hay usuario logueado, redirigir a la página principal y mostrar modal de login
+            if (!loggedInUser) {
+                // Guardar en sessionStorage una bandera para mostrar el modal al redirigir
+                sessionStorage.setItem("showLoginModal", "true");
+                
+                // Redirigir a la página principal
+                window.location.href = "/index.html";
+            } else {
+                console.log("Usuario autenticado, acceso a checkout permitido");
+            }
+        });
+    </script>   
+    <script src="/js/elements/load-nav.js"></script>
+    <script src="/js/elements/load-footer.js"></script>
+    <script src="/js/script-login.js"></script>
 </body>
 </html>

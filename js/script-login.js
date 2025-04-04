@@ -11,10 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Inicializa los modales de Bootstrap después de cargarlos
             document.querySelectorAll(".modal").forEach(modal => new bootstrap.Modal(modal));
-
             // Inicializar login después de cargar los modales
-            inicializarLogin();
-            register();
+            setTimeout(() => {
+                inicializarLogin();
+                register();
+            }, 300);            
         })
         .catch(error => {
             console.error("Error al cargar los modales:", error);
@@ -24,10 +25,33 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Función para inicializar el login
+
 function inicializarLogin() {
+    // Verificar si el usuario está logueado
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    
+    // Verificar si viene de un intento de acceder a checkout sin estar logueado
+    const showLoginModal = sessionStorage.getItem("showLoginModal");
+    if (showLoginModal === "true" && !loggedInUser) {
+        // Abrir el modal de login automáticamente
+        const loginModal = new bootstrap.Modal(document.getElementById("modal-login"));
+        loginModal.show();
+        
+        // Limpiar la bandera para evitar que se abra en futuras recargas
+        sessionStorage.removeItem("showLoginModal");
+        
+        // Mostrar mensaje de que necesita iniciar sesión
+        const alertDiv = document.createElement("div");
+        alertDiv.className = "alert alert-warning alert-dismissible fade show";
+        alertDiv.innerHTML = `
+            Es necesario iniciar sesión para realizar el checkout.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.getElementById("modal-login").querySelector(".modal-body").prepend(alertDiv);
+    }
 
     if (loggedInUser) {
+        // Obtener el elemento donde se insertará el dropdown
         const loginSuccessful = document.getElementById("loginSuccessful");
 
         // Verificar si ya existe el dropdown para no duplicarlo
@@ -50,22 +74,22 @@ function inicializarLogin() {
             // Inicializar el dropdown de Bootstrap
             new bootstrap.Dropdown(userDropdown.querySelector(".dropdown-toggle"));
         }
-
+        
         // Ocultar botones de login y registro
         document.getElementById("login")?.remove();
         document.getElementById("register")?.remove();
     }
 
-    // Manejar el formulario de login
+    // Manejar el formulario de login (código existente)
     const loginForm = document.querySelector("#modal-login form");
     if (loginForm) {
         loginForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
-            const email = document.getElementById("email").value.trim();
+            const email = document.getElementById("login-email").value.trim();
             const password = document.getElementById("password").value.trim();
 
-            fetch("usuarios.json")
+            fetch("/usuarios.json")
                 .then(response => {
                     if (!response.ok) throw new Error("No se pudo cargar el JSON");
                     return response.json();
@@ -75,6 +99,14 @@ function inicializarLogin() {
 
                     if (userFound) {
                         localStorage.setItem("user", JSON.stringify(userFound));
+                        
+                        // Si viene de checkout, redirigir de vuelta a checkout después de login exitoso
+                        if (sessionStorage.getItem("showLoginModal") === "true") {
+                            sessionStorage.removeItem("showLoginModal");
+                            window.location.href = "/html/checkout.html";
+                            return;
+                        }
+                        
                         location.reload(); // Recargar solo si el login es exitoso
                     } else {
                         alert("Correo o contraseña incorrectos, intente de nuevo");

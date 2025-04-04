@@ -1,0 +1,24 @@
+navbar:
+
+    <div id="navbar-container"></div>
+
+
+    <script src="/js/elements/load-nav.js"></script>
+
+
+modal-logins:
+
+    <link rel="stylesheet" href="/css/login.css">
+
+
+    <div id="modal-container"></div>
+
+
+    <script src="/js/script-login.js"></script>
+
+footer:
+
+    <div id="footer-container"></div>
+
+
+    <script src="/js/elements/load-footer.js"></script>

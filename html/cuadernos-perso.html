@@ -10,35 +10,14 @@
     <link rel="stylesheet" href="/css/libretas.css">
     <link rel="shortcut icon" href="/img/logo/logo-no-png.png"/>
     <link rel="stylesheet" href="/css/carrito.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="/index.html">
-                <img src="/img/logo/logo.png">
-                Creaciones Lucero
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.html">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.html#products">Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.html#about">Sobre Nosotros</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/index.html#contact">Contacto</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    
+    <!-- Navbar -->
+    <div id="navbar-container"></div>
+
+    <div id="modal-container"></div>
         <!-- Main Content -->
         <main class="container my-4">
             <!-- Breadcrumb -->
@@ -160,15 +139,10 @@
         </main>
     
         <!-- Footer -->
-        <footer class="py-3 text-center mt-5">
-            <div class="container">
-                <p>© 2025 Creaciones Lucero. Reservados todos los derechos.</p>
-            </div>
-        </footer>
+        <div id="footer-container"></div>
 
-            <!-- Botón flotante del carrito -->
-    <button class="cart-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" 
-            aria-controls="offcanvasCart">
+    <!-- Botón flotante del carrito -->
+    <button class="cart-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
         <i class="bi bi-cart-fill fs-4"></i>
         <span class="cart-badge" id="cartCount">3</span>
     </button>
@@ -218,5 +192,8 @@
             }
             });
     </script>
+    <script src="/js/script-login.js"></script>
+    <script src="/js/elements/load-nav.js"></script>
+    <script src="/js/elements/load-footer.js"></script>
 </body>
 </html>

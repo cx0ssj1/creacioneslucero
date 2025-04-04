@@ -1,5 +1,5 @@
 // script-carrito.js
-(function() {
+( function() {
     // Variable global para el carrito (se guarda en localStorage)
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -152,20 +152,51 @@
             });
         });
         cartFooter.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Total: $${total}</h5>
-            </div>
-            <button id="checkoutBtn" class="btn btn-success w-100 mt-3" style="background-color: var(--pink-dark); border: none; font-size: 1.1rem;">
-                Finalizar Compra
-            </button>
-        `;
-        const checkoutBtn = cartFooter.querySelector('#checkoutBtn');
-        if (checkoutBtn) {
-            checkoutBtn.addEventListener('click', function() {
-                // Redirige a la página de checkout
-                window.location.href = '/html/checkout.html';
-            });
+    <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Total: $${total}</h5>
+    </div>
+    <button id="checkoutBtn" class="btn btn-success w-100 mt-3" style="background-color: var(--pink-dark); border: none; font-size: 1.1rem;">
+        Finalizar Compra
+    </button>
+`;
+const checkoutBtn = cartFooter.querySelector('#checkoutBtn');
+if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', function() {
+        // Verificar si hay un usuario logueado
+        const loggedInUser = JSON.parse(localStorage.getItem("user"));
+        
+        if (!loggedInUser) {
+            // Si no hay usuario logueado, guardar flag para mostrar el modal
+            sessionStorage.setItem("showLoginModal", "true");
+            // Cerrar el offcanvas del carrito
+            const offcanvasElement = document.getElementById('offcanvasCart');
+            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+            if (offcanvas) {
+                offcanvas.hide();
+            }
+            // Si estamos en checkout.html, redirigir a la página principal
+            if (window.location.href.includes('checkout.html')) {
+                window.location.href = '/index.html';
+            } else {
+                // Mostrar el modal de login
+                const loginModal = new bootstrap.Modal(document.getElementById("modal-login"));
+                loginModal.show();
+                
+                // Mostrar mensaje en el modal
+                const alertDiv = document.createElement("div");
+                alertDiv.className = "alert alert-warning alert-dismissible fade show";
+                alertDiv.innerHTML = `
+                    Es necesario iniciar sesión para realizar el checkout.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                document.getElementById("modal-login").querySelector(".modal-body").prepend(alertDiv);
+            }
+        } else {
+            // Si hay usuario logueado, redirigir a la página de checkout
+            window.location.href = '/html/checkout.html';
         }
+    });
+}
     }
 
     // Función para eliminar un producto del carrito
@@ -294,8 +325,6 @@
             return;
         }
 
-        // Generamos el número de pedido único
-
         // Parámetros para la plantilla de EmailJS (ajusta los nombres según tu plantilla)
         var templateParams = {
             order_details: orderDetails,
@@ -365,6 +394,7 @@
                 alert('Pago exitoso y correo enviado!');
             }
         });
+        
     }
 
     document.addEventListener("DOMContentLoaded", function () {

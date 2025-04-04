@@ -18,7 +18,8 @@
   "homepage": "https://github.com/cx0ssj1/creacioneslucero#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "transbank-sdk": "^5.0.0"
   },
   "description": ""
 }
