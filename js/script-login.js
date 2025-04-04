@@ -150,8 +150,14 @@ function register() {
                 return;
             }
 
+            // Determinar la URL del endpoint según el entorno
+            const isProduction = window.location.hostname !== "localhost";
+            const apiUrl = isProduction 
+                ? "/.netlify/functions/register"  // URL para producción (Netlify Functions)
+                : "http://localhost:3000/usuarios"; // URL para desarrollo local
+
             // Enviar datos al backend
-            fetch("http://localhost:3000/usuarios", {
+            fetch(apiUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ nombre, email, password })
@@ -165,7 +171,10 @@ function register() {
                     document.querySelector("#modal-registro .btn-close").click(); // Cierra el modal
                 }
             })
-            .catch(error => console.error("Error al registrar usuario:", error));
+            .catch(error => {
+                console.error("Error al registrar usuario:", error);
+                alert("Error en el registro. Por favor intenta más tarde.");
+            });
         });
     }
 }

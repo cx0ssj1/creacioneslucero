@@ -21,5 +21,8 @@
     "express": "^4.21.2",
     "transbank-sdk": "^5.0.0"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "netlify-cli": "^19.1.5"
+  }
 }
