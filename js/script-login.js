@@ -108,7 +108,7 @@ function inicializarLogin() {
             const email = document.getElementById("login-email").value.trim();
             const password = document.getElementById("password").value.trim();
 
-            fetch("/usuarios.json")
+            fetch("https://creacioneslucero.onrender.com/usuarios")
                 .then(response => {
                     if (!response.ok) throw new Error("No se pudo cargar el JSON");
                     return response.json();
