@@ -21,7 +21,9 @@ const userSchema = new mongoose.Schema({
     nombre: String,
     email: { type: String, unique: true },
     password: String,
-    ventas: { type: Number, default: 0 }
+    ventas: { type: Number, default: 0 },
+    resetCode: String,
+    resetCodeExpires: Date
 });
 
 const Usuario = mongoose.model("Usuario", userSchema);
@@ -82,6 +84,61 @@ app.post("/sumar-venta", async (req, res) => {
     } catch (err) {
         console.error("Error al sumar venta:", err);
         res.status(500).json({ error: "Error en el servidor" });
+    }
+});
+
+const emailjs = require('@emailjs/nodejs'); // Instala con npm si no lo tienes
+
+app.post("/solicitar-reset", async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await Usuario.findOne({ email });
+        if (!user) return res.status(404).json({ error: "Correo no registrado" });
+
+        const code = Math.floor(100000 + Math.random() * 900000).toString(); // Código de 6 dígitos
+        const expiration = new Date(Date.now() + 10 * 60 * 1000); // 10 minutos
+
+        user.resetCode = code;
+        user.resetCodeExpires = expiration;
+        await user.save();
+
+        // ENVÍO CON EMAILJS
+        const serviceID = 'service_jpxibh8';
+        const templateID = 'template_m92i0to';
+        const publicKey = 'k_9nZSnIjBCNH-26v'; 
+
+        await emailjs.send(serviceID, templateID, {
+            to_email: email,
+            user_name: user.nombre,
+            reset_code: code
+        }, { publicKey });
+
+        res.json({ mensaje: "Código enviado por correo" });
+    } catch (err) {
+        console.error("Error al solicitar código:", err);
+        res.status(500).json({ error: "Error del servidor" });
+    }
+});
+
+app.post("/confirmar-reset", async (req, res) => {
+    const { email, code, nuevaPassword } = req.body;
+    try {
+        const user = await Usuario.findOne({ email });
+
+        if (!user || user.resetCode !== code || user.resetCodeExpires < new Date()) {
+            return res.status(400).json({ error: "Código inválido o expirado" });
+        }
+
+        const hashedPassword = await bcrypt.hash(nuevaPassword, 10);
+        user.password = hashedPassword;
+        user.resetCode = null;
+        user.resetCodeExpires = null;
+        await user.save();
+
+        res.json({ mensaje: "Contraseña actualizada correctamente" });
+    } catch (err) {
+        console.error("Error al confirmar código:", err);
+        res.status(500).json({ error: "Error del servidor" });
     }
 });
 

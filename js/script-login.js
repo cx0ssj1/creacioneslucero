@@ -156,3 +156,53 @@ function register() {
         });
     }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const resetForm = document.getElementById("form-reset");
+    const paso1 = document.getElementById("paso1");
+    const paso2 = document.getElementById("paso2");
+
+    resetForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = document.getElementById("reset-email").value.trim();
+
+        fetch("https://creacioneslucero.onrender.com/solicitar-reset", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) return alert(data.error);
+            alert("Código enviado a tu correo. Revisa tu bandeja de entrada.");
+            paso1.classList.add("d-none");
+            paso2.classList.remove("d-none");
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Ocurrió un error al solicitar el código");
+        });
+    });
+
+    document.getElementById("confirm-reset").addEventListener("click", function () {
+        const email = document.getElementById("reset-email").value.trim();
+        const code = document.getElementById("reset-code").value.trim();
+        const nuevaPassword = document.getElementById("reset-password").value.trim();
+
+        fetch("https://creacioneslucero.onrender.com/confirmar-reset", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, code, nuevaPassword })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) return alert(data.error);
+            alert("Contraseña restablecida con éxito. Ya puedes iniciar sesión.");
+            location.reload();
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error al restablecer contraseña.");
+        });
+    });
+});
