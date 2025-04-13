@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("modal-container").innerHTML = data;
             console.log("Modales cargados correctamente");
 
+            document.querySelectorAll(".modal").forEach(modal => new bootstrap.Modal(modal));
+
             const guestButton = document.getElementById("guest-button");
             if (guestButton) {
                 guestButton.addEventListener("click", function () {
@@ -19,11 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
 
-            document.querySelectorAll(".modal").forEach(modal => new bootstrap.Modal(modal));
-
             setTimeout(() => {
                 inicializarLogin();
                 register();
+                recuperarContrasena(); // <-- NUEVO
             }, 300);
         })
         .catch(error => {
@@ -45,7 +46,7 @@ function inicializarLogin() {
         const alertDiv = document.createElement("div");
         alertDiv.className = "alert alert-warning alert-dismissible fade show";
         alertDiv.innerHTML = `
-            inicia sesión para realizar tu compra o continua como invitado.
+            Inicia sesión para realizar tu compra o continúa como invitado.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         `;
         document.getElementById("modal-login").querySelector(".modal-body").prepend(alertDiv);
@@ -89,21 +90,21 @@ function inicializarLogin() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    localStorage.setItem("user", JSON.stringify(data));
-                    if (sessionStorage.getItem("showLoginModal") === "true") {
-                        sessionStorage.removeItem("showLoginModal");
-                        window.location.href = "/html/checkout.html";
-                        return;
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        localStorage.setItem("user", JSON.stringify(data));
+                        if (sessionStorage.getItem("showLoginModal") === "true") {
+                            sessionStorage.removeItem("showLoginModal");
+                            window.location.href = "/html/checkout.html";
+                            return;
+                        }
+                        location.reload();
                     }
-                    location.reload();
-                }
-            })
-            .catch(error => console.error("Error al iniciar sesión:", error));
+                })
+                .catch(error => console.error("Error al iniciar sesión:", error));
         };
     } else {
         console.error("No se encontró el formulario de login en el documento");
@@ -143,33 +144,39 @@ function register() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ nombre, email, password })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    alert("Registro exitoso. Ahora puedes iniciar sesión.");
-                    document.querySelector("#modal-registro .btn-close").click();
-                }
-            })
-            .catch(error => console.error("Error al registrar usuario:", error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        alert("Registro exitoso. Ahora puedes iniciar sesión.");
+                        document.querySelector("#modal-registro .btn-close").click();
+                    }
+                })
+                .catch(error => console.error("Error al registrar usuario:", error));
         });
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const resetForm = document.getElementById("form-reset");
+function recuperarContrasena() {
     const paso1 = document.getElementById("paso1");
     const paso2 = document.getElementById("paso2");
 
-    resetForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-    
-        // Desactivamos los campos ocultos para que no molesten
-        document.querySelectorAll("#paso2 input").forEach(input => input.disabled = true);
-    
+    const btnEnviarCodigo = document.getElementById("enviar-codigo");
+    const btnConfirmar = document.getElementById("confirm-reset");
+
+    const spinnerEnviar = document.getElementById("spinner-enviar");
+    const spinnerReset = document.getElementById("spinner-reset");
+
+    if (!btnEnviarCodigo || !btnConfirmar) return;
+
+    btnEnviarCodigo.addEventListener("click", function () {
         const email = document.getElementById("reset-email").value.trim();
-    
+        if (!email) return alert("Ingresa tu correo electrónico.");
+
+        spinnerEnviar.classList.remove("d-none");
+        btnEnviarCodigo.disabled = true;
+
         fetch("https://creacioneslucero.onrender.com/solicitar-reset", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -177,25 +184,31 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(res => res.json())
         .then(data => {
-            if (data.error) return alert(data.error);
-            alert("Código enviado a tu correo. Revisa tu bandeja de entrada.");
-            paso1.classList.add("d-none");
-            paso2.classList.remove("d-none");
-    
-            // Habilitamos los campos del paso 2
-            document.querySelectorAll("#paso2 input").forEach(input => input.disabled = false);
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert("Código enviado. Revisa tu correo.");
+                paso1.classList.add("d-none");
+                paso2.classList.remove("d-none");
+            }
         })
         .catch(err => {
             console.error(err);
-            alert("Ocurrió un error al solicitar el código");
+            alert("Error al enviar el código");
+        })
+        .finally(() => {
+            spinnerEnviar.classList.add("d-none");
+            btnEnviarCodigo.disabled = false;
         });
     });
-    
 
-    document.getElementById("confirm-reset").addEventListener("click", function () {
+    btnConfirmar.addEventListener("click", function () {
         const email = document.getElementById("reset-email").value.trim();
         const code = document.getElementById("reset-code").value.trim();
         const nuevaPassword = document.getElementById("reset-password").value.trim();
+
+        spinnerReset.classList.remove("d-none");
+        btnConfirmar.disabled = true;
 
         fetch("https://creacioneslucero.onrender.com/confirmar-reset", {
             method: "POST",
@@ -204,13 +217,20 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(res => res.json())
         .then(data => {
-            if (data.error) return alert(data.error);
-            alert("Contraseña restablecida con éxito. Ya puedes iniciar sesión.");
-            location.reload();
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert("Contraseña actualizada. Ya puedes iniciar sesión.");
+                location.reload();
+            }
         })
         .catch(err => {
             console.error(err);
             alert("Error al restablecer contraseña.");
+        })
+        .finally(() => {
+            spinnerReset.classList.add("d-none");
+            btnConfirmar.disabled = false;
         });
     });
-});
+}
