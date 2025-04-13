@@ -110,7 +110,7 @@ function inicializarLogin() {
 
             fetch("https://creacioneslucero.onrender.com/usuarios")
                 .then(response => {
-                    if (!response.ok) throw new Error("No se pudo cargar el JSON");
+                    if (!response.ok) throw new Error("No se pudo cargar los usuarios");
                     return response.json();
                 })
                 .then(data => {

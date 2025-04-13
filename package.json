@@ -20,6 +20,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "mongodb": "^6.15.0",
     "transbank-sdk": "^5.0.0"
   },
   "description": ""

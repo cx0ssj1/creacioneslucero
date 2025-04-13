@@ -1,52 +1,58 @@
 const express = require("express");
-const fs = require("fs");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 const app = express();
-const PORT = 3000; // Changed port number
+const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-const USERS_FILE = "usuarios.json";
+// Conexión a MongoDB Atlas
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log("✅ Conectado a MongoDB Atlas"))
+.catch(err => console.error("❌ Error al conectar con MongoDB:", err));
 
-// Leer usuarios
-app.get("/usuarios", (req, res) => {
-    fs.readFile(USERS_FILE, "utf8", (err, data) => {
-        if (err) return res.status(500).json({ error: "Error al leer el archivo" });
-        res.json(JSON.parse(data));
-    });
+// Esquema y modelo de usuario
+const userSchema = new mongoose.Schema({
+    nombre: String,
+    email: String,
+    password: String,
+});
+const Usuario = mongoose.model("Usuario", userSchema);
+
+// Ruta para obtener todos los usuarios (para login)
+app.get("/usuarios", async (req, res) => {
+    try {
+        const usuarios = await Usuario.find();
+        res.json({ usuarios });
+    } catch (err) {
+        res.status(500).json({ error: "Error al obtener usuarios" });
+    }
 });
 
-// Registrar usuario
-app.post("/usuarios", (req, res) => {
+// Ruta para registrar un nuevo usuario
+app.post("/usuarios", async (req, res) => {
     const { nombre, email, password } = req.body;
-    console.log("Recibiendo datos:", req.body); // <-- Agrega esto para ver los datos recibidos
-
-    fs.readFile(USERS_FILE, "utf8", (err, data) => {
-        if (err) {
-            console.error("Error al leer el archivo:", err);
-            return res.status(500).json({ error: "Error al leer el archivo" });
-        }
-
-        let users = JSON.parse(data).usuarios;
-        if (users.some(user => user.email === email)) {
+    try {
+        const existente = await Usuario.findOne({ email });
+        if (existente) {
             return res.status(400).json({ error: "El correo ya está registrado" });
         }
 
-        const newUser = { id: users.length + 1, nombre, email, password };
-        users.push(newUser);
+        const nuevoUsuario = new Usuario({ nombre, email, password });
+        await nuevoUsuario.save();
+        res.status(201).json(nuevoUsuario);
+    } catch (err) {
+        res.status(500).json({ error: "Error al registrar usuario" });
+    }
+});
 
-        fs.writeFile(USERS_FILE, JSON.stringify({ usuarios: users }, null, 2), err => {
-            if (err) {
-                console.error("Error al guardar el usuario:", err);
-                return res.status(500).json({ error: "Error al guardar el usuario" });
-            }
-            console.log("Usuario registrado con éxito:", newUser);
-            res.status(201).json(newUser);
-        });
-    });
-}); 
-
-// Iniciar servidor
-app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+// Iniciar el servidor
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
