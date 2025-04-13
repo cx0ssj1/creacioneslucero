@@ -14,7 +14,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" placeholder="Ingresa tu contraseña" required>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Ingresa tu contraseña" required>
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="remember">
@@ -24,7 +24,6 @@
                     <br>
                     <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-registro">¿No tienes cuenta? Regístrate aquí</a>
                     <a type="button" class="text-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-reset">¿Olvidaste tu contraseña?</a>
-                    <!-- NUEVA OPCIÓN: Continuar como invitado -->
                     <button type="button" id="guest-button" class="btn btn-secondary w-100 mt-2">Continuar como invitado</button>
                 </form>
             </div>
@@ -34,6 +33,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal recuperación contraseña -->
 <div class="modal fade" id="modal-reset" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalResetLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -46,14 +46,17 @@
                 <form id="form-reset">
                     <div id="paso1">
                         <label for="reset-email" class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control mb-3" id="reset-email" required>
+                        <input type="email" class="form-control mb-3" id="reset-email" name="reset-email" required>
                         <button type="submit" class="btn btn-primary w-100">Enviar código</button>
                     </div>
+
                     <div id="paso2" class="d-none">
                         <label for="reset-code" class="form-label">Código recibido</label>
-                        <input type="text" class="form-control mb-2" id="reset-code" required>
+                        <input type="text" class="form-control mb-2" id="reset-code" name="reset-code">
+
                         <label for="reset-password" class="form-label">Nueva contraseña</label>
-                        <input type="password" class="form-control mb-2" id="reset-password" required>
+                        <input type="password" class="form-control mb-2" id="reset-password" name="reset-password">
+
                         <button type="button" class="btn btn-success w-100" id="confirm-reset">Restablecer contraseña</button>
                     </div>
                 </form>
@@ -61,7 +64,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Modal-registro -->
 <div class="modal fade" id="modal-registro" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true">
@@ -75,23 +77,23 @@
                 <form>
                     <div class="mb-3">
                         <label for="register-name" class="form-label">Nombre completo</label>
-                        <input type="text" class="form-control" id="register-name" placeholder="Ingresa tu nombre" required>
+                        <input type="text" class="form-control" id="register-name" name="register-name" placeholder="Ingresa tu nombre" required>
                     </div>
                     <div class="mb-3">
                         <label for="register-email" class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" id="register-email" placeholder="Ingresa tu correo" required>
+                        <input type="email" class="form-control" id="register-email" name="register-email" placeholder="Ingresa tu correo" required>
                     </div>
                     <div class="mb-3">
                         <label for="register-password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="register-password" placeholder="Crea una contraseña" required>
+                        <input type="password" class="form-control" id="register-password" name="register-password" placeholder="Crea una contraseña" required>
                     </div>
                     <div class="mb-3">
                         <label for="confirm-password" class="form-label">Confirmar contraseña</label>
-                        <input type="password" class="form-control" id="confirm-password" placeholder="Repite la contraseña" required>
+                        <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Repite la contraseña" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Registrarse</button>
                     <br>
-                    <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-login">Ya tienes cuenta? inicia sesion aca</a>
+                    <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-login">¿Ya tienes cuenta? Inicia sesión aquí</a>
                 </form>
             </div>
             <div class="modal-footer">
