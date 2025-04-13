@@ -150,20 +150,19 @@
         });
         
         document.addEventListener("DOMContentLoaded", function () {
-            // Verificar si hay un usuario logueado
             const loggedInUser = JSON.parse(localStorage.getItem("user"));
+            const guestCheckout = localStorage.getItem("guestCheckout");
             
-            // Si no hay usuario logueado, redirigir a la página principal y mostrar modal de login
-            if (!loggedInUser) {
-                // Guardar en sessionStorage una bandera para mostrar el modal al redirigir
+            // Si NO hay usuario registrado Y no se optó por checkout invitado, redirigir.
+            if (!loggedInUser && guestCheckout !== "true") {
                 sessionStorage.setItem("showLoginModal", "true");
-                
-                // Redirigir a la página principal
                 window.location.href = "/index.html";
             } else {
-                console.log("Usuario autenticado, acceso a checkout permitido");
+                console.log("Acceso a checkout permitido");
+              // Opcional: Si el usuario decidió continuar como invitado, podrías limpiar o usar los datos de guestCheckout según lo necesites.
             }
         });
+
     </script>   
     <script src="/js/elements/load-nav.js"></script>
     <script src="/js/elements/load-footer.js"></script>

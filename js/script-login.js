@@ -8,10 +8,27 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById("modal-container").innerHTML = data;
             console.log("Modales cargados correctamente");
-
+            
+            // Asigna el evento al botón de "Continuar como invitado" ya que ahora existe en el DOM
+            const guestButton = document.getElementById("guest-button");
+            if (guestButton) {
+                guestButton.addEventListener("click", function () {
+                    // Configuramos el flag para continuar sin usuario registrado
+                    localStorage.setItem("guestCheckout", "true");
+                    // Cerramos el modal de login
+                    const loginModalEl = document.getElementById("modal-login");
+                    // Usamos o creamos la instancia de Bootstrap Modal
+                    const loginModal = bootstrap.Modal.getInstance(loginModalEl) || new bootstrap.Modal(loginModalEl);
+                    loginModal.hide();
+                    // Redirigimos a la página de checkout
+                    window.location.href = "/html/checkout.html";
+                });
+            }
+            
             // Inicializa los modales de Bootstrap después de cargarlos
             document.querySelectorAll(".modal").forEach(modal => new bootstrap.Modal(modal));
-            // Inicializar login después de cargar los modales
+            
+            // Inicializar login y registro después de un breve retraso
             setTimeout(() => {
                 inicializarLogin();
                 register();
@@ -23,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 '<div class="alert alert-danger">Error al cargar los modales. Por favor, recarga la página.</div>';
         });
 });
+
 
 // Función para inicializar el login
 
@@ -44,7 +62,7 @@ function inicializarLogin() {
         const alertDiv = document.createElement("div");
         alertDiv.className = "alert alert-warning alert-dismissible fade show";
         alertDiv.innerHTML = `
-            Es necesario iniciar sesión para realizar el checkout.
+            inicia sesión para realizar tu compra o continua como invitado.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         `;
         document.getElementById("modal-login").querySelector(".modal-body").prepend(alertDiv);
@@ -83,9 +101,10 @@ function inicializarLogin() {
     // Manejar el formulario de login (código existente)
     const loginForm = document.querySelector("#modal-login form");
     if (loginForm) {
-        loginForm.addEventListener("submit", function (event) {
+        // Asignar directamente
+        loginForm.onsubmit = function(event) {
             event.preventDefault();
-
+            // Código de manejo del login (igual al que pusimos en handleLoginSubmit)
             const email = document.getElementById("login-email").value.trim();
             const password = document.getElementById("password").value.trim();
 
@@ -99,21 +118,18 @@ function inicializarLogin() {
 
                     if (userFound) {
                         localStorage.setItem("user", JSON.stringify(userFound));
-                        
-                        // Si viene de checkout, redirigir de vuelta a checkout después de login exitoso
                         if (sessionStorage.getItem("showLoginModal") === "true") {
                             sessionStorage.removeItem("showLoginModal");
                             window.location.href = "/html/checkout.html";
                             return;
                         }
-                        
-                        location.reload(); // Recargar solo si el login es exitoso
+                        location.reload();
                     } else {
                         alert("Correo o contraseña incorrectos, intente de nuevo");
                     }
                 })
                 .catch(error => console.error("Error al cargar el JSON:", error));
-        });
+        }
     } else {
         console.error("No se encontró el formulario de login en el documento");
     }

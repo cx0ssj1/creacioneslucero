@@ -3,13 +3,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">iniciar sesion ✨</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Iniciar sesión ✨</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Correo electrónico</label>
+                        <label for="login-email" class="form-label">Correo electrónico</label>
                         <input type="email" class="form-control" id="login-email" name="email" placeholder="Ingresa tu correo" required>
                     </div>
                     <div class="mb-3">
@@ -22,7 +22,9 @@
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
                     <br>
-                    <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-registro" >No tienes cuenta? No te preocupes crea una aca</a>
+                    <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-registro">¿No tienes cuenta? Regístrate aquí</a>
+                    <!-- NUEVA OPCIÓN: Continuar como invitado -->
+                    <button type="button" id="guest-button" class="btn btn-secondary w-100 mt-2">Continuar como invitado</button>
                 </form>
             </div>
             <div class="modal-footer">
