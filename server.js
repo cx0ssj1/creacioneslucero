@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const emailjs = require("@emailjs/nodejs");
+const nodemailer = require("nodemailer");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -29,7 +29,16 @@ const userSchema = new mongoose.Schema({
 
 const Usuario = mongoose.model("Usuario", userSchema);
 
-// Ruta: Registro de usuario
+// 📬 Configura NodeMailer con Gmail
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: "creaciones.lucero.papeleria@gmail.com", // <-- Tu correo Gmail
+        pass: "eopf iwnk ntzd ujnd" // <-- Contraseña de aplicación generada en Google
+    }
+});
+
+// 📌 Registro de usuario
 app.post("/usuarios", async (req, res) => {
     const { nombre, email, password } = req.body;
     try {
@@ -48,20 +57,15 @@ app.post("/usuarios", async (req, res) => {
     }
 });
 
-// Ruta: Login
+// 📌 Login
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
-
     try {
         const user = await Usuario.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ error: "Usuario no encontrado" });
-        }
+        if (!user) return res.status(400).json({ error: "Usuario no encontrado" });
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ error: "Contraseña incorrecta" });
-        }
+        if (!isMatch) return res.status(400).json({ error: "Contraseña incorrecta" });
 
         res.json({ nombre: user.nombre, email: user.email, id: user._id });
     } catch (err) {
@@ -70,10 +74,9 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// Ruta: Sumar 1 venta al usuario
+// 📌 Sumar venta
 app.post("/sumar-venta", async (req, res) => {
     const { email } = req.body;
-
     try {
         const user = await Usuario.findOne({ email });
         if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
@@ -88,38 +91,41 @@ app.post("/sumar-venta", async (req, res) => {
     }
 });
 
-// Ruta: Solicitar código de recuperación
+// 📌 Solicitar código de recuperación
 app.post("/solicitar-reset", async (req, res) => {
     const { email } = req.body;
-    console.log("📨 Solicitud de reset recibida para:", email); 
+    console.log("📨 Solicitud de reset recibida para:", email);
+
     try {
         const user = await Usuario.findOne({ email });
         if (!user) return res.status(404).json({ error: "Correo no registrado" });
 
         const code = Math.floor(100000 + Math.random() * 900000).toString();
-        const expiration = new Date(Date.now() + 10 * 60 * 1000); // 10 minutos
+        const expiration = new Date(Date.now() + 10 * 60 * 1000);
 
         user.resetCode = code;
         user.resetCodeExpires = expiration;
         await user.save();
 
-        const serviceID = 'service_jpxibh8';
-        const templateID = 'template_m92i0to';
+        const mailOptions = {
+            from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
+            to: email,
+            subject: "Código para recuperar tu contraseña",
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2 style="color: #4CAF50;">Hola ${user.nombre},</h2>
+                    <p>Tu código de recuperación es:</p>
+                    <h3 style="background: #f0f0f0; padding: 10px; display: inline-block;">${code}</h3>
+                    <p>Este código es válido por <strong>10 minutos</strong>.</p>
+                    <br>
+                    <p>Gracias por confiar en <strong>Creaciones Lucero</strong>.</p>
+                </div>
+            `
+        };
 
-        await emailjs.send(
-            serviceID,
-            templateID,
-            {
-                to_email: email,
-                user_name: user.nombre,
-                reset_code: code
-            },
-            {
-                publicKey: 'k_9nZSnIjBCNH-26v' // Usa tu PUBLIC KEY aquí
-            }
-        );
-        
-        console.log("✅ Código enviado exitosamente por EmailJS");
+        await transporter.sendMail(mailOptions);
+        console.log("✅ Código enviado por Gmail");
+
         res.json({ mensaje: "Código enviado por correo" });
     } catch (err) {
         console.error("❌ Error al solicitar código:", err);
@@ -127,9 +133,10 @@ app.post("/solicitar-reset", async (req, res) => {
     }
 });
 
-// Ruta: Confirmar código y cambiar contraseña
+// 📌 Confirmar código y actualizar contraseña
 app.post("/confirmar-reset", async (req, res) => {
     const { email, code, nuevaPassword } = req.body;
+
     try {
         const user = await Usuario.findOne({ email });
 
@@ -150,7 +157,7 @@ app.post("/confirmar-reset", async (req, res) => {
     }
 });
 
-// Ruta de prueba
+// 📌 Ruta de prueba
 app.get("/", (req, res) => {
     res.send("Servidor funcionando y conectado a MongoDB");
 });

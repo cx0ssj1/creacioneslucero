@@ -97,7 +97,13 @@
                     if (data.error) {
                         alert(data.error);
                     } else {
-                        alert("Contraseña actualizada. Ya puedes iniciar sesión.");
+                        document.body.innerHTML = `
+                        <div class="container text-center py-5">
+                            <h3 class="text-success">✅ ¡Contraseña actualizada con éxito!</h3>
+                            <p>Puedes iniciar sesión desde el botón a continuación.</p>
+                            <a href="/index.html" class="btn btn-primary mt-3">Ir a iniciar sesión</a>
+                        </div>
+                        `;
                         window.location.href = "/index.html";
                     }
                 })
@@ -110,11 +116,6 @@
                 });
             });
         });
-    </script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-    <script type="text/javascript">
-        emailjs.init('k_9nZSnIjBCNH-26v')
     </script>
 </body>
 </html>
