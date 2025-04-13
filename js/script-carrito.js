@@ -387,12 +387,23 @@ if (checkoutBtn) {
             // Simulación de confirmación de pago. Reemplaza esta lógica con la de tu pasarela real.
             const pagoExitoso = true;
             if (pagoExitoso) {
-                // Envía el correo con la orden solo si el pago es exitoso.
                 sendOrderEmail();
-                // Opcional: limpiar el carrito y redirigir a una página de confirmación.
+                
+                const usuario = JSON.parse(localStorage.getItem("user"));
+                if (usuario) {
+                    fetch("https://creacioneslucero.onrender.com/sumar-venta", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email: usuario.email })
+                    })
+                    .then(res => res.json())
+                    .then(data => console.log("✅ Venta registrada:", data))
+                    .catch(err => console.error("❌ Error al registrar venta:", err));
+                }
+            
                 localStorage.removeItem('cart');
                 alert('Pago exitoso y correo enviado!');
-            }
+            }            
         });
         
     }

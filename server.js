@@ -21,7 +21,9 @@ const userSchema = new mongoose.Schema({
     nombre: String,
     email: { type: String, unique: true },
     password: String,
+    ventas: { type: Number, default: 0 }
 });
+
 const Usuario = mongoose.model("Usuario", userSchema);
 
 // Ruta: Registro de usuario (con hash de contraseña)
@@ -64,6 +66,25 @@ app.post("/login", async (req, res) => {
         res.status(500).json({ error: "Error del servidor" });
     }
 });
+
+// Sumar 1 venta al usuario (requiere el email)
+app.post("/sumar-venta", async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await Usuario.findOne({ email });
+        if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
+
+        user.ventas += 1;
+        await user.save();
+
+        res.json({ mensaje: "Venta registrada", ventas: user.ventas });
+    } catch (err) {
+        console.error("Error al sumar venta:", err);
+        res.status(500).json({ error: "Error en el servidor" });
+    }
+});
+
 
 // Ruta de prueba (opcional)
 app.get("/", (req, res) => {
