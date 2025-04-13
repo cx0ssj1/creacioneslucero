@@ -23,52 +23,13 @@
                     <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
                     <br>
                     <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-registro">¿No tienes cuenta? Regístrate aquí</a>
-                    <a type="button" class="text-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-reset">¿Olvidaste tu contraseña?</a>
+                    <br>
+                    <a type="button" class="text-danger" href="/html/recuperar.html">¿Olvidaste tu contraseña?</a>
                     <button type="button" id="guest-button" class="btn btn-secondary w-100 mt-2">Continuar como invitado</button>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal recuperación contraseña -->
-<div class="modal fade" id="modal-reset" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalResetLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalResetLabel">Recuperar Contraseña</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <form id="form-reset">
-                    <div id="paso1">
-                        <label for="reset-email" class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control mb-3" id="reset-email" name="reset-email" required>
-                        <button type="submit" class="btn btn-primary w-100">Enviar código</button>
-                    </div>
-                    <div id="spinner-enviar" class="text-center my-2 d-none">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Cargando...</span>
-                        </div>
-                    </div>
-                    <div id="paso2" class="d-none">
-                        <label for="reset-code" class="form-label">Código recibido</label>
-                        <input type="text" class="form-control mb-2" id="reset-code" name="reset-code">
-
-                        <label for="reset-password" class="form-label">Nueva contraseña</label>
-                        <input type="password" class="form-control mb-2" id="reset-password" name="reset-password">
-
-                        <button type="button" class="btn btn-success w-100" id="confirm-reset">Restablecer contraseña</button>
-                        <div id="spinner-reset" class="text-center my-2 d-none">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Cargando...</span>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -111,9 +72,5 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-<script type="text/javascript">
-    emailjs.init('k_9nZSnIjBCNH-26v')
-</script>
 <script src="/js/script-login.js"></script>

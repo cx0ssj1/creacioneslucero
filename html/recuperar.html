@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar Contraseña - Creaciones Lucero</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h2 class="text-center mb-4">Recuperar Contraseña</h2>
+
+        <div id="paso1">
+            <form id="form-paso1" class="card p-4 shadow-sm">
+                <label for="reset-email" class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control mb-3" id="reset-email" required>
+
+                <button type="submit" class="btn btn-primary w-100">Enviar código</button>
+                <div id="spinner-enviar" class="text-center my-2 d-none">
+                    <div class="spinner-border text-primary" role="status"></div>
+                </div>
+            </form>
+        </div>
+
+        <div id="paso2" class="d-none mt-4">
+            <form id="form-paso2" class="card p-4 shadow-sm">
+                <label for="reset-code" class="form-label">Código recibido</label>
+                <input type="text" class="form-control mb-3" id="reset-code" required>
+
+                <label for="reset-password" class="form-label">Nueva contraseña</label>
+                <input type="password" class="form-control mb-3" id="reset-password" required>
+
+                <button type="submit" class="btn btn-success w-100">Restablecer contraseña</button>
+                <div id="spinner-reset" class="text-center my-2 d-none">
+                    <div class="spinner-border text-success" role="status"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const paso1 = document.getElementById("paso1");
+            const paso2 = document.getElementById("paso2");
+
+            const spinnerEnviar = document.getElementById("spinner-enviar");
+            const spinnerReset = document.getElementById("spinner-reset");
+
+            document.getElementById("form-paso1").addEventListener("submit", function (e) {
+                e.preventDefault();
+                const email = document.getElementById("reset-email").value.trim();
+                if (!email) return alert("Ingresa tu correo electrónico.");
+
+                spinnerEnviar.classList.remove("d-none");
+
+                fetch("https://creacioneslucero.onrender.com/solicitar-reset", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        alert("Código enviado. Revisa tu correo.");
+                        paso1.classList.add("d-none");
+                        paso2.classList.remove("d-none");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Error al enviar el código");
+                })
+                .finally(() => {
+                    spinnerEnviar.classList.add("d-none");
+                });
+            });
+
+            document.getElementById("form-paso2").addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                const email = document.getElementById("reset-email").value.trim();
+                const code = document.getElementById("reset-code").value.trim();
+                const nuevaPassword = document.getElementById("reset-password").value.trim();
+
+                spinnerReset.classList.remove("d-none");
+
+                fetch("https://creacioneslucero.onrender.com/confirmar-reset", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, code, nuevaPassword })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        alert("Contraseña actualizada. Ya puedes iniciar sesión.");
+                        window.location.href = "/index.html";
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Error al restablecer contraseña.");
+                })
+                .finally(() => {
+                    spinnerReset.classList.add("d-none");
+                });
+            });
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script type="text/javascript">
+        emailjs.init('k_9nZSnIjBCNH-26v')
+    </script>
+</body>
+</html>
