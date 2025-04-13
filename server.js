@@ -91,6 +91,7 @@ const emailjs = require('@emailjs/nodejs'); // Instala con npm si no lo tienes
 
 app.post("/solicitar-reset", async (req, res) => {
     const { email } = req.body;
+    console.log("📨 Solicitud de reset recibida para:", email); 
     try {
         const user = await Usuario.findOne({ email });
         if (!user) return res.status(404).json({ error: "Correo no registrado" });
@@ -103,15 +104,25 @@ app.post("/solicitar-reset", async (req, res) => {
         await user.save();
 
         // ENVÍO CON EMAILJS
-        const serviceID = 'service_jpxibh8';
+        const serviceID = 'default_service';
         const templateID = 'template_m92i0to';
-        const publicKey = 'k_9nZSnIjBCNH-26v'; 
 
-        await emailjs.send(serviceID, templateID, {
+        // Parámetros para la plantilla de EmailJS (ajusta los nombres según tu plantilla)
+        var templateParams = {
             to_email: email,
             user_name: user.nombre,
             reset_code: code
-        }, { publicKey });
+        };
+
+        await emailjs.send(serviceID, templateID, templateParams).then(
+            (response) => {
+                console.log('SUCCESS!', response.status, response.text);
+            },
+            (error) => {
+                console.log('FAILED...', error);
+            },
+        );
+        emailjs.init("k_9nZSnIjBCNH-26v"); // Inicializa EmailJS con tu User ID
 
         res.json({ mensaje: "Código enviado por correo" });
     } catch (err) {
