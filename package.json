@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/cx0ssj1/creacioneslucero#readme",
   "dependencies": {
+    "@emailjs/nodejs": "^5.0.2",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "express": "^4.21.2",
