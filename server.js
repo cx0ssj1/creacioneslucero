@@ -103,7 +103,7 @@ app.post("/solicitar-reset", async (req, res) => {
         user.resetCodeExpires = expiration;
         await user.save();
 
-        const serviceID = 'default_service';
+        const serviceID = 'service_jpxibh8';
         const templateID = 'template_m92i0to';
 
         await emailjs.send(serviceID, templateID, {
