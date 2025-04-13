@@ -103,27 +103,22 @@ app.post("/solicitar-reset", async (req, res) => {
         user.resetCodeExpires = expiration;
         await user.save();
 
+        emailjs.init("k_9nZSnIjBCNH-26v"); // Inicializa EmailJS con tu User ID
+
         // ENVÍO CON EMAILJS
-        const serviceID = 'default_service';
+        const serviceID = 'service_jpxibh8';
         const templateID = 'template_m92i0to';
 
         // Parámetros para la plantilla de EmailJS (ajusta los nombres según tu plantilla)
-        var templateParams = {
+        const templateParams = {
             to_email: email,
             user_name: user.nombre,
             reset_code: code
         };
 
-        await emailjs.send(serviceID, templateID, templateParams).then(
-            (response) => {
-                console.log('SUCCESS!', response.status, response.text);
-            },
-            (error) => {
-                console.log('FAILED...', error);
-            },
-        );
-        emailjs.init("k_9nZSnIjBCNH-26v"); // Inicializa EmailJS con tu User ID
-
+        await emailjs.send(serviceID, templateID, templateParams);
+        console.log('✅ Código enviado con éxito');
+        
         res.json({ mensaje: "Código enviado por correo" });
     } catch (err) {
         console.error("Error al solicitar código:", err);
