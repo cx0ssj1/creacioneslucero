@@ -164,8 +164,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     resetForm.addEventListener("submit", function (e) {
         e.preventDefault();
+    
+        // Desactivamos los campos ocultos para que no molesten
+        document.querySelectorAll("#paso2 input").forEach(input => input.disabled = true);
+    
         const email = document.getElementById("reset-email").value.trim();
-
+    
         fetch("https://creacioneslucero.onrender.com/solicitar-reset", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -177,12 +181,16 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Código enviado a tu correo. Revisa tu bandeja de entrada.");
             paso1.classList.add("d-none");
             paso2.classList.remove("d-none");
+    
+            // Habilitamos los campos del paso 2
+            document.querySelectorAll("#paso2 input").forEach(input => input.disabled = false);
         })
         .catch(err => {
             console.error(err);
             alert("Ocurrió un error al solicitar el código");
         });
     });
+    
 
     document.getElementById("confirm-reset").addEventListener("click", function () {
         const email = document.getElementById("reset-email").value.trim();
