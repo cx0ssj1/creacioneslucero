@@ -106,12 +106,19 @@ app.post("/solicitar-reset", async (req, res) => {
         const serviceID = 'service_jpxibh8';
         const templateID = 'template_m92i0to';
 
-        await emailjs.send(serviceID, templateID, {
-            to_email: email,
-            user_name: user.nombre,
-            reset_code: code
-        });
-
+        await emailjs.send(
+            serviceID,
+            templateID,
+            {
+                to_email: email,
+                user_name: user.nombre,
+                reset_code: code
+            },
+            {
+                publicKey: 'k_9nZSnIjBCNH-26v' // Usa tu PUBLIC KEY aquí
+            }
+        );
+        
         console.log("✅ Código enviado exitosamente por EmailJS");
         res.json({ mensaje: "Código enviado por correo" });
     } catch (err) {
