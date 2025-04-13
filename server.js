@@ -110,18 +110,30 @@ app.post("/solicitar-reset", async (req, res) => {
         const mailOptions = {
             from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
             to: email,
-            subject: "Código para recuperar tu contraseña",
+            subject: "Recuperación de Contraseña - Creaciones Lucero",
             html: `
-                <div style="font-family: Arial, sans-serif; padding: 20px;">
-                    <h2 style="color: #4CAF50;">Hola ${user.nombre},</h2>
-                    <p>Tu código de recuperación es:</p>
-                    <h3 style="background: #f0f0f0; padding: 10px; display: inline-block;">${code}</h3>
-                    <p>Este código es válido por <strong>10 minutos</strong>.</p>
-                    <br>
-                    <p>Gracias por confiar en <strong>Creaciones Lucero</strong>.</p>
+            <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px; border-radius: 10px; max-width: 600px; margin: auto;">
+                <h2 style="color: #4CAF50;">Recuperación de Contraseña</h2>
+                <p>Hola <strong>${user.nombre}</strong>,</p>
+        
+                <p>Hemos recibido una solicitud para restablecer tu contraseña en <strong>Creaciones Lucero</strong>.</p>
+        
+                <p>Tu código de verificación es:</p>
+        
+                <div style="background-color: #e9f5ee; border: 2px dashed #4CAF50; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; color: #2e7d32;">
+                    ${code}
                 </div>
+        
+                <p style="margin-top: 20px;">Este código es válido por <strong>10 minutos</strong>. Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
+        
+                <p style="margin-top: 40px;">Saludos cordiales,<br><strong>Creaciones Lucero</strong></p>
+        
+                <hr style="border: none; border-top: 1px solid #ddd; margin: 40px 0;">
+                <p style="font-size: 12px; color: #888;">Este mensaje fue generado automáticamente. Por favor, no respondas a este correo.</p>
+            </div>
             `
         };
+        
 
         await transporter.sendMail(mailOptions);
         console.log("✅ Código enviado por Gmail");

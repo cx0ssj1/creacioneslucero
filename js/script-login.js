@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 inicializarLogin();
                 register();
-                recuperarContrasena(); // <-- NUEVO
             }, 300);
         })
         .catch(error => {
@@ -156,5 +155,12 @@ function register() {
                 .catch(error => console.error("Error al registrar usuario:", error));
         });
     }
+}
+
+function togglePassword(inputId, button) {
+    const input = document.getElementById(inputId);
+    const isVisible = input.type === "text";
+    input.type = isVisible ? "password" : "text";
+    button.innerText = isVisible ? "👁" : "🙈";
 }
 

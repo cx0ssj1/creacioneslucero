@@ -10,17 +10,17 @@
 <body>
     <div class="container py-5">
         <h2 class="text-center mb-4">Recuperar Contraseña</h2>
-
         <div id="paso1">
             <form id="form-paso1" class="card p-4 shadow-sm">
                 <label for="reset-email" class="form-label">Correo electrónico</label>
                 <input type="email" class="form-control mb-3" id="reset-email" required>
-
+                
                 <button type="submit" class="btn btn-primary w-100">Enviar código</button>
                 <div id="spinner-enviar" class="text-center my-2 d-none">
                     <div class="spinner-border text-primary" role="status"></div>
                 </div>
             </form>
+            <a href="/index.html" class="btn btn-primary mt-3">Volver al Inicio</a>
         </div>
 
         <div id="paso2" class="d-none mt-4">
@@ -29,7 +29,11 @@
                 <input type="text" class="form-control mb-3" id="reset-code" required>
 
                 <label for="reset-password" class="form-label">Nueva contraseña</label>
-                <input type="password" class="form-control mb-3" id="reset-password" required>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" id="reset-password" required>
+                    <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('reset-password', this)">👁</button>
+                </div>
+
 
                 <button type="submit" class="btn btn-success w-100">Restablecer contraseña</button>
                 <div id="spinner-reset" class="text-center my-2 d-none">
@@ -37,9 +41,15 @@
                 </div>
             </form>
         </div>
-    </div>
-
+    </div>       
     <script>
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const isVisible = input.type === "text";
+            input.type = isVisible ? "password" : "text";
+            button.innerText = isVisible ? "👁" : "🙈";
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             const paso1 = document.getElementById("paso1");
             const paso2 = document.getElementById("paso2");
@@ -104,7 +114,6 @@
                             <a href="/index.html" class="btn btn-primary mt-3">Ir a iniciar sesión</a>
                         </div>
                         `;
-                        window.location.href = "/index.html";
                     }
                 })
                 .catch(err => {
