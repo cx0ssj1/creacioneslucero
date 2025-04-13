@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const emailjs = require("@emailjs/nodejs");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,7 +29,7 @@ const userSchema = new mongoose.Schema({
 
 const Usuario = mongoose.model("Usuario", userSchema);
 
-// Ruta: Registro de usuario (con hash de contraseña)
+// Ruta: Registro de usuario
 app.post("/usuarios", async (req, res) => {
     const { nombre, email, password } = req.body;
     try {
@@ -47,7 +48,7 @@ app.post("/usuarios", async (req, res) => {
     }
 });
 
-// Ruta: Login (verificación segura)
+// Ruta: Login
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
@@ -69,7 +70,7 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// Sumar 1 venta al usuario (requiere el email)
+// Ruta: Sumar 1 venta al usuario
 app.post("/sumar-venta", async (req, res) => {
     const { email } = req.body;
 
@@ -87,8 +88,7 @@ app.post("/sumar-venta", async (req, res) => {
     }
 });
 
-const emailjs = require('@emailjs/nodejs'); // Instala con npm si no lo tienes
-
+// Ruta: Solicitar código de recuperación
 app.post("/solicitar-reset", async (req, res) => {
     const { email } = req.body;
     console.log("📨 Solicitud de reset recibida para:", email); 
@@ -96,33 +96,31 @@ app.post("/solicitar-reset", async (req, res) => {
         const user = await Usuario.findOne({ email });
         if (!user) return res.status(404).json({ error: "Correo no registrado" });
 
-        const code = Math.floor(100000 + Math.random() * 900000).toString(); // Código de 6 dígitos
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
         const expiration = new Date(Date.now() + 10 * 60 * 1000); // 10 minutos
 
         user.resetCode = code;
         user.resetCodeExpires = expiration;
         await user.save();
-        
-        emailjs.init("k_9nZSnIjBCNH-26v"); // Inicializa EmailJS con tu User ID
-        // ENVÍO CON EMAILJS
+
         const serviceID = 'default_service';
         const templateID = 'template_m92i0to';
-        const publicKey = 'k_9nZSnIjBCNH-26v'; 
 
         await emailjs.send(serviceID, templateID, {
             to_email: email,
             user_name: user.nombre,
             reset_code: code
-        }, { publicKey });
+        });
 
-
+        console.log("✅ Código enviado exitosamente por EmailJS");
         res.json({ mensaje: "Código enviado por correo" });
     } catch (err) {
-        console.error("Error al solicitar código:", err);
-        res.status(500).json({ error: "Error del servidor" });
+        console.error("❌ Error al solicitar código:", err);
+        res.status(500).json({ error: "Error al enviar correo" });
     }
 });
 
+// Ruta: Confirmar código y cambiar contraseña
 app.post("/confirmar-reset", async (req, res) => {
     const { email, code, nuevaPassword } = req.body;
     try {
@@ -145,13 +143,12 @@ app.post("/confirmar-reset", async (req, res) => {
     }
 });
 
-
-// Ruta de prueba (opcional)
+// Ruta de prueba
 app.get("/", (req, res) => {
     res.send("Servidor funcionando y conectado a MongoDB");
 });
 
-// Iniciar el servidor
+// Iniciar servidor
 app.listen(PORT, () => {
     console.log(`Servidor corriendo ✅`);
 });
