@@ -102,23 +102,20 @@ app.post("/solicitar-reset", async (req, res) => {
         user.resetCode = code;
         user.resetCodeExpires = expiration;
         await user.save();
-
+        
         emailjs.init("k_9nZSnIjBCNH-26v"); // Inicializa EmailJS con tu User ID
-
         // ENVÍO CON EMAILJS
-        const serviceID = 'service_jpxibh8';
+        const serviceID = 'default_service';
         const templateID = 'template_m92i0to';
+        const publicKey = 'k_9nZSnIjBCNH-26v'; 
 
-        // Parámetros para la plantilla de EmailJS (ajusta los nombres según tu plantilla)
-        const templateParams = {
+        await emailjs.send(serviceID, templateID, {
             to_email: email,
             user_name: user.nombre,
             reset_code: code
-        };
+        }, { publicKey });
 
-        await emailjs.send(serviceID, templateID, templateParams);
-        console.log('✅ Código enviado con éxito');
-        
+
         res.json({ mensaje: "Código enviado por correo" });
     } catch (err) {
         console.error("Error al solicitar código:", err);
