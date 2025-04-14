@@ -157,6 +157,13 @@ function register() {
                 pasoRegistro.classList.add("d-none");
                 pasoVerificacion.classList.remove("d-none");
 
+                // Evitar validación mientras está oculto
+                document.getElementById("register-name").removeAttribute("required");
+                document.getElementById("register-email").removeAttribute("required");
+                document.getElementById("register-password").removeAttribute("required");
+                document.getElementById("confirm-password").removeAttribute("required");
+
+
                 // Guarda el email en sesión para la verificación
                 sessionStorage.setItem("verificacionEmail", email);
             }
