@@ -123,39 +123,75 @@ document.addEventListener("click", function (event) {
 });
 
 function register() {
-    const registerForm = document.querySelector("#modal-registro form");
-    if (registerForm) {
-        registerForm.addEventListener("submit", function (event) {
-            event.preventDefault();
+    const registerForm = document.querySelector("#form-registro");
+    if (!registerForm) return;
 
-            const nombre = document.getElementById("register-name").value.trim();
-            const email = document.getElementById("register-email").value.trim();
-            const password = document.getElementById("register-password").value.trim();
-            const confirmPassword = document.getElementById("confirm-password").value.trim();
+    const pasoRegistro = document.getElementById("registro-usuario");
+    const pasoVerificacion = document.getElementById("verificacion-usuario");
+    const btnVerificar = document.getElementById("btn-verificar-codigo");
 
-            if (password !== confirmPassword) {
-                alert("Las contraseñas no coinciden.");
-                return;
+    registerForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const nombre = document.getElementById("register-name").value.trim();
+        const email = document.getElementById("register-email").value.trim();
+        const password = document.getElementById("register-password").value.trim();
+        const confirmPassword = document.getElementById("confirm-password").value.trim();
+
+        if (password !== confirmPassword) {
+            alert("Las contraseñas no coinciden.");
+            return;
+        }
+
+        fetch("https://creacioneslucero.onrender.com/usuarios", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre, email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert("Registro exitoso. Revisa tu correo para ingresar el código.");
+                pasoRegistro.classList.add("d-none");
+                pasoVerificacion.classList.remove("d-none");
+
+                // Guarda el email en sesión para la verificación
+                sessionStorage.setItem("verificacionEmail", email);
             }
+        })
+        .catch(error => console.error("Error al registrar usuario:", error));
+    });
 
-            fetch("https://creacioneslucero.onrender.com/usuarios", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nombre, email, password })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                    } else {
-                        alert("Registro exitoso. Ahora puedes iniciar sesión.");
-                        document.querySelector("#modal-registro .btn-close").click();
-                    }
-                })
-                .catch(error => console.error("Error al registrar usuario:", error));
+    // Verificación del código
+    btnVerificar.addEventListener("click", function () {
+        const email = sessionStorage.getItem("verificacionEmail");
+        const codigo = document.getElementById("codigo-verificacion").value.trim();
+
+        fetch("https://creacioneslucero.onrender.com/verificar-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, codigo })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert("Correo verificado correctamente. ¡Ya puedes iniciar sesión!");
+                sessionStorage.removeItem("verificacionEmail");
+                const modal = bootstrap.Modal.getInstance(document.getElementById("modal-registro"));
+                modal.hide();
+            }
+        })
+        .catch(err => {
+            console.error("Error al verificar correo:", err);
+            alert("Ocurrió un error al verificar tu código.");
         });
-    }
+    });
 }
+
 
 function togglePassword(inputId, button) {
     const input = document.getElementById(inputId);

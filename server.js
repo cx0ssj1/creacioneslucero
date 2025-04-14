@@ -24,7 +24,9 @@ const userSchema = new mongoose.Schema({
     password: String,
     ventas: { type: Number, default: 0 },
     resetCode: String,
-    resetCodeExpires: Date
+    resetCodeExpires: Date,
+    verificado: { type: Boolean, default: false },
+    codigoVerificacion: String
 });
 
 const Usuario = mongoose.model("Usuario", userSchema);
@@ -48,14 +50,48 @@ app.post("/usuarios", async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-        const nuevoUsuario = new Usuario({ nombre, email, password: hashedPassword });
+        const codigoVerificacion = Math.floor(100000 + Math.random() * 900000).toString();
+
+        const nuevoUsuario = new Usuario({
+            nombre,
+            email,
+            password: hashedPassword,
+            codigoVerificacion,
+            verificado: false
+        });
+
         await nuevoUsuario.save();
-        res.status(201).json({ mensaje: "Usuario registrado con éxito" });
+
+        // Enviar correo con el código de verificación
+        const mailOptions = {
+            from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
+            to: email,
+            subject: "Verifica tu correo - Creaciones Lucero",
+            html: `
+            <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px; border-radius: 10px; max-width: 600px; margin: auto;">
+                <h2 style="color: #2196F3;">Verificación de Correo</h2>
+                <p>Hola <strong>${nombre}</strong>,</p>
+                <p>Gracias por registrarte en <strong>Creaciones Lucero</strong>.</p>
+                <p>Tu código de verificación es:</p>
+                <div style="background-color: #e3f2fd; border: 2px dashed #2196F3; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; color: #0d47a1;">
+                    ${codigoVerificacion}
+                </div>
+                <p style="margin-top: 20px;">Este código es válido por <strong>una sola vez</strong>.</p>
+                <p style="margin-top: 40px;">Saludos cordiales,<br><strong>Creaciones Lucero</strong></p>
+            </div>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log("✅ Código de verificación enviado");
+
+        res.status(201).json({ mensaje: "Usuario registrado. Verifica tu correo.", email });
     } catch (err) {
         console.error("Error al registrar usuario:", err);
         res.status(500).json({ error: "Error en el servidor" });
     }
 });
+
 
 // 📌 Login
 app.post("/login", async (req, res) => {
@@ -168,6 +204,33 @@ app.post("/confirmar-reset", async (req, res) => {
         res.status(500).json({ error: "Error del servidor" });
     }
 });
+
+app.post("/verificar-email", async (req, res) => {
+    const { email, codigo } = req.body;
+
+    try {
+        const user = await Usuario.findOne({ email });
+        if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
+
+        if (user.verificado) {
+            return res.status(400).json({ error: "El correo ya está verificado" });
+        }
+
+        if (user.codigoVerificacion !== codigo) {
+            return res.status(400).json({ error: "Código incorrecto" });
+        }
+
+        user.verificado = true;
+        user.codigoVerificacion = null;
+        await user.save();
+
+        res.json({ mensaje: "Correo verificado correctamente" });
+    } catch (err) {
+        console.error("Error al verificar correo:", err);
+        res.status(500).json({ error: "Error del servidor" });
+    }
+});
+
 
 // 📌 Ruta de prueba
 app.get("/", (req, res) => {
