@@ -60,11 +60,6 @@ app.post("/usuarios", async (req, res) => {
             verificado: false
         });
 
-        if (user.verificado = true) {
-            user.verificado = true;
-            codigoVerificacion = null;
-        }
-
         await nuevoUsuario.save();
 
         // Enviar correo con el código de verificación
@@ -104,6 +99,10 @@ app.post("/login", async (req, res) => {
     try {
         const user = await Usuario.findOne({ email });
         if (!user) return res.status(400).json({ error: "Usuario no encontrado" });
+
+        if (!user.verificado) {
+            return res.status(403).json({ error: "Debes verificar tu correo para iniciar sesión." });
+        }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ error: "Contraseña incorrecta" });
@@ -224,9 +223,12 @@ app.post("/verificar-email", async (req, res) => {
             return res.status(400).json({ error: "Código incorrecto" });
         }
         
+        console.log("Antes de guardar:", user);
         user.verificado = true;
         user.codigoVerificacion = null;
         await user.save();
+        console.log("Después de guardar:", user);
+
 
         res.json({ mensaje: "Correo verificado correctamente" });
     } catch (err) {
