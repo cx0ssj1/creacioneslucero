@@ -218,7 +218,9 @@ app.post("/verificar-email", async (req, res) => {
 
         user.verificado = true;
         user.codigoVerificacion = null;
-        await user.save();
+        await user.save()
+        .then(() => console.log("✅ Usuario verificado guardado exitosamente"))
+        .catch(error => console.error("❌ Error al guardar verificación:", error));
 
         res.json({ mensaje: "Correo verificado correctamente" });
     } catch (err) {
