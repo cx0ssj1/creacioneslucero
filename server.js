@@ -212,6 +212,8 @@ app.post("/verificar-email", async (req, res) => {
         if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
 
         if (user.verificado) {
+            user.verificado = true;
+            user.codigoVerificacion = null;
             return res.status(400).json({ error: "El correo ya está verificado" });
         }
 
@@ -219,8 +221,6 @@ app.post("/verificar-email", async (req, res) => {
             return res.status(400).json({ error: "Código incorrecto" });
         }
 
-        user.verificado = true;
-        user.codigoVerificacion = null;
         await user.save();
 
         res.json({ mensaje: "Correo verificado correctamente" });
