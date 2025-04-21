@@ -31,16 +31,16 @@ const userSchema = new mongoose.Schema({
 
 const Usuario = mongoose.model("Usuario", userSchema);
 
-// 📬 Configura NodeMailer con Gmail
+// Configura NodeMailer con Gmail
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: "creaciones.lucero.papeleria@gmail.com", // <-- Tu correo Gmail
-        pass: "eopf iwnk ntzd ujnd" // <-- Contraseña de aplicación generada en Google
+        user: "creaciones.lucero.papeleria@gmail.com",
+        pass: "eopf iwnk ntzd ujnd"
     }
 });
 
-// 📌 Registro de usuario
+// Registro de usuario
 app.post("/usuarios", async (req, res) => {
     const { nombre, email, password } = req.body;
     try {
@@ -62,7 +62,6 @@ app.post("/usuarios", async (req, res) => {
 
         await nuevoUsuario.save();
 
-        // Enviar correo con el código de verificación
         const mailOptions = {
             from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
             to: email,
@@ -92,8 +91,7 @@ app.post("/usuarios", async (req, res) => {
     }
 });
 
-
-// 📌 Login
+// Login
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -114,7 +112,7 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// 📌 Sumar venta
+// Sumar venta
 app.post("/sumar-venta", async (req, res) => {
     const { email } = req.body;
     try {
@@ -131,7 +129,7 @@ app.post("/sumar-venta", async (req, res) => {
     }
 });
 
-// 📌 Solicitar código de recuperación
+// Solicitar código de recuperación
 app.post("/solicitar-reset", async (req, res) => {
     const { email } = req.body;
     console.log("📨 Solicitud de reset recibida para:", email);
@@ -155,25 +153,19 @@ app.post("/solicitar-reset", async (req, res) => {
             <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px; border-radius: 10px; max-width: 600px; margin: auto;">
                 <h2 style="color: #4CAF50;">Recuperación de Contraseña</h2>
                 <p>Hola <strong>${user.nombre}</strong>,</p>
-        
                 <p>Hemos recibido una solicitud para restablecer tu contraseña en <strong>Creaciones Lucero</strong>.</p>
-        
                 <p>Tu código de verificación es:</p>
-        
                 <div style="background-color: #e9f5ee; border: 2px dashed #4CAF50; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; color: #2e7d32;">
                     ${code}
                 </div>
-        
                 <p style="margin-top: 20px;">Este código es válido por <strong>10 minutos</strong>. Si no solicitaste este cambio, puedes ignorar este mensaje.</p>
-        
                 <p style="margin-top: 40px;">Saludos cordiales,<br><strong>Creaciones Lucero</strong></p>
-        
                 <hr style="border: none; border-top: 1px solid #ddd; margin: 40px 0;">
                 <p style="font-size: 12px; color: #888;">Este mensaje fue generado automáticamente. Por favor, no respondas a este correo.</p>
             </div>
-            `   
+            `
         };
-        
+
         await transporter.sendMail(mailOptions);
         console.log("✅ Código enviado por Gmail");
 
@@ -184,7 +176,7 @@ app.post("/solicitar-reset", async (req, res) => {
     }
 });
 
-// 📌 Confirmar código y actualizar contraseña
+// Confirmar código y actualizar contraseña
 app.post("/confirmar-reset", async (req, res) => {
     const { email, code, nuevaPassword } = req.body;
 
@@ -208,6 +200,7 @@ app.post("/confirmar-reset", async (req, res) => {
     }
 });
 
+// Confirmar verificación de email
 app.post("/verificar-email", async (req, res) => {
     const { email, codigo } = req.body;
 
@@ -218,17 +211,14 @@ app.post("/verificar-email", async (req, res) => {
         if (user.verificado) {
             return res.status(400).json({ error: "El correo ya está verificado" });
         }
-        
+
         if (user.codigoVerificacion !== codigo) {
             return res.status(400).json({ error: "Código incorrecto" });
         }
-        
-        console.log("Antes de guardar:", user);
+
         user.verificado = true;
         user.codigoVerificacion = null;
         await user.save();
-        console.log("Después de guardar:", user);
-
 
         res.json({ mensaje: "Correo verificado correctamente" });
     } catch (err) {
@@ -237,8 +227,7 @@ app.post("/verificar-email", async (req, res) => {
     }
 });
 
-
-// 📌 Ruta de prueba
+// Ruta de prueba
 app.get("/", (req, res) => {
     res.send("Servidor funcionando y conectado a MongoDB");
 });
