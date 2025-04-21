@@ -47,8 +47,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
+                <!-- Paso 1: Registro -->
                 <form id="form-registro">
-                    <!-- Paso 1: Registro -->
                     <div id="registro-usuario">
                         <div class="mb-3">
                             <label for="register-name" class="form-label">Nombre completo</label>
@@ -74,27 +75,33 @@
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Registrarse</button>
                     </div>
-                
-                    <!-- Paso 2: Verificación -->
-                    <div id="verificacion-usuario" class="d-none">
-                        <div class="alert alert-success">Hemos enviado un código de verificación a tu correo. Ingrésalo a continuación:</div>
+                </form>
+
+                <!-- Paso 2: Verificación -->
+                <form id="form-verificacion" class="d-none">
+                    <div id="verificacion-usuario">
+                        <div class="alert alert-success">
+                            Hemos enviado un código de verificación a tu correo. Ingrésalo a continuación:
+                        </div>
                         <div class="mb-3">
                             <label for="codigo-verificacion" class="form-label">Código de verificación</label>
                             <input type="text" name="codigo" class="form-control" id="codigo-verificacion" placeholder="Ej: 123456" required>
                         </div>
-                        <button type="button" class="btn btn-success w-100" id="btn-verificar-codigo">Verificar correo</button>
+                        <button type="submit" class="btn btn-success w-100">Verificar correo</button>
                     </div>
-                
-                    <br>
-                    <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-login">¿Ya tienes cuenta? Inicia sesión aquí</a>
-                </form>                
+                </form>
+
+                <br>
+                <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-login">¿Ya tienes cuenta? Inicia sesión aquí</a>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
+
 
 <script src="/js/script-login.js"></script>
 

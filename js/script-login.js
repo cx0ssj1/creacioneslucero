@@ -157,21 +157,17 @@ function register() {
                 pasoRegistro.classList.add("d-none");
                 pasoVerificacion.classList.remove("d-none");
 
-                // Evitar validación mientras está oculto
-                document.getElementById("register-name").removeAttribute("required");
-                document.getElementById("register-email").removeAttribute("required");
-                document.getElementById("register-password").removeAttribute("required");
-                document.getElementById("confirm-password").removeAttribute("required");
+                document.getElementById("register-name").required = false;
+                document.getElementById("register-email").required = false;
+                document.getElementById("register-password").required = false;
+                document.getElementById("confirm-password").required = false;
 
-
-                // Guarda el email en sesión para la verificación
                 sessionStorage.setItem("verificacionEmail", email);
             }
         })
         .catch(error => console.error("Error al registrar usuario:", error));
     });
 
-    // Verificación del código
     btnVerificar.addEventListener("click", function () {
         const email = sessionStorage.getItem("verificacionEmail");
         const codigo = document.getElementById("codigo-verificacion").value.trim();
@@ -199,11 +195,9 @@ function register() {
     });
 }
 
-
 function togglePassword(inputId, button) {
     const input = document.getElementById(inputId);
     const isVisible = input.type === "text";
     input.type = isVisible ? "password" : "text";
     button.innerText = isVisible ? "👁" : "🙈";
 }
-

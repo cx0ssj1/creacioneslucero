@@ -167,10 +167,9 @@ app.post("/solicitar-reset", async (req, res) => {
                 <hr style="border: none; border-top: 1px solid #ddd; margin: 40px 0;">
                 <p style="font-size: 12px; color: #888;">Este mensaje fue generado automáticamente. Por favor, no respondas a este correo.</p>
             </div>
-            `
+            `   
         };
         
-
         await transporter.sendMail(mailOptions);
         console.log("✅ Código enviado por Gmail");
 
