@@ -219,9 +219,26 @@ app.post("/verificar-email", async (req, res) => {
         user.verificado = true;
         user.codigoVerificacion = null;
         await user.save()
-        .then(() => console.log("✅ Usuario verificado guardado exitosamente"))
+        .then(async () => {
+            console.log("✅ Usuario verificado guardado exitosamente");
+        const mailOptions = {
+            from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
+            to: email,
+            subject: "¡Correo verificado con éxito!",
+            html: `
+            <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px; border-radius: 10px; max-width: 600px; margin: auto;">
+                <h2 style="color: #4CAF50;">¡Gracias por verificar tu cuenta!</h2>
+                <p>Hola <strong>${user.nombre}</strong>,</p>
+                <p>Tu cuenta en <strong>Creaciones Lucero</strong> ha sido verificada exitosamente.</p>
+                <p>Ahora puedes iniciar sesión y comenzar a disfrutar de nuestros productos personalizados.</p>
+                <p style="margin-top: 40px;">Saludos cordiales,<br><strong>Creaciones Lucero</strong></p>
+            </div>
+            `
+        };
+            await transporter.sendMail(mailOptions);
+            console.log("📩 Confirmación de verificación enviada");
+        })
         .catch(error => console.error("❌ Error al guardar verificación:", error));
-
         res.json({ mensaje: "Correo verificado correctamente" });
     } catch (err) {
         console.error("Error al verificar correo:", err);
