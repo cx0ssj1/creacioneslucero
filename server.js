@@ -60,6 +60,11 @@ app.post("/usuarios", async (req, res) => {
             verificado: false
         });
 
+        if (user.verificado = true) {
+            user.verificado = true;
+            codigoVerificacion = null;
+        }
+
         await nuevoUsuario.save();
 
         // Enviar correo con el código de verificación
@@ -212,15 +217,15 @@ app.post("/verificar-email", async (req, res) => {
         if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
 
         if (user.verificado) {
-            user.verificado = true;
-            user.codigoVerificacion = null;
             return res.status(400).json({ error: "El correo ya está verificado" });
         }
-
+        
         if (user.codigoVerificacion !== codigo) {
             return res.status(400).json({ error: "Código incorrecto" });
         }
-
+        
+        user.verificado = true;
+        user.codigoVerificacion = null;
         await user.save();
 
         res.json({ mensaje: "Correo verificado correctamente" });
