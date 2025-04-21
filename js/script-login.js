@@ -128,7 +128,6 @@ function register() {
 
     const pasoRegistro = document.getElementById("registro-usuario");
     const pasoVerificacion = document.getElementById("verificacion-usuario");
-    const btnVerificar = document.getElementById("btn-verificar-codigo");
 
     registerForm.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -157,41 +156,42 @@ function register() {
                 pasoRegistro.classList.add("d-none");
                 pasoVerificacion.classList.remove("d-none");
 
-                document.getElementById("register-name").required = false;
-                document.getElementById("register-email").required = false;
-                document.getElementById("register-password").required = false;
-                document.getElementById("confirm-password").required = false;
+                ["register-name", "register-email", "register-password", "confirm-password"].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.required = false;
+                });
 
                 sessionStorage.setItem("verificacionEmail", email);
+
+                const btnVerificar = document.getElementById("btn-verificar-codigo");
+                if (btnVerificar) {
+                    btnVerificar.addEventListener("click", function () {
+                        const codigo = document.getElementById("codigo-verificacion").value.trim();
+                        fetch("https://creacioneslucero.onrender.com/verificar-email", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email, codigo })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert(data.error);
+                            } else {
+                                alert("Correo verificado correctamente. ¡Ya puedes iniciar sesión!");
+                                sessionStorage.removeItem("verificacionEmail");
+                                const modal = bootstrap.Modal.getInstance(document.getElementById("modal-registro"));
+                                modal.hide();
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Error al verificar correo:", err);
+                            alert("Ocurrió un error al verificar tu código.");
+                        });
+                    });
+                }
             }
         })
         .catch(error => console.error("Error al registrar usuario:", error));
-    });
-
-    btnVerificar.addEventListener("click", function () {
-        const email = sessionStorage.getItem("verificacionEmail");
-        const codigo = document.getElementById("codigo-verificacion").value.trim();
-
-        fetch("https://creacioneslucero.onrender.com/verificar-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, codigo })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.error) {
-                alert(data.error);
-            } else {
-                alert("Correo verificado correctamente. ¡Ya puedes iniciar sesión!");
-                sessionStorage.removeItem("verificacionEmail");
-                const modal = bootstrap.Modal.getInstance(document.getElementById("modal-registro"));
-                modal.hide();
-            }
-        })
-        .catch(err => {
-            console.error("Error al verificar correo:", err);
-            alert("Ocurrió un error al verificar tu código.");
-        });
     });
 }
 
