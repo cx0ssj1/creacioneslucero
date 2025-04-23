@@ -246,6 +246,52 @@ app.post("/verificar-email", async (req, res) => {
     }
 });
 
+app.post("/confirmacioncompra", async (req, res) => {
+    const { userEmail, orderDetails, userNames, userAddress, userCity, userRegion, orderNumber, totalText } = req.body;
+    console.log("📦 Confirmación de compra recibida:", req.body);
+
+    try {
+        const mailOptions = {
+            from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
+            to: userEmail, // destinatario dinámico
+            subject: `🛍️ Confirmación de Pedido N°${orderNumber}`,
+            html: `
+            <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; padding: 20px;">
+                <div style="background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    <h2 style="color: #5a5a5a;">Hola ${userNames},</h2>
+                    <p>¡Gracias por tu compra en <strong>Creaciones Lucero</strong>! 🎉</p>
+                    <p>Hemos recibido tu pedido con el número <strong>N°${orderNumber}</strong> y estamos procesándolo.</p>
+                    <div style="background: #e0f7fa; padding: 8px; border-radius: 5px;">
+                    <h3 style="color: #5a5a5a;">📝 Detalles de tu compra:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><strong>Total de tu Compra:</strong> $${totalText}</li>
+                        <li><strong>Productos Solicitados:</strong></li>
+                        <li>${orderDetails}</li>
+                        <li><strong>Número de Pedido:</strong> N°${orderNumber}</li>
+                    </ul>
+                    </div>
+                    <h3 style="color: #5a5a5a;">📦 Envío:</h3>
+                    <p>Tu pedido será enviado a la siguiente dirección:<br>
+                    ${userAddress}, ${userCity}, Región: ${userRegion}.</p>
+                    <p>Si deseas cambiar la dirección de envío, por favor contáctanos.</p>
+                    <p>Si tienes alguna pregunta, no dudes en contactarnos con tu número de pedido (N°${orderNumber}) al siguiente WhatsApp: 📞 +56 9 8858 1495.</p>
+                    <p>¡Esperamos que disfrutes tu compra! 💖</p>
+                    <div style="margin-top: 20px; text-align: center; font-size: 0.9em; color: #888;">
+                        Saludos,<br><strong>Creaciones Lucero</strong>
+                    </div>
+                </div>
+            </div>
+            `
+        };
+        await transporter.sendMail(mailOptions);
+        console.log("✅ Confirmación enviada a", userEmail);
+        res.json({ mensaje: "Correo enviado correctamente." });
+    } catch (error) {
+        console.error("❌ Error al enviar confirmación de compra:", error);
+        res.status(500).json({ error: "Error al enviar confirmación de compra" });
+    }
+    
+});
 // Ruta de prueba
 app.get("/", (req, res) => {
     res.send("Servidor funcionando y conectado a MongoDB");

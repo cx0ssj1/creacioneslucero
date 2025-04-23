@@ -269,7 +269,7 @@ if (checkoutBtn) {
     }
 
     // ----------------------------
-    // Función para enviar la orden por correo (ejemplo con EmailJS)
+    // Función para enviar la orden por correo
     // ----------------------------
     function sendOrderEmail() {
         let orderDetails = "";
@@ -354,15 +354,23 @@ if (checkoutBtn) {
             },
         );
         // Enviar al cliente con el mismo contenido
-        var clientParams = { ...templateParams, to_email: userEmail };
-        emailjs.send(serviceID, "template_g6xbnma", clientParams).then(
-            (response) => {
-                console.log("Correo enviado al cliente", response);
-            },
-            (error) => {
-                console.error("Error enviando al cliente", error);
-            },
-        );
+        fetch("https://creacioneslucero.onrender.com/confirmacioncompra", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userEmail, orderDetails, userNames, userAddress, userCity, userRegion, orderNumber, totalText })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    console.log("✅ Orden confirmada:", data);
+                    // Aquí puedes redirigir al usuario a una página de agradecimiento o mostrar un mensaje de éxito
+                    alert("¡Gracias por tu compra! Te hemos enviado un correo con los detalles.");
+                    window.location.href = '/index.html'; // Redirigir a la página principal
+                }
+            })
+            .catch(error => console.error("Error al confirmar compra:", error));
     }
 
     // ----------------------------
