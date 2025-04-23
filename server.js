@@ -346,6 +346,36 @@ app.post("/confirmacioncompratienda", async (req, res) => {
     
 });
 
+app.post("/emailcontacto", async (req, res) => { 
+    const {phone, userEmail, userNames, userMessage } = req.body;
+    console.log("📩 Consulta recibida:", req.body);
+    try {
+        const mailOptions = {
+            from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
+            to: "creaciones.lucero.papeleria@gmail.com", // o cualquier otro destinatario
+            subject: "📩 Nueva Consulta Recibida",
+            html: `
+                <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; padding: 20px;">
+                    <div style="background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    <h2 style="color: #5a5a5a;">Nueva Consulta Recibida</h2>
+                    <p><strong>Nombre del Cliente:</strong> ${userNames}</p>
+                    <p><strong>Correo Electrónico:</strong> ${userEmail}</p>
+                    <p><strong>Teléfono:</strong> ${phone}</p>
+                    <p><strong>Mensaje:</strong> ${userMessage}</p>
+                    </div>
+                </div>
+            `
+        };
+        await transporter.sendMail(mailOptions);
+        console.log("✅ Consulta enviada a", userEmail);
+        res.json({ mensaje: "Correo enviado correctamente." });
+    } catch (error) {
+        console.error("❌ Error al enviar consulta:", error);
+        res.status(500).json({ error: "Error al enviar consulta" });
+    }
+    
+});
+
 // Ruta de prueba
 app.get("/", (req, res) => {
     res.send("Servidor funcionando y conectado a MongoDB");

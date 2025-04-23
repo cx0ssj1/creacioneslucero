@@ -7,31 +7,21 @@
         const userEmail = document.getElementById('emaill').value.trim();
         const userNames = document.getElementById('namee').value.trim();
         const userMessage = document.getElementById('messagee').value.trim();
-
         
-        const serviceID = 'service_jpxibh8'; // ID del servicio de EmailJS
-        const templateID = 'template_4nciwbb'; // ID de la plantilla de EmailJS
-        
-        // Parámetros para la plantilla de EmailJS (ajusta los nombres según tu plantilla)
-        var templateParams = {
-            user_phone: phone,
-            user_email: userEmail,
-            user_names: userNames,
-            user_message: userMessage
-        };
-        
-
-        emailjs.init("k_9nZSnIjBCNH-26v"); // Inicializa EmailJS con tu User ID
-        // Envía el correo utilizando EmailJS
-        emailjs.send(serviceID, templateID, templateParams).then(
-            (response) => {
-                console.log('SUCCESS!', response.status, response.text);
-            },
-            (error) => {
-                console.log('FAILED...', error);
-            },
-        );
-    
+        fetch("https://creacioneslucero.onrender.com/emailcontacto", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone, userEmail, userNames, userMessage })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    console.log("✅ Consulta enviada:", data);
+                }
+            })
+            .catch(error => console.error("Error al confirmar compra:", error));
     }
 
     const consultForm = document.getElementById('contactForm');
