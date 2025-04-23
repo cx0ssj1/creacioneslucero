@@ -292,6 +292,60 @@ app.post("/confirmacioncompra", async (req, res) => {
     }
     
 });
+
+app.post("/confirmacioncompratienda", async (req, res) => {
+    const { orderDetails, phone, userEmail, userNames, userLastName, userId, userAddress, userOpcional, userCity, userRegion, orderNumber, totalText  } = req.body;
+    console.log("📦 Confirmación de compra recibida:", req.body);
+
+    try {
+        const mailOptions = {
+            from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
+            to: "creaciones.lucero.papeleria@gmail.com",
+            subject: `📦 Llego Nueva orden N°${orderNumber}`,
+            html: `
+            <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; padding: 20px;">
+                <div style="background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    <h2>Hola,</h2>
+                    <p>Se ha recibido una nueva orden en <strong>Creaciones Lucero</strong>.</p>
+                    <div style="background: #e0f7fa; padding: 8px; border-radius: 5px;">
+                        <h3>Detalles de la Orden:</h3>
+                        <p>${orderDetails}</p>
+                        <p><strong>Total de la Compra:</strong> $${totalText}</p>
+                        <p><strong>Número de Pedido: N°</strong> ${orderNumber}</p>
+                    </div>
+                    <h3>Datos del Cliente:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><strong>RUT:</strong> ${userId}</li>
+                        <li><strong>Nombre:</strong> ${userNames}</li>
+                        <li><strong>Apellido:</strong> ${userLastName}</li>
+                        <li><strong>Teléfono:</strong> ${phone}</li>
+                        <li><strong>Correo Electrónico:</strong> ${userEmail}</li>
+                    </ul>
+                    <h3>Dirección de Entrega:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><strong>Dirección:</strong> ${userAddress}</li>
+                        <li><strong>Comuna:</strong> ${userCity}</li>
+                        <li><strong>Región:</strong> ${userRegion}</li>
+                        <li><strong>Casa / Depto / Oficina (opcional):</strong> ${userOpcional}</li>
+                    </ul>
+                    <p>Por favor, procede a revisar y procesar la orden.</p>
+                    <div style="margin-top: 20px; text-align: center; font-size: 0.9em; color: #888;">
+                        Saludos,<br>El equipo de Creaciones Lucero
+                    </div>
+                </div>
+            </div>
+            `
+        };
+        await transporter.sendMail(mailOptions);
+        console.log("✅ Confirmación enviada a", userEmail);
+        res.json({ mensaje: "Correo enviado correctamente." });
+    } catch (error) {
+        console.error("❌ Error al enviar confirmación de compra:", error);
+        res.status(500).json({ error: "Error al enviar confirmación de compra" });
+    }
+    
+});
+
 // Ruta de prueba
 app.get("/", (req, res) => {
     res.send("Servidor funcionando y conectado a MongoDB");

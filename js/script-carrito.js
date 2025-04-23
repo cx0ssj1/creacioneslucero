@@ -324,35 +324,22 @@ if (checkoutBtn) {
             console.log('Error: Faltan datos de contacto o total del carrito.');
             return;
         }
+        // Enviar la orden a la tienda
+        fetch("https://creacioneslucero.onrender.com/confirmacioncompratienda", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ orderDetails, phone, userEmail, userNames, userLastName, userId, userAddress, userOpcional, userCity, userRegion, orderNumber, totalText })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    console.log("✅ Orden confirmada:", data);
+                }
+            })
+            .catch(error => console.error("Error al confirmar compra:", error));
 
-        // Parámetros para la plantilla de EmailJS (ajusta los nombres según tu plantilla)
-        var templateParams = {
-            order_details: orderDetails,
-            user_phone: phone,
-            user_email: userEmail,
-            user_names: userNames,
-            user_lastName: userLastName,
-            user_id: userId,
-            user_address: userAddress,
-            user_opcional: userOpcional,
-            user_city: userCity,
-            user_region: userRegion,
-            order_number: orderNumber,
-            order_total: totalText
-        };
-
-        const serviceID = 'service_f1qem3k'; // ID del servicio de EmailJS
-        const templateID = 'template_kep2c6o'; // ID de la plantilla de EmailJS
-
-        // Envía el correo utilizando EmailJS
-        emailjs.send(serviceID, templateID, templateParams).then(
-            (response) => {
-                console.log('SUCCESS!', response.status, response.text);
-            },
-            (error) => {
-                console.log('FAILED...', error);
-            },
-        );
         // Enviar al cliente con el mismo contenido
         fetch("https://creacioneslucero.onrender.com/confirmacioncompra", {
             method: "POST",
@@ -365,8 +352,6 @@ if (checkoutBtn) {
                     alert(data.error);
                 } else {
                     console.log("✅ Orden confirmada:", data);
-                    // Aquí puedes redirigir al usuario a una página de agradecimiento o mostrar un mensaje de éxito
-                    alert("¡Gracias por tu compra! Te hemos enviado un correo con los detalles.");
                     window.location.href = '/index.html'; // Redirigir a la página principal
                 }
             })
@@ -411,6 +396,7 @@ if (checkoutBtn) {
             
                 localStorage.removeItem('cart');
                 alert('Pago exitoso y correo enviado!');
+                window.location.href = '/index.html'; // Redirigir a la página principal
             }            
         });
         
