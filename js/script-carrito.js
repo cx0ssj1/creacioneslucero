@@ -267,44 +267,48 @@ if (checkoutBtn) {
         localStorage.setItem('orderNumbers', JSON.stringify(orderNumbers));
         return newNumber;
     }
-
+    
     // ----------------------------
     // Función para enviar la orden por correo
     // ----------------------------
     function sendOrderEmail() {
-        let orderDetails = "";
+        let orderDetails = "<ul>";
+    
         cart.forEach(item => {
+            orderDetails += "<li>";
             if (item.type === 'custom') {
-                orderDetails += `Producto Personalizado: ${item.name}\n`;
-                orderDetails += `Cantidad: ${item.quantity}\n`;
-                orderDetails += `Precio unitario: $${item.price}\n\n`;
-                orderDetails += "Detalles de Personalización:\n";
-                
+                orderDetails += `<strong>Producto Personalizado:</strong> ${item.name}<br>`;
+                orderDetails += `Cantidad: ${item.quantity}<br>`;
+                orderDetails += `Precio unitario: $${item.price}<br>`;
+                orderDetails += `<strong>Detalles de Personalización:</strong><br>`;
+        
                 if (item.customization.text) {
-                    orderDetails += `- Texto personalizado: ${item.customization.text}\n`;
+                    orderDetails += `- Texto personalizado: ${item.customization.text}<br>`;
                 }
-                
+        
                 if (item.customization.tipoHoja) {
-                    orderDetails += `- Tipo de hoja: ${item.customization.tipoHoja}\n`;
+                    orderDetails += `- Tipo de hoja: ${item.customization.tipoHoja}<br>`;
                 }
-                
+        
                 if (item.customization.option === 'color') {
-                    orderDetails += `- Tapa: Color sólido (${item.customization.color})\n`;
+                    orderDetails += `- Tapa: Color sólido (${item.customization.color})<br>`;
                 } else if (item.customization.option === 'personalizada') {
-                    orderDetails += `- Tapa: Personalizada\n`;
+                    orderDetails += `- Tapa: Personalizada<br>`;
                 }
-                
+        
                 if (item.customization.anilla) {
-                    orderDetails += `- Tipo de anilla: ${item.customization.anilla}\n`;
+                    orderDetails += `- Tipo de anilla: ${item.customization.anilla}<br>`;
                 }
-                
-                orderDetails += "\n";
             } else {
-                orderDetails += `Producto: ${item.name}\n`;
-                orderDetails += `Cantidad: ${item.quantity}\n`;
-                orderDetails += `Precio unitario: $${item.price}\n\n`;
+                orderDetails += `<strong>Producto:</strong> ${item.name}<br>`;
+                orderDetails += `Cantidad: ${item.quantity}<br>`;
+                orderDetails += `Precio unitario: $${item.price}<br>`;
             }
+            orderDetails += "</li>";
         });
+        
+        orderDetails += "</ul>";
+        
         
         // Datos de contacto ingresados en el formulario de checkout
         const phone = document.getElementById('phone').value.trim();
