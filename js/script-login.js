@@ -1,3 +1,5 @@
+// /js/script-login.js
+
 document.addEventListener("DOMContentLoaded", function () {
     fetch("/html/elements/modal-login.html")
         .then(response => response.text())
@@ -120,14 +122,7 @@ function register() {
     });
 }
 
-function togglePassword(inputId, button) {
-    const input = document.getElementById(inputId);
-    const isVisible = input.type === "text";
-    input.type = isVisible ? "password" : "text";
-    button.innerText = isVisible ? "👁" : "🙈";
-}
-
-// LOGIN
+// LOGIN NORMAL
 document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.querySelector("#modal-login form");
     if (loginForm) {

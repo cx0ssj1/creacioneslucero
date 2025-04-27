@@ -38,8 +38,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@ejemplo.com">
-                            </div>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+                            </div>                            
                             <h4 class="mb-3">Entrega</h4>
                             <div class="row">
                                 <div class="col-md-6 pb-3">
@@ -157,64 +157,5 @@
     <script src="/js/elements/load-nav.js"></script>
     <script src="/js/elements/load-footer.js"></script>
     <script src="/js/script-login.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const token = localStorage.getItem('token');
-            const emailField = document.getElementById('email').closest('.mb-3');
-        
-            if (token && emailField) {
-                emailField.style.display = "none";
-            }
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const token = localStorage.getItem('token');
-        
-            const emailField = document.getElementById('email')?.closest('.mb-3');
-            if (token && emailField) {
-                emailField.style.display = "none";
-            }
-        
-            const nameField = document.getElementById('name');
-            const lastNameField = document.getElementById('lastname');
-        
-            if (token && nameField && lastNameField) {
-                const decoded = parseJwt(token);
-                if (decoded.nombre) {
-                    const nombreCompleto = decoded.nombre.trim().split(' ');
-                    nameField.value = nombreCompleto[0] || "";
-                    lastNameField.value = nombreCompleto.slice(1).join(' ') || "";
-                }
-            }
-        
-            function parseJwt(token) {
-                try {
-                    const base64Url = token.split('.')[1];
-                    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-                        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                    }).join(''));
-                    return JSON.parse(jsonPayload);
-                } catch (error) {
-                    console.error("Error al decodificar token:", error);
-                    return {};
-                }
-            }
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const token = localStorage.getItem('token');
-            const guestCheckout = localStorage.getItem('guestCheckout');
-        
-            if (!token && guestCheckout !== "true") {
-                sessionStorage.setItem("showLoginModal", "true");
-                window.location.href = "/index.html";
-            } else {
-                console.log("✅ Acceso permitido al checkout");
-            }
-        });
-    </script>
 </body>
 </html>

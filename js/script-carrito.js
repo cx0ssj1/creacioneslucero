@@ -204,16 +204,9 @@
             orderDetails += "</li>";
         });
         orderDetails += "</ul>";
-
-        // Obtener datos
-        let userEmail = document.getElementById('email').value.trim();
-
-        const token = localStorage.getItem('token');
-        if (token) {
-            const decoded = parseJwt(token);
-            userEmail = decoded.email;
-        }
-
+    
+        // Obtenemos el email directamente del input manualmente
+        const userEmail = document.getElementById('email').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const userNames = document.getElementById('name').value.trim();
         const userLastName = document.getElementById('lastname').value.trim();
@@ -222,39 +215,42 @@
         const userOpcional = document.getElementById('opcional').value.trim();
         const userCity = document.getElementById('city').value.trim();
         const userRegion = document.getElementById('region').value.trim();
-        const orderNumber = Math.floor(10000000 + Math.random() * 90000000); // Número de orden aleatorio
+        const orderNumber = Math.floor(10000000 + Math.random() * 90000000);
         const totalText = document.getElementById('cartTotal').textContent.replace('Total: $', '');
-
+    
         if (!phone || !userEmail || !totalText) {
-            console.log('Error: Faltan datos');
+            alert('Error: Faltan datos.');
             return;
         }
-
-        fetch("https://creacioneslucero.onrender.com/api/order/confirmacioncompratienda", {
+    
+        // Confirmación para la tienda
+        fetch(`https://creacioneslucero.onrender.com/api/order/confirmacioncompratienda`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ orderDetails, phone, userEmail, userNames, userLastName, userId, userAddress, userOpcional, userCity, userRegion, orderNumber, totalText })
         })
         .then(response => response.json())
         .then(data => {
-            console.log("✅ Orden tienda:", data);
+            console.log("✅ Confirmación enviada a tienda:", data);
         })
-        .catch(error => console.error("Error tienda:", error));
-
-        fetch("https://creacioneslucero.onrender.com/api/order/confirmacioncompra", {
+        .catch(error => console.error("Error al enviar a tienda:", error));
+    
+        // Confirmación para el cliente
+        fetch(`https://creacioneslucero.onrender.com/api/order/confirmacioncompra`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userEmail, orderDetails, userNames, userAddress, userCity, userRegion, orderNumber, totalText })
         })
         .then(response => response.json())
         .then(data => {
-            console.log("✅ Orden cliente:", data);
+            console.log("✅ Confirmación enviada al cliente:", data);
             localStorage.removeItem('cart');
-            alert('Pago exitoso y correo enviado!');
+            alert('Pago exitoso y correos enviados!');
             window.location.href = '/index.html';
         })
-        .catch(error => console.error("Error cliente:", error));
+        .catch(error => console.error("Error al enviar a cliente:", error));
     }
+    
 
     function parseJwt(token) {
         try {
