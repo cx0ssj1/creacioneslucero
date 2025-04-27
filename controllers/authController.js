@@ -3,7 +3,6 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const Usuario = require("../models/Usuario");
 const transporter = require("../config/mailer");
-const jwt = require("jsonwebtoken"); // 👈 Importamos JWT arriba
 
 const router = express.Router();
 const SALT_ROUNDS = 10;
@@ -47,7 +46,8 @@ router.post("/register", async (req, res) => {
     }
 });
 
-// Login
+
+// LOGIN SIMPLE SIN JWT
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -63,7 +63,6 @@ router.post("/login", async (req, res) => {
             email: user.email,
             id: user._id
         });
-        
     } catch (err) {
         console.error("Error en login:", err);
         res.status(500).json({ error: "Error del servidor" });

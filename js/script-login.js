@@ -67,7 +67,7 @@ function register() {
             return;
         }
 
-        fetch("https://creacioneslucero.onrender.com/api/auth/register", {
+        fetch(`https://creacioneslucero.onrender.com/api/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nombre, email, password })
@@ -92,7 +92,7 @@ function register() {
                 if (btnVerificar) {
                     btnVerificar.addEventListener("click", function () {
                         const codigo = document.getElementById("codigo-verificacion").value.trim();
-                        fetch("https://creacioneslucero.onrender.com/api/auth/verify-email", {
+                        fetch(`https://creacioneslucero.onrender.com/api/auth/verify-email`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ email, codigo })
@@ -126,3 +126,31 @@ function togglePassword(inputId, button) {
     input.type = isVisible ? "password" : "text";
     button.innerText = isVisible ? "👁" : "🙈";
 }
+
+// LOGIN
+document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.querySelector("#modal-login form");
+    if (loginForm) {
+        loginForm.onsubmit = function (event) {
+            event.preventDefault();
+            const email = document.getElementById("login-email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            fetch(`https://creacioneslucero.onrender.com/api/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    localStorage.setItem("user", JSON.stringify(data));
+                    location.reload();
+                }
+            })
+            .catch(error => console.error("Error al iniciar sesión:", error));
+        };
+    }
+});

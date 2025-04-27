@@ -7,7 +7,7 @@ fetch("/html/elements/navbar.html")
     })
     .then(data => {
         document.getElementById("navbar-container").innerHTML = data;
-        inicializarLogin(); // Ejecutamos inmediatamente después de cargar el navbar
+        inicializarLogin(); // Llamamos a inicializarLogin() inmediatamente después de insertar el navbar
     })
     .catch(error => {
         console.error("Error al cargar el navbar:", error);
