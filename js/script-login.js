@@ -17,26 +17,31 @@ function inicializarLogin() {
     const loginSuccessful = document.getElementById("loginSuccessful");
 
     if (user && loginSuccessful) {
-        const userDropdown = document.createElement("li");
-        userDropdown.classList.add("nav-item", "dropdown");
-        userDropdown.id = "userDropdown";
-        userDropdown.innerHTML = `
-            <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Hola, ${user.nombre}!
-            </a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Perfil</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#" id="cerrarSesion">Cerrar Sesión</a></li>
-            </ul>
-        `;
-        loginSuccessful.appendChild(userDropdown);
+        // 💥 VERIFICAMOS si ya existe el menú del usuario
+        if (!document.getElementById("userDropdown")) {
+            const userDropdown = document.createElement("li");
+            userDropdown.classList.add("nav-item", "dropdown");
+            userDropdown.id = "userDropdown";
+            userDropdown.innerHTML = `
+                <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Hola, ${user.nombre}!
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Perfil</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" id="cerrarSesion">Cerrar Sesión</a></li>
+                </ul>
+            `;
+            loginSuccessful.appendChild(userDropdown);
 
-        new bootstrap.Dropdown(userDropdown.querySelector(".dropdown-toggle"));
+            new bootstrap.Dropdown(userDropdown.querySelector(".dropdown-toggle"));
+        }
+
         document.getElementById("login")?.remove();
         document.getElementById("register")?.remove();
     }
 }
+
 
 function inicializarFormularios() {
     const loginForm = document.getElementById("form-login");
