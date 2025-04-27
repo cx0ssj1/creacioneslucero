@@ -1,4 +1,3 @@
-// script-carrito.js
 (function() {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -15,58 +14,14 @@
         }
     }
 
-    function showCartNotification(item) {
-        const notification = document.createElement('div');
-        notification.className = 'cart-toast-notification';
-        notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background-color: white;
-            color: #333;
-            border-left: 4px solid #28a745;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            padding: 16px;
-            border-radius: 4px;
-            z-index: 9999;
-            max-width: 300px;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        `;
-        notification.innerHTML = `
-            <div style="display: flex; align-items: center;">
-                <i class="bi bi-check-circle-fill" style="color: #28a745; margin-right: 10px; font-size: 20px;"></i>
-                <div>
-                    <strong style="display: block; margin-bottom: 3px;">Producto agregado</strong>
-                    <span>${item.name}</span>
-                    <span>$${item.price}</span>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(notification);
-        setTimeout(() => {
-            notification.style.opacity = '1';
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }, 100);
-    }
-
     function addItem(item) {
-        const existingItem = cart.find(
-            cartItem => cartItem.id === item.id &&
-                        JSON.stringify(cartItem.customization) === JSON.stringify(item.customization)
-        );
+        const existingItem = cart.find(cartItem => cartItem.id === item.id);
         if (existingItem) {
             existingItem.quantity += item.quantity;
         } else {
             cart.push(item);
         }
         saveCart();
-        showCartNotification(item);
     }
 
     function removeCartItem(index) {
@@ -74,28 +29,6 @@
         saveCart();
         renderCart();
     }
-
-    document.querySelectorAll('.card button.btn-primary').forEach(button => {
-        button.addEventListener('click', function() {
-            const card = button.closest('.card');
-            if (!card) return;
-            const id = card.getAttribute('data-id') || card.querySelector('.card-title').textContent.trim();
-            const name = card.querySelector('.card-title').textContent.trim();
-            const priceText = card.querySelector('.price').textContent.trim();
-            const price = parseFloat(priceText.replace('$', '').replace(/\./g, ''));
-            const image = card.querySelector('img').src;
-            const item = {
-                id: id,
-                name: name,
-                price: price,
-                image: image,
-                type: 'stock',
-                quantity: 1,
-                customization: {}
-            };
-            addItem(item);
-        });
-    });
 
     function renderCart() {
         const cartBody = document.querySelector('#offcanvasCart .offcanvas-body');
@@ -124,7 +57,7 @@
             `;
         });
         cartBody.innerHTML = bodyHtml;
-        
+
         const removeButtons = cartBody.querySelectorAll('.remove-item');
         removeButtons.forEach(button => {
             button.addEventListener('click', function(e) {
@@ -132,30 +65,20 @@
                 removeCartItem(index);
             });
         });
+
         cartFooter.innerHTML = `
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Total: $${total}</h5>
             </div>
-            <button id="checkoutBtn" class="btn btn-success w-100 mt-3" style="background-color: var(--pink-dark); border: none; font-size: 1.1rem;">
+            <button id="checkoutBtn" class="btn btn-success w-100 mt-3">
                 Finalizar Compra
             </button>
         `;
+
         const checkoutBtn = cartFooter.querySelector('#checkoutBtn');
         if (checkoutBtn) {
             checkoutBtn.addEventListener('click', function() {
-                const loggedInToken = localStorage.getItem("token");
-
-                if (!loggedInToken && !localStorage.getItem("guestCheckout")) {
-                    sessionStorage.setItem("showLoginModal", "true");
-                    const offcanvasElement = document.getElementById('offcanvasCart');
-                    const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
-                    if (offcanvas) {
-                        offcanvas.hide();
-                    }
-                    window.location.href = '/index.html';
-                } else {
-                    window.location.href = '/html/checkout.html';
-                }
+                window.location.href = '/html/checkout.html';
             });
         }
     }
@@ -191,21 +114,12 @@
     function sendOrderEmail() {
         let orderDetails = "<ul>";
         cart.forEach(item => {
-            orderDetails += "<li>";
-            if (item.type === 'custom') {
-                orderDetails += `<strong>Producto Personalizado:</strong> ${item.name}<br>`;
-                orderDetails += `Cantidad: ${item.quantity}<br>`;
-                orderDetails += `Precio unitario: $${item.price}<br>`;
-            } else {
-                orderDetails += `<strong>Producto:</strong> ${item.name}<br>`;
-                orderDetails += `Cantidad: ${item.quantity}<br>`;
-                orderDetails += `Precio unitario: $${item.price}<br>`;
-            }
-            orderDetails += "</li>";
+            orderDetails += `<li><strong>${item.name}</strong><br>`;
+            orderDetails += `Cantidad: ${item.quantity}<br>`;
+            orderDetails += `Precio unitario: $${item.price}</li>`;
         });
         orderDetails += "</ul>";
-    
-        // Obtenemos el email directamente del input manualmente
+
         const userEmail = document.getElementById('email').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const userNames = document.getElementById('name').value.trim();
@@ -217,13 +131,13 @@
         const userRegion = document.getElementById('region').value.trim();
         const orderNumber = Math.floor(10000000 + Math.random() * 90000000);
         const totalText = document.getElementById('cartTotal').textContent.replace('Total: $', '');
-    
-        if (!phone || !userEmail || !totalText) {
-            alert('Error: Faltan datos.');
+
+        if (!userEmail || !phone || !totalText) {
+            alert('Por favor completa todos los campos requeridos.');
             return;
         }
-    
-        // Confirmación para la tienda
+
+        // Enviar correo para tienda
         fetch(`https://creacioneslucero.onrender.com/api/order/confirmacioncompratienda`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -234,8 +148,8 @@
             console.log("✅ Confirmación enviada a tienda:", data);
         })
         .catch(error => console.error("Error al enviar a tienda:", error));
-    
-        // Confirmación para el cliente
+
+        // Enviar correo para cliente
         fetch(`https://creacioneslucero.onrender.com/api/order/confirmacioncompra`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -245,25 +159,10 @@
         .then(data => {
             console.log("✅ Confirmación enviada al cliente:", data);
             localStorage.removeItem('cart');
-            alert('Pago exitoso y correos enviados!');
+            alert('¡Compra realizada con éxito!');
             window.location.href = '/index.html';
         })
         .catch(error => console.error("Error al enviar a cliente:", error));
-    }
-    
-
-    function parseJwt(token) {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        } catch (error) {
-            console.error("Error al decodificar token:", error);
-            return {};
-        }
     }
 
     const checkoutForm = document.getElementById('checkoutForm');
