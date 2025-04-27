@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             document.getElementById("modal-container").innerHTML = data;
             inicializarLogin();
+            inicializarFormularios(); // << Aquí inicializamos formularios SOLO después de cargar modal
             register();
         })
         .catch(error => console.error("Error al cargar modales:", error));
@@ -34,6 +35,38 @@ function inicializarLogin() {
         new bootstrap.Dropdown(userDropdown.querySelector(".dropdown-toggle"));
         document.getElementById("login")?.remove();
         document.getElementById("register")?.remove();
+    }
+}
+
+function inicializarFormularios() {
+    const loginForm = document.getElementById("form-login");
+    if (loginForm) {
+        loginForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById("login-email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            fetch(`https://creacioneslucero.onrender.com/api/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    localStorage.setItem("user", JSON.stringify(data));
+                    alert("Inicio de sesión exitoso.");
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error("Error al iniciar sesión:", error);
+                alert("Ocurrió un error al iniciar sesión.");
+            });
+        });
     }
 }
 
@@ -121,31 +154,3 @@ function register() {
         .catch(error => console.error("Error al registrar usuario:", error));
     });
 }
-
-// LOGIN NORMAL
-document.addEventListener("DOMContentLoaded", function () {
-    const loginForm = document.querySelector("#modal-login form");
-    if (loginForm) {
-        loginForm.onsubmit = function (event) {
-            event.preventDefault();
-            const email = document.getElementById("login-email").value.trim();
-            const password = document.getElementById("password").value.trim();
-
-            fetch(`https://creacioneslucero.onrender.com/api/auth/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    localStorage.setItem("user", JSON.stringify(data));
-                    location.reload();
-                }
-            })
-            .catch(error => console.error("Error al iniciar sesión:", error));
-        };
-    }
-});
