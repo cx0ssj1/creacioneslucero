@@ -1,5 +1,5 @@
 // script-carrito.js
-( function() {
+(function() {
     // Variable global para el carrito (se guarda en localStorage)
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -18,6 +18,56 @@
         }
     }
 
+    // Función para mostrar notificación al agregar al carrito (aparece sobre la pantalla)
+function showCartNotification(item) {
+    // Crear el elemento de notificación
+    const notification = document.createElement('div');
+    notification.className = 'cart-toast-notification';
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background-color:rgb(255, 255, 255);
+        color: #333;
+        border-left: 4px solid #28a745;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        padding: 16px;
+        border-radius: 4px;
+        z-index: 9999;
+        max-width: 300px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    `;
+    
+    notification.innerHTML = `
+        <div style="display: flex; align-items: center;">
+            <i class="bi bi-check-circle-fill" style="color: #28a745; margin-right: 10px; font-size: 20px;"></i>
+            <div>
+                <strong style="display: block; margin-bottom: 3px;">Producto agregado</strong>
+                <span>${item.name}</span>
+                <span>$${item.price}</span>
+            </div>
+        </div>
+    `;
+    
+    // Agregar al body
+    document.body.appendChild(notification);
+    
+    // Mostrar con efecto fade in
+    setTimeout(() => {
+        notification.style.opacity = '1';
+        
+        // Ocultar después de 3 segundos
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            // Eliminar del DOM después de completar la transición
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }, 100);
+}
+
     // Función para agregar un producto al carrito
     function addItem(item) {
         const existingItem = cart.find(
@@ -31,6 +81,14 @@
             cart.push(item);
         }
         saveCart();
+        showCartNotification(item);
+    }
+
+    // Función para eliminar un producto del carrito
+    function removeCartItem(index) {
+        cart.splice(index, 1);
+        saveCart();
+        renderCart();
     }
 
     // ----------------------------
@@ -143,6 +201,7 @@
             `;
         });
         cartBody.innerHTML = bodyHtml;
+        
         // Asigna eventos a los botones de eliminación
         const removeButtons = cartBody.querySelectorAll('.remove-item');
         removeButtons.forEach(button => {
@@ -152,64 +211,51 @@
             });
         });
         cartFooter.innerHTML = `
-    <div class="d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Total: $${total}</h5>
-    </div>
-    <button id="checkoutBtn" class="btn btn-success w-100 mt-3" style="background-color: var(--pink-dark); border: none; font-size: 1.1rem;">
-        Finalizar Compra
-    </button>
-`;
-const checkoutBtn = cartFooter.querySelector('#checkoutBtn');
-if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', function() {
-        // Verificar si hay un usuario logueado
-        const loggedInUser = JSON.parse(localStorage.getItem("user"));
-        
-        if (!loggedInUser) {
-            // Si no hay usuario logueado, guardar flag para mostrar el modal
-            sessionStorage.setItem("showLoginModal", "true");
-            // Cerrar el offcanvas del carrito
-            const offcanvasElement = document.getElementById('offcanvasCart');
-            const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
-            if (offcanvas) {
-                offcanvas.hide();
-            }
-            // Si estamos en checkout.html, redirigir a la página principal
-            if (window.location.href.includes('checkout.html')) {
-                window.location.href = '/index.html';
-            } else {
-                // Mostrar el modal de login
-                const loginModal = new bootstrap.Modal(document.getElementById("modal-login"));
-                loginModal.show();
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Total: $${total}</h5>
+            </div>
+            <button id="checkoutBtn" class="btn btn-success w-100 mt-3" style="background-color: var(--pink-dark); border: none; font-size: 1.1rem;">
+                Finalizar Compra
+            </button>
+        `;
+        const checkoutBtn = cartFooter.querySelector('#checkoutBtn');
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', function() {
+                // Verificar si hay un usuario logueado
+                const loggedInUser = JSON.parse(localStorage.getItem("user"));
                 
-                // Mostrar mensaje en el modal
-                const alertDiv = document.createElement("div");
-                alertDiv.className = "alert alert-warning alert-dismissible fade show";
-                alertDiv.innerHTML = `
-                    Es necesario iniciar sesión para realizar el checkout.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                `;
-                document.getElementById("modal-login").querySelector(".modal-body").prepend(alertDiv);
-            }
-        } else {
-            // Si hay usuario logueado, redirigir a la página de checkout
-            window.location.href = '/html/checkout.html';
+                if (!loggedInUser) {
+                    // Si no hay usuario logueado, guardar flag para mostrar el modal
+                    sessionStorage.setItem("showLoginModal", "true");
+                    // Cerrar el offcanvas del carrito
+                    const offcanvasElement = document.getElementById('offcanvasCart');
+                    const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                    if (offcanvas) {
+                        offcanvas.hide();
+                    }
+                    // Si estamos en checkout.html, redirigir a la página principal
+                    if (window.location.href.includes('checkout.html')) {
+                        window.location.href = '/index.html';
+                    } else {
+                        // Mostrar el modal de login
+                        const loginModal = new bootstrap.Modal(document.getElementById("modal-login"));
+                        loginModal.show();
+                        
+                        // Mostrar mensaje en el modal
+                        const alertDiv = document.createElement("div");
+                        alertDiv.className = "alert alert-warning alert-dismissible fade show";
+                        alertDiv.innerHTML = `
+                            Es necesario iniciar sesión para realizar el checkout.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        `;
+                        document.getElementById("modal-login").querySelector(".modal-body").prepend(alertDiv);
+                    }
+                } else {
+                    // Si hay usuario logueado, redirigir a la página de checkout
+                    window.location.href = '/html/checkout.html';
+                }
+            });
         }
-    });
-}
-    }
-
-    // Función para eliminar un producto del carrito
-    function removeCartItem(index) {
-        cart.splice(index, 1);
-        saveCart();
-        renderCart();
-    }
-
-    updateCartBadge();
-    const offcanvasCart = document.getElementById('offcanvasCart');
-    if (offcanvasCart) {
-        offcanvasCart.addEventListener('show.bs.offcanvas', renderCart);
     }
 
     // ----------------------------
@@ -309,7 +355,6 @@ if (checkoutBtn) {
         
         orderDetails += "</ul>";
         
-        
         // Datos de contacto ingresados en el formulario de checkout
         const phone = document.getElementById('phone').value.trim();
         const userEmail = document.getElementById('email').value.trim();
@@ -403,46 +448,55 @@ if (checkoutBtn) {
                 window.location.href = '/index.html'; // Redirigir a la página principal
             }            
         });
-        
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const regionSelect = document.getElementById("region");
-        const comunaSelect = document.getElementById("city");
+    // Inicializar select de regiones y comunas en la página de checkout
+    if (document.getElementById('region')) {
+        document.addEventListener("DOMContentLoaded", function () {
+            const regionSelect = document.getElementById("region");
+            const comunaSelect = document.getElementById("city");
 
-        // Cargar JSON dinámicamente
-        fetch("/comunas-regiones.json")
-            .then(response => response.json())
-            .then(data => {
-                // Llenar el select de regiones
-                data.regiones.forEach(regionObj => {
-                    let option = document.createElement("option");
-                    option.value = regionObj.region;
-                    option.textContent = regionObj.region;
-                    regionSelect.appendChild(option);
-                });
+            // Cargar JSON dinámicamente
+            fetch("/comunas-regiones.json")
+                .then(response => response.json())
+                .then(data => {
+                    // Llenar el select de regiones
+                    data.regiones.forEach(regionObj => {
+                        let option = document.createElement("option");
+                        option.value = regionObj.region;
+                        option.textContent = regionObj.region;
+                        regionSelect.appendChild(option);
+                    });
 
-                // Evento para actualizar comunas cuando cambia la región
-                regionSelect.addEventListener("change", function () {
-                    let regionSeleccionada = this.value;
+                    // Evento para actualizar comunas cuando cambia la región
+                    regionSelect.addEventListener("change", function () {
+                        let regionSeleccionada = this.value;
 
-                    // Limpiar opciones previas de comuna
-                    comunaSelect.innerHTML = '<option value="" selected disabled>Seleccione una comuna</option>';
+                        // Limpiar opciones previas de comuna
+                        comunaSelect.innerHTML = '<option value="" selected disabled>Seleccione una comuna</option>';
 
-                    // Buscar las comunas correspondientes y agregarlas al select
-                    let regionEncontrada = data.regiones.find(r => r.region === regionSeleccionada);
-                    if (regionEncontrada) {
-                        regionEncontrada.comunas.forEach(comuna => {
-                            let option = document.createElement("option");
-                            option.value = comuna;
-                            option.textContent = comuna;
-                            comunaSelect.appendChild(option);
-                        });
-                    }
-                });
-            })
-            .catch(error => console.error("Error cargando el JSON:", error));
-    });
+                        // Buscar las comunas correspondientes y agregarlas al select
+                        let regionEncontrada = data.regiones.find(r => r.region === regionSeleccionada);
+                        if (regionEncontrada) {
+                            regionEncontrada.comunas.forEach(comuna => {
+                                let option = document.createElement("option");
+                                option.value = comuna;
+                                option.textContent = comuna;
+                                comunaSelect.appendChild(option);
+                            });
+                        }
+                    });
+                })
+                .catch(error => console.error("Error cargando el JSON:", error));
+        });
+    }
+
+    // Inicializar el offcanvas del carrito
+    updateCartBadge();
+    const offcanvasCart = document.getElementById('offcanvasCart');
+    if (offcanvasCart) {
+        offcanvasCart.addEventListener('show.bs.offcanvas', renderCart);
+    }
 
     // Exponer funciones si es necesario
     window.Cart = {
@@ -454,5 +508,4 @@ if (checkoutBtn) {
         renderCheckout: renderCheckout,
         sendOrderEmail: sendOrderEmail
     };
-
 })();
