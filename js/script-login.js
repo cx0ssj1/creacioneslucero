@@ -73,6 +73,37 @@ function inicializarFormularios() {
             });
         });
     }
+    
+    // Añadir funcionalidad para continuar como invitado
+    const guestButton = document.getElementById("guest-button");
+    if (guestButton) {
+        guestButton.addEventListener("click", function() {
+            // Crear un usuario invitado temporal
+            const guestUser = {
+                nombre: "Invitado",
+                email: "invitado_" + Date.now() + "@guest.com",
+                id: "guest_" + Date.now()
+            };
+            
+            // Guardar en localStorage
+            localStorage.setItem("user", JSON.stringify(guestUser));
+            
+            // Cerrar el modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById("modal-login"));
+            if (modal) {
+                modal.hide();
+            }
+            
+            // Redirigir al checkout si estaba en proceso
+            if (sessionStorage.getItem("showLoginModal") === "true") {
+                sessionStorage.removeItem("showLoginModal");
+                window.location.href = '/html/checkout.html';
+            } else {
+                // Solo recargar la página
+                location.reload();
+            }
+        });
+    }
 }
 
 function cerrarSesion() {
@@ -158,4 +189,11 @@ function register() {
         })
         .catch(error => console.error("Error al registrar usuario:", error));
     });
+}
+
+function togglePassword(inputId, button) {
+    const input = document.getElementById(inputId);
+    const isVisible = input.type === "text";
+    input.type = isVisible ? "password" : "text";
+    button.innerText = isVisible ? "👁" : "🙈";
 }
