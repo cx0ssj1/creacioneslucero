@@ -1,6 +1,100 @@
-// /js/script-login.js
-
 document.addEventListener("DOMContentLoaded", function () {
+    // Agregar la función de notificación al objeto window para usarla globalmente
+    window.showNotification = function(message, type = 'success', duration = 4000) {
+        // Crear el elemento de notificación
+        const notification = document.createElement('div');
+        notification.className = 'toast-notification';
+        
+        // Determinar el color del borde según el tipo
+        let borderColor;
+        let iconHTML;
+        
+        switch(type) {
+            case 'success':
+                borderColor = '#28a745'; // verde
+                iconHTML = '<i class="bi bi-check-circle-fill" style="color: #28a745; margin-right: 10px; font-size: 20px;"></i>';
+                break;
+            case 'error':
+                borderColor = '#dc3545'; // rojo
+                iconHTML = '<i class="bi bi-exclamation-circle-fill" style="color: #dc3545; margin-right: 10px; font-size: 20px;"></i>';
+                break;
+            case 'warning':
+                borderColor = '#ffc107'; // amarillo
+                iconHTML = '<i class="bi bi-exclamation-triangle-fill" style="color: #ffc107; margin-right: 10px; font-size: 20px;"></i>';
+                break;
+            case 'info':
+                borderColor = '#17a2b8'; // azul
+                iconHTML = '<i class="bi bi-info-circle-fill" style="color: #17a2b8; margin-right: 10px; font-size: 20px;"></i>';
+                break;
+        }
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgb(255, 255, 255);
+            color: #333;
+            border-left: 4px solid ${borderColor};
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 16px;
+            border-radius: 4px;
+            z-index: 9999;
+            max-width: 350px;
+            min-width: 250px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        `;
+        
+        notification.innerHTML = `
+            <div style="display: flex; align-items: flex-start;">
+                ${iconHTML}
+                <div style="flex-grow: 1;">
+                    ${message}
+                </div>
+                <button class="close-notification" style="background: none; border: none; cursor: pointer; font-size: 20px; margin-left: 8px; color: #6c757d;">×</button>
+            </div>
+        `;
+        
+        // Agregar al body
+        document.body.appendChild(notification);
+        
+        // Mostrar con efecto fade in
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            
+            // Cerrar después del tiempo especificado
+            const timeoutId = setTimeout(() => {
+                closeNotification(notification);
+            }, duration);
+            
+            // Guardar el timeoutId en el elemento para poder cancelarlo si se cierra manualmente
+            notification.dataset.timeoutId = timeoutId;
+        }, 100);
+        
+        // Agregar evento al botón de cerrar
+        const closeButton = notification.querySelector('.close-notification');
+        if (closeButton) {
+            closeButton.addEventListener('click', () => {
+                // Cancelar el timeout si existe
+                if (notification.dataset.timeoutId) {
+                    clearTimeout(parseInt(notification.dataset.timeoutId));
+                }
+                closeNotification(notification);
+            });
+        }
+    }
+
+    // Función para cerrar la notificación con animación
+    function closeNotification(notification) {
+        notification.style.opacity = '0';
+        // Eliminar del DOM después de completar la transición
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }
+
     fetch("/html/elements/modal-login.html")
         .then(response => response.text())
         .then(data => {
@@ -9,7 +103,10 @@ document.addEventListener("DOMContentLoaded", function () {
             inicializarFormularios(); // << Aquí inicializamos formularios SOLO después de cargar modal
             register();
         })
-        .catch(error => console.error("Error al cargar modales:", error));
+        .catch(error => {
+            console.error("Error al cargar modales:", error);
+            showNotification("Error al cargar los modales. Por favor, recarga la página.", "error");
+        });
 });
 
 function inicializarLogin() {
@@ -60,16 +157,26 @@ function inicializarFormularios() {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    alert(data.error);
+                    showNotification(data.error, "error");
                 } else {
                     localStorage.setItem("user", JSON.stringify(data));
-                    alert("Inicio de sesión exitoso.");
-                    location.reload();
+                    showNotification("Inicio de sesión exitoso", "success");
+                    
+                    // Cerrar el modal primero
+                    const modal = bootstrap.Modal.getInstance(document.getElementById("modal-login"));
+                    if (modal) {
+                        modal.hide();
+                    }
+                    
+                    // Recargar después de un breve retraso
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
                 }
             })
             .catch(error => {
                 console.error("Error al iniciar sesión:", error);
-                alert("Ocurrió un error al iniciar sesión.");
+                showNotification("Ocurrió un error al iniciar sesión", "error");
             });
         });
     }
@@ -94,13 +201,19 @@ function inicializarFormularios() {
                 modal.hide();
             }
             
+            showNotification("Continuando como invitado", "info");
+            
             // Redirigir al checkout si estaba en proceso
             if (sessionStorage.getItem("showLoginModal") === "true") {
                 sessionStorage.removeItem("showLoginModal");
-                window.location.href = '/html/checkout.html';
+                setTimeout(() => {
+                    window.location.href = '/html/checkout.html';
+                }, 1000);
             } else {
                 // Solo recargar la página
-                location.reload();
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             }
         });
     }
@@ -108,7 +221,10 @@ function inicializarFormularios() {
 
 function cerrarSesion() {
     localStorage.removeItem("user");
-    location.reload();
+    showNotification("Has cerrado sesión correctamente", "info");
+    setTimeout(() => {
+        location.reload();
+    }, 1000);
 }
 
 document.addEventListener("click", function (event) {
@@ -134,7 +250,7 @@ function register() {
         const confirmPassword = document.getElementById("confirm-password").value.trim();
 
         if (password !== confirmPassword) {
-            alert("Las contraseñas no coinciden.");
+            showNotification("Las contraseñas no coinciden", "error");
             return;
         }
 
@@ -146,9 +262,9 @@ function register() {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                alert(data.error);
+                showNotification(data.error, "error");
             } else {
-                alert("Registro exitoso. Revisa tu correo para ingresar el código.");
+                showNotification("Registro exitoso. Revisa tu correo para ingresar el código", "success");
                 pasoRegistro.classList.add("d-none");
                 pasoVerificacion.classList.remove("d-none");
 
@@ -171,23 +287,30 @@ function register() {
                         .then(res => res.json())
                         .then(data => {
                             if (data.error) {
-                                alert(data.error);
+                                showNotification(data.error, "error");
                             } else {
-                                alert("Correo verificado correctamente. ¡Ya puedes iniciar sesión!");
+                                showNotification("Correo verificado correctamente. ¡Ya puedes iniciar sesión!", "success");
                                 sessionStorage.removeItem("verificacionEmail");
-                                const modal = bootstrap.Modal.getInstance(document.getElementById("modal-registro"));
-                                modal.hide();
+                                
+                                // Cerrar el modal después de un breve retraso
+                                setTimeout(() => {
+                                    const modal = bootstrap.Modal.getInstance(document.getElementById("modal-registro"));
+                                    if (modal) modal.hide();
+                                }, 1500);
                             }
                         })
                         .catch(err => {
                             console.error("Error al verificar correo:", err);
-                            alert("Ocurrió un error al verificar tu código.");
+                            showNotification("Ocurrió un error al verificar tu código", "error");
                         });
                     });
                 }
             }
         })
-        .catch(error => console.error("Error al registrar usuario:", error));
+        .catch(error => {
+            console.error("Error al registrar usuario:", error);
+            showNotification("Ocurrió un error durante el registro", "error");
+        });
     });
 }
 

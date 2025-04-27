@@ -19,52 +19,12 @@
 
     // Función para mostrar notificación al agregar al carrito (aparece sobre la pantalla)
     function showCartNotification(item) {
-        // Crear el elemento de notificación
-        const notification = document.createElement('div');
-        notification.className = 'cart-toast-notification';
-        notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background-color:rgb(255, 255, 255);
-            color: #333;
-            border-left: 4px solid #28a745;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            padding: 16px;
-            border-radius: 4px;
-            z-index: 9999;
-            max-width: 300px;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        `;
-        
-        notification.innerHTML = `
-            <div style="display: flex; align-items: center;">
-                <i class="bi bi-check-circle-fill" style="color: #28a745; margin-right: 10px; font-size: 20px;"></i>
-                <div>
-                    <strong style="display: block; margin-bottom: 3px;">Producto agregado</strong>
-                    <span>${item.name}</span>
-                    <span>$${item.price}</span>
-                </div>
-            </div>
-        `;
-        
-        // Agregar al body
-        document.body.appendChild(notification);
-        
-        // Mostrar con efecto fade in
-        setTimeout(() => {
-            notification.style.opacity = '1';
-            
-            // Ocultar después de 3 segundos
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                // Eliminar del DOM después de completar la transición
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }, 100);
+        // Usar la función global de notificación
+        window.showNotification(`
+            <strong style="display: block; margin-bottom: 3px;">Producto agregado</strong>
+            <span>${item.name}</span>
+            <span>$${item.price}</span>
+        `, 'success', 3000);
     }
 
     // Función para agregar un producto al carrito
@@ -382,7 +342,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    alert(data.error);
+                    window.showNotification(data.error, "error");
                 } else {
                     console.log("✅ Orden confirmada:", data);
                 }
@@ -398,10 +358,13 @@
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    alert(data.error);
+                    window.showNotification(data.error, "error");
                 } else {
                     console.log("✅ Orden confirmada:", data);
-                    window.location.href = '/index.html'; // Redirigir a la página principal
+                    window.showNotification("¡Orden confirmada! Gracias por tu compra.", "success");
+                    setTimeout(() => {
+                        window.location.href = '/index.html'; // Redirigir a la página principal
+                    }, 2000);
                 }
             })
             .catch(error => console.error("Error al confirmar compra:", error));
@@ -419,11 +382,11 @@
             const email = document.getElementById('email').value.trim();
             // Validar formato del teléfono chileno (ejemplo: +56912345678)
             if (!phone.match(/^\+56\d{9,}$/)) {
-                alert('Por favor, ingresa un número telefónico válido que comience con +56 9 o que contenga 9 digitos sin incluir +56 9.');
+                window.showNotification('Por favor, ingresa un número telefónico válido que comience con +56 9 o que contenga 9 digitos sin incluir +56 9.', 'warning');
                 return;
             }
             if (!email) {
-                alert('Por favor, ingresa un correo electrónico.');
+                window.showNotification('Por favor, ingresa un correo electrónico.', 'warning');
                 return;
             }
             // Simulación de confirmación de pago. Reemplaza esta lógica con la de tu pasarela real.
@@ -444,9 +407,12 @@
                     .catch(err => console.error("❌ Error al registrar venta:", err));
                 }
             
+                // Y finalmente, en el mismo checkoutForm:
                 localStorage.removeItem('cart');
-                alert('Pago exitoso y correo enviado!');
-                window.location.href = '/index.html'; // Redirigir a la página principal
+                window.showNotification('Pago exitoso y correo enviado!', 'success');
+                setTimeout(() => {
+                    window.location.href = '/index.html'; // Redirigir a la página principal
+                }, 2000);
             }            
         });
     }
