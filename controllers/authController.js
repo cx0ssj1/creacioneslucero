@@ -143,4 +143,25 @@ router.post("/confirm-reset", async (req, res) => {
     }
 });
 
+// Incrementar contador de ventas del usuario
+router.post("/sumar-venta", async (req, res) => {
+    const { email } = req.body;
+    try {
+        const usuario = await Usuario.findOne({ email });
+        if (!usuario) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
+        }
+        
+        usuario.ventas += 1;
+        await usuario.save();
+        
+        res.json({ 
+            mensaje: "Venta registrada correctamente", 
+            ventas: usuario.ventas 
+        });
+    } catch (err) {
+        console.error("Error al registrar venta:", err);
+        res.status(500).json({ error: "Error del servidor" });
+    }
+});
 module.exports = router;

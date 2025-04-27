@@ -1,4 +1,3 @@
-// script-carrito.js
 (function() {
     // Variable global para el carrito (se guarda en localStorage)
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -19,54 +18,54 @@
     }
 
     // Función para mostrar notificación al agregar al carrito (aparece sobre la pantalla)
-function showCartNotification(item) {
-    // Crear el elemento de notificación
-    const notification = document.createElement('div');
-    notification.className = 'cart-toast-notification';
-    notification.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background-color:rgb(255, 255, 255);
-        color: #333;
-        border-left: 4px solid #28a745;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        padding: 16px;
-        border-radius: 4px;
-        z-index: 9999;
-        max-width: 300px;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-    `;
-    
-    notification.innerHTML = `
-        <div style="display: flex; align-items: center;">
-            <i class="bi bi-check-circle-fill" style="color: #28a745; margin-right: 10px; font-size: 20px;"></i>
-            <div>
-                <strong style="display: block; margin-bottom: 3px;">Producto agregado</strong>
-                <span>${item.name}</span>
-                <span>$${item.price}</span>
-            </div>
-        </div>
-    `;
-    
-    // Agregar al body
-    document.body.appendChild(notification);
-    
-    // Mostrar con efecto fade in
-    setTimeout(() => {
-        notification.style.opacity = '1';
+    function showCartNotification(item) {
+        // Crear el elemento de notificación
+        const notification = document.createElement('div');
+        notification.className = 'cart-toast-notification';
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background-color:rgb(255, 255, 255);
+            color: #333;
+            border-left: 4px solid #28a745;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 16px;
+            border-radius: 4px;
+            z-index: 9999;
+            max-width: 300px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        `;
         
-        // Ocultar después de 3 segundos
+        notification.innerHTML = `
+            <div style="display: flex; align-items: center;">
+                <i class="bi bi-check-circle-fill" style="color: #28a745; margin-right: 10px; font-size: 20px;"></i>
+                <div>
+                    <strong style="display: block; margin-bottom: 3px;">Producto agregado</strong>
+                    <span>${item.name}</span>
+                    <span>$${item.price}</span>
+                </div>
+            </div>
+        `;
+        
+        // Agregar al body
+        document.body.appendChild(notification);
+        
+        // Mostrar con efecto fade in
         setTimeout(() => {
-            notification.style.opacity = '0';
-            // Eliminar del DOM después de completar la transición
+            notification.style.opacity = '1';
+            
+            // Ocultar después de 3 segundos
             setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
-    }, 100);
-}
+                notification.style.opacity = '0';
+                // Eliminar del DOM después de completar la transición
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }, 100);
+    }
 
     // Función para agregar un producto al carrito
     function addItem(item) {
@@ -373,8 +372,9 @@ function showCartNotification(item) {
             console.log('Error: Faltan datos de contacto o total del carrito.');
             return;
         }
-        // Enviar la orden a la tienda
-        fetch("https://creacioneslucero.onrender.com/confirmacioncompratienda", {
+        
+        // Enviar la orden a la tienda (actualizado para la nueva estructura de rutas)
+        fetch("https://creacioneslucero.onrender.com/api/order/confirmacioncompratienda", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ orderDetails, phone, userEmail, userNames, userLastName, userId, userAddress, userOpcional, userCity, userRegion, orderNumber, totalText })
@@ -389,8 +389,8 @@ function showCartNotification(item) {
             })
             .catch(error => console.error("Error al confirmar compra:", error));
 
-        // Enviar al cliente con el mismo contenido
-        fetch("https://creacioneslucero.onrender.com/confirmacioncompra", {
+        // Enviar al cliente con el mismo contenido (actualizado para la nueva estructura de rutas)
+        fetch("https://creacioneslucero.onrender.com/api/order/confirmacioncompra", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userEmail, orderDetails, userNames, userAddress, userCity, userRegion, orderNumber, totalText })
@@ -433,7 +433,8 @@ function showCartNotification(item) {
                 
                 const usuario = JSON.parse(localStorage.getItem("user"));
                 if (usuario) {
-                    fetch("https://creacioneslucero.onrender.com/sumar-venta", {
+                    // Actualizado para la nueva ruta
+                    fetch("https://creacioneslucero.onrender.com/api/auth/sumar-venta", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ email: usuario.email })
