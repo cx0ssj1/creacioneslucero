@@ -1,112 +1,37 @@
 document.addEventListener("DOMContentLoaded", function () {
     fetch("/html/elements/modal-login.html")
-        .then(response => {
-            if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-            return response.text();
-        })
+        .then(response => response.text())
         .then(data => {
             document.getElementById("modal-container").innerHTML = data;
-            console.log("Modales cargados correctamente");
-
-            document.querySelectorAll(".modal").forEach(modal => new bootstrap.Modal(modal));
-
-            const guestButton = document.getElementById("guest-button");
-            if (guestButton) {
-                guestButton.addEventListener("click", function () {
-                    localStorage.setItem("guestCheckout", "true");
-                    const loginModalEl = document.getElementById("modal-login");
-                    const loginModal = bootstrap.Modal.getInstance(loginModalEl) || new bootstrap.Modal(loginModalEl);
-                    loginModal.hide();
-                    window.location.href = "/html/checkout.html";
-                });
-            }
-
-            setTimeout(() => {
-                inicializarLogin();
-                register();
-            }, 300);
+            inicializarLogin();
+            register();
         })
-        .catch(error => {
-            console.error("Error al cargar los modales:", error);
-            document.getElementById("modal-container").innerHTML =
-                '<div class="alert alert-danger">Error al cargar los modales. Por favor, recarga la página.</div>';
-        });
+        .catch(error => console.error("Error al cargar modales:", error));
 });
 
 function inicializarLogin() {
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    const showLoginModal = sessionStorage.getItem("showLoginModal");
+    const user = JSON.parse(localStorage.getItem("user"));
+    const loginSuccessful = document.getElementById("loginSuccessful");
 
-    if (showLoginModal === "true" && !loggedInUser) {
-        const loginModal = new bootstrap.Modal(document.getElementById("modal-login"));
-        loginModal.show();
-        sessionStorage.removeItem("showLoginModal");
-
-        const alertDiv = document.createElement("div");
-        alertDiv.className = "alert alert-warning alert-dismissible fade show";
-        alertDiv.innerHTML = `
-            Inicia sesión para realizar tu compra o continúa como invitado.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    if (user && loginSuccessful) {
+        const userDropdown = document.createElement("li");
+        userDropdown.classList.add("nav-item", "dropdown");
+        userDropdown.id = "userDropdown";
+        userDropdown.innerHTML = `
+            <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Hola, ${user.nombre}!
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Perfil</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#" id="cerrarSesion">Cerrar Sesión</a></li>
+            </ul>
         `;
-        document.getElementById("modal-login").querySelector(".modal-body").prepend(alertDiv);
-    }
+        loginSuccessful.appendChild(userDropdown);
 
-    if (loggedInUser) {
-        const loginSuccessful = document.getElementById("loginSuccessful");
-
-        if (!document.getElementById("userDropdown")) {
-            const userDropdown = document.createElement("li");
-            userDropdown.classList.add("nav-item", "dropdown");
-            userDropdown.id = "userDropdown";
-            userDropdown.innerHTML = `
-                <a class="nav-link dropdown-toggle text-success" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Hola, ${loggedInUser.nombre}!
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Perfil</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#" id="cerrarSesion">Cerrar Sesión</a></li>
-                </ul>
-            `;
-            loginSuccessful.appendChild(userDropdown);
-
-            new bootstrap.Dropdown(userDropdown.querySelector(".dropdown-toggle"));
-        }
-
+        new bootstrap.Dropdown(userDropdown.querySelector(".dropdown-toggle"));
         document.getElementById("login")?.remove();
         document.getElementById("register")?.remove();
-    }
-
-    const loginForm = document.querySelector("#modal-login form");
-    if (loginForm) {
-        loginForm.onsubmit = function (event) {
-            event.preventDefault();
-            const email = document.getElementById("login-email").value.trim();
-            const password = document.getElementById("password").value.trim();
-
-            fetch("https://creacioneslucero.onrender.com/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                    } else {
-                        localStorage.setItem("user", JSON.stringify(data));
-                        if (sessionStorage.getItem("showLoginModal") === "true") {
-                            sessionStorage.removeItem("showLoginModal");
-                            window.location.href = "/html/checkout.html";
-                            return;
-                        }
-                        location.reload();
-                    }
-                })
-                .catch(error => console.error("Error al iniciar sesión:", error));
-        };
-    } else {
-        console.error("No se encontró el formulario de login en el documento");
     }
 }
 
@@ -142,7 +67,7 @@ function register() {
             return;
         }
 
-        fetch("https://creacioneslucero.onrender.com/usuarios", {
+        fetch("https://creacioneslucero.onrender.com/api/auth/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nombre, email, password })
@@ -167,7 +92,7 @@ function register() {
                 if (btnVerificar) {
                     btnVerificar.addEventListener("click", function () {
                         const codigo = document.getElementById("codigo-verificacion").value.trim();
-                        fetch("https://creacioneslucero.onrender.com/verificar-email", {
+                        fetch("https://creacioneslucero.onrender.com/api/auth/verify-email", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ email, codigo })
