@@ -1,6 +1,6 @@
-// /controllers/orderController.js
 const express = require("express");
 const transporter = require("../config/mailer");
+const templates = require("../config/emailTemplates");
 const router = express.Router();
 
 // Confirmar compra para el cliente
@@ -9,19 +9,12 @@ router.post("/confirmacioncompra", async (req, res) => {
     console.log("📦 Confirmación de compra enviada al cliente:", req.body);
 
     try {
+        const html = templates.orderConfirmationEmail(userNames, userEmail, orderNumber, orderDetails, totalText, userAddress, userCity, userRegion);
         await transporter.sendMail({
             from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
             to: userEmail,
             subject: `🛍️ Confirmación de Pedido N°${orderNumber}`,
-            html: `
-                <h2>¡Hola ${userNames}!</h2>
-                <p>Gracias por tu compra en <strong>Creaciones Lucero</strong> 🎉</p>
-                <p><strong>Pedido N°:</strong> ${orderNumber}</p>
-                <p><strong>Detalles:</strong> ${orderDetails}</p>
-                <p><strong>Total:</strong> $${totalText}</p>
-                <p><strong>Envío:</strong> ${userAddress}, ${userCity}, Región: ${userRegion}</p>
-                <p>¡Esperamos que disfrutes tus productos! 💖</p>
-            `
+            html
         });
 
         res.json({ mensaje: "Correo de confirmación enviado al cliente." });
@@ -37,21 +30,12 @@ router.post("/confirmacioncompratienda", async (req, res) => {
     console.log("📦 Nueva orden recibida:", req.body);
 
     try {
+        const html = templates.newOrderNotificationEmail(orderNumber, userNames, userLastName, userEmail, phone, userId, userAddress, userCity, userRegion, userOpcional, orderDetails, totalText)
         await transporter.sendMail({
             from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
             to: "creaciones.lucero.papeleria@gmail.com",
             subject: `📦 Nueva Orden N°${orderNumber}`,
-            html: `
-                <h2>Nueva Orden Recibida</h2>
-                <p><strong>Cliente:</strong> ${userNames} ${userLastName}</p>
-                <p><strong>Correo:</strong> ${userEmail}</p>
-                <p><strong>Teléfono:</strong> ${phone}</p>
-                <p><strong>RUT:</strong> ${userId}</p>
-                <p><strong>Dirección:</strong> ${userAddress}, ${userCity}, ${userRegion} (${userOpcional})</p>
-                <p><strong>Pedido N°:</strong> ${orderNumber}</p>
-                <p><strong>Detalles:</strong> ${orderDetails}</p>
-                <p><strong>Total:</strong> $${totalText}</p>
-            `
+            html
         });
 
         res.json({ mensaje: "Correo de confirmación enviado a la tienda." });

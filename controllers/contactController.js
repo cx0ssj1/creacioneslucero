@@ -1,7 +1,6 @@
-// /controllers/contactController.js
 const express = require("express");
 const transporter = require("../config/mailer");
-const router = express.Router();
+const templates = require("../config/emailTemplates");
 
 // Consulta de contacto
 router.post("/consulta", async (req, res) => {
@@ -9,17 +8,12 @@ router.post("/consulta", async (req, res) => {
     console.log("📩 Nueva consulta recibida:", req.body);
 
     try {
+        const html = templates.contactFormEmail(userNames, userEmail, phone, userMessage);
         await transporter.sendMail({
             from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
             to: "creaciones.lucero.papeleria@gmail.com",
             subject: "📩 Nueva Consulta de Cliente",
-            html: `
-                <h2>Consulta de Cliente</h2>
-                <p><strong>Nombre:</strong> ${userNames}</p>
-                <p><strong>Correo:</strong> ${userEmail}</p>
-                <p><strong>Teléfono:</strong> ${phone}</p>
-                <p><strong>Mensaje:</strong> ${userMessage}</p>
-            `
+            html
         });
 
         res.json({ mensaje: "Consulta enviada correctamente." });

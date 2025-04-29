@@ -1,9 +1,8 @@
-// /controllers/authController.js
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const Usuario = require("../models/Usuario");
 const transporter = require("../config/mailer");
-
+const templates = require("../config/emailTemplates");
 const router = express.Router();
 const SALT_ROUNDS = 10;
 
@@ -28,15 +27,13 @@ router.post("/register", async (req, res) => {
         });
 
         await nuevoUsuario.save();
-
+        
+        const html = templates.registrationEmail(nombre, email, codigoVerificacion);
         await transporter.sendMail({
             from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
             to: email,
             subject: "Verifica tu correo - Creaciones Lucero",
-            html: `
-                <h2>Verificación de Correo</h2>
-                <p>Tu código de verificación es: <strong>${codigoVerificacion}</strong></p>
-            `
+            html
         });
 
         res.status(201).json({ mensaje: "Usuario registrado. Verifica tu correo.", email });
@@ -81,12 +78,12 @@ router.post("/verify-email", async (req, res) => {
         user.verificado = true;
         user.codigoVerificacion = null;
         await user.save();
-
+        const html = templates.verificationSuccessEmail(email);
         await transporter.sendMail({
             from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
-            to: email,
-            subject: "¡Correo verificado!",
-            html: `<p>Gracias por verificar tu correo.</p>`
+            to: email, 
+            subject: "¡Correo verificado con éxito! 🎉",
+            html
         });
 
         res.json({ mensaje: "Correo verificado correctamente" });
@@ -107,12 +104,12 @@ router.post("/request-reset", async (req, res) => {
         user.resetCode = resetCode;
         user.resetCodeExpires = new Date(Date.now() + 10 * 60000);
         await user.save();
-
+        const html = templates.passwordResetEmail(email, resetCode);
         await transporter.sendMail({
             from: '"Creaciones Lucero" <creaciones.lucero.papeleria@gmail.com>',
             to: email,
-            subject: "Recuperar Contraseña",
-            html: `<p>Tu código de recuperación es: <strong>${resetCode}</strong> (válido por 10 minutos)</p>`
+            subject: "Recuperar Contraseña - Creaciones Lucero",
+            html
         });
 
         res.json({ mensaje: "Código enviado al correo" });
