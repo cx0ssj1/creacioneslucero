@@ -1,6 +1,7 @@
 const express = require("express");
 const transporter = require("../config/mailer");
 const templates = require("../config/emailTemplates");
+const router = express.Router();
 
 // Consulta de contacto
 router.post("/consulta", async (req, res) => {
