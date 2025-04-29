@@ -8,7 +8,7 @@
         const userNames = document.getElementById('namee').value.trim();
         const userMessage = document.getElementById('messagee').value.trim();
         
-        fetch("https://creacioneslucero.onrender.com/emailcontacto", {
+        fetch("https://creacioneslucero.onrender.com/api/contact/consulta", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ phone, userEmail, userNames, userMessage })
