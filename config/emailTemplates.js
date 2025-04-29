@@ -1,5 +1,5 @@
 // URLs y configuración
-const LOGO_URL = "https://creacioneslucero.onrender.com/img/logo/logo.png"; // Reemplaza con la URL de tu logo
+const LOGO_URL = "https://creacioneslucero.netlify.app/img/logo/logo.png"; // Reemplaza con la URL de tu logo
 const CURRENT_YEAR = new Date().getFullYear();
 const STORE_EMAIL = "creaciones.lucero.papeleria@gmail.com";
 const STORE_NAME = "Creaciones Lucero";
