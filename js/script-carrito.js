@@ -75,60 +75,6 @@
         });
     });
 
-    // ----------------------------
-    // Configuración para productos personalizados
-    // ----------------------------
-    const customAddBtn = document.querySelector('main button.btn-primary.btn-lg');
-    if (customAddBtn) {
-        customAddBtn.addEventListener('click', function() {
-            const id = 'custom-libreta';
-            const name = document.querySelector('h1').textContent.trim();
-            const priceText = document.querySelector('.mt-2 span.h2').textContent.trim();
-            const price = parseFloat(priceText.replace('$', '').replace(/\./g, ''));
-            const image = document.querySelector('#productCarousel .carousel-item.active img').src;
-            const quantityInput = document.getElementById('quantity');
-            const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
-            
-            const customization = {};
-
-            // Obtener texto personalizado
-            const textInput = document.querySelector('input[placeholder="Escribe tu texto aquí"]');
-            customization.text = textInput ? textInput.value.trim() : '';
-
-            // Obtener el tipo de tapa seleccionado
-            const optionSelector = document.getElementById('optionSelector');
-            customization.option = optionSelector ? optionSelector.value : '';
-
-            // Si se selecciona opción de color, obtener el color elegido
-            if (customization.option === 'color') {
-                const colorPicker = document.getElementById('colorPicker');
-                customization.color = colorPicker ? colorPicker.value : '';
-            }
-
-            // Obtener el tipo de hoja
-            const tipoHoja = document.getElementById('tipoHoja');
-            if (tipoHoja) {
-                customization.tipoHoja = tipoHoja.value;
-            }
-
-            // Obtener el tipo de anilla (para libretas, por ejemplo)
-            const anillaSelect = document.getElementById('optionSelector-anilla');
-            if (anillaSelect) {
-                customization.anilla = anillaSelect.value;
-            }
-
-            const item = {
-                id: id,
-                name: name,
-                price: price,
-                image: image,
-                type: 'custom',
-                quantity: quantity,
-                customization: customization
-            };
-            addItem(item);
-        });
-    }
 
     // ----------------------------
     // Función para renderizar el contenido del carrito en el offcanvas
@@ -281,34 +227,9 @@
     
         cart.forEach(item => {
             orderDetails += "<li>";
-            if (item.type === 'custom') {
-                orderDetails += `<strong>Producto Personalizado:</strong> ${item.name}<br>`;
-                orderDetails += `Cantidad: ${item.quantity}<br>`;
-                orderDetails += `Precio unitario: $${item.price}<br>`;
-                orderDetails += `<strong>Detalles de Personalización:</strong><br>`;
-        
-                if (item.customization.text) {
-                    orderDetails += `- Texto personalizado: ${item.customization.text}<br>`;
-                }
-        
-                if (item.customization.tipoHoja) {
-                    orderDetails += `- Tipo de hoja: ${item.customization.tipoHoja}<br>`;
-                }
-        
-                if (item.customization.option === 'color') {
-                    orderDetails += `- Tapa: Color sólido (${item.customization.color})<br>`;
-                } else if (item.customization.option === 'personalizada') {
-                    orderDetails += `- Tapa: Personalizada<br>`;
-                }
-        
-                if (item.customization.anilla) {
-                    orderDetails += `- Tipo de anilla: ${item.customization.anilla}<br>`;
-                }
-            } else {
-                orderDetails += `<strong>Producto:</strong> ${item.name}<br>`;
-                orderDetails += `Cantidad: ${item.quantity}<br>`;
-                orderDetails += `Precio unitario: $${item.price}<br>`;
-            }
+            orderDetails += `<strong>Producto:</strong> ${item.name}<br>`;
+            orderDetails += `Cantidad: ${item.quantity}<br>`;
+            orderDetails += `Precio unitario: $${item.price}<br>`;
             orderDetails += "</li>";
         });
         
