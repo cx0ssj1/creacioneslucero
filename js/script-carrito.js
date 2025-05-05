@@ -49,20 +49,23 @@
         saveCart();
         renderCart();
     }
-
+    // Función para disminuir cantidad de un producto del carrito
     function addItemQuantity(index) {
-        if (cart[index]) {
-            cart[index].quantity += 1;
-            saveCart();
-            renderCart();
-        }
+        const item = cart[index]; // Obtén el elemento del carrito
+        item.quantity += 1; // Incrementa la cantidad
+        saveCart(); // Guarda el carrito actualizado
+        renderCart(); // Vuelve a renderizar el carrito
     }
+    // Función para aumentar cantidad de un producto del carrito
     function removeItemQuantity(index) {
-        if (cart[index] && cart[index].quantity > 1) {
-            cart[index].quantity -= 1;
-            saveCart();
-            renderCart();
+        const item = cart[index]; // Obtén el elemento del carrito
+        if (item.quantity > 1) {
+            item.quantity -= 1; // Decrementa la cantidad si es mayor a 1
+        } else {
+            cart.splice(index, 1); // Si la cantidad es 1, elimina el elemento del carrito
         }
+        saveCart(); // Guarda el carrito actualizado
+        renderCart(); // Vuelve a renderizar el carrito
     }
 
     // ----------------------------
@@ -98,69 +101,150 @@
         const cartBody = document.querySelector('#offcanvasCart .offcanvas-body');
         const cartFooter = document.getElementById('offcanvasCartFooter');
         if (!cartBody || !cartFooter) return;
+        
+        // Añadir estilos al carrito
+        cartBody.style.padding = "15px";
+        cartBody.style.maxHeight = "calc(100vh - 200px)";
+        cartBody.style.overflowY = "auto";
+        
         if (cart.length === 0) {
-            cartBody.innerHTML = '<p>El carrito está vacío.</p>';
+            cartBody.innerHTML = `
+                <div class="text-center py-5">
+                    <i class="bi bi-cart-x" style="font-size: 3rem; color: #ccc;"></i>
+                    <p class="mt-3">El carrito está vacío.</p>
+                    <button class="btn btn-outline-primary mt-2">Continuar comprando</button>
+                </div>
+            `;
             cartFooter.innerHTML = '';
             return;
         }
-        let bodyHtml = '';
+        
+        // Título del carrito
+        let bodyHtml = `
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Tu Carrito (${cart.reduce((sum, item) => sum + item.quantity, 0)} productos)</h5>
+            </div>
+            <hr>
+        `;
+        
         let total = 0;
+        
         cart.forEach((item, index) => {
-            total += item.quantity * item.price;
+            const itemTotal = item.quantity * item.price;
+            total += itemTotal;
+            
+            // Formato para precios con separador de miles y decimales
+            const formattedPrice = item.price.toLocaleString('es-CL', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
+            
+            const formattedTotal = itemTotal.toLocaleString('es-CL', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
+            
             bodyHtml += `
-                <div class="cart-item d-flex align-items-center mb-3" style="border-bottom: 1px solid #ccc; padding-bottom: 10px;">
-                    <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover;" class="me-2">
-                    <div class="flex-grow-1">
-                        <h6 class="mb-0">${item.name}</h6>
-                        <button class="btn btn-primary" id="removeItemBtn" data-index="${index}">
-                            <i class="bi bi-dash me-2"></i>
-                        </button>
-                        <small>${item.quantity}</small>
-                        <button class="btn btn-primary" id="addItemBtn" data-index="${index}">
-                            <i class="bi bi-plus me-2"></i>
-                        </button>
-                        <small>$${total}</small>
+                <div class="cart-item mb-3 p-2" style="border-radius: 8px; background-color: #f8f9fa; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <div class="d-flex align-items-center">
+                        <div class="position-relative" style="width: 80px; height: 80px;">
+                            <img src="${item.image}" alt="${item.name}" 
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;" 
+                                class="me-3">
+                        </div>
+                        
+                        <div class="flex-grow-1 ms-3">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <h6 class="mb-0 fw-bold">${item.name}</h6>
+                                <button class="btn btn-sm btn-outline-danger remove-item" data-index="${index}" 
+                                    style="padding: 2px 6px; border-radius: 50%;">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div class="quantity-controls d-flex align-items-center" 
+                                    style="border: 1px solid #ddd; border-radius: 20px; padding: 2px 8px;">
+                                    <button class="btn p-0 me-2" id="removeItemBtn" data-index="${index}">
+                                        <i class="bi bi-dash-circle" style="color: #dc3545;"></i>
+                                    </button>
+                                    <span class="mx-2" style="min-width: 20px; text-align: center;">${item.quantity}</span>
+                                    <button class="btn p-0 ms-2" id="addItemBtn" data-index="${index}">
+                                        <i class="bi bi-plus-circle" style="color: #28a745;"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="price-info text-end">
+                                    <div class="item-price text-muted" style="font-size: 0.8rem;">
+                                        $${formattedPrice} c/u
+                                    </div>
+                                    <div class="item-total fw-bold" style="color: var(--pink-dark);">
+                                        $${formattedTotal}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <button class="btn btn-sm btn-danger remove-item" data-index="${index}">
-                        <i class="bi bi-trash"></i>
-                    </button>
                 </div>
             `;
         });
+        
         cartBody.innerHTML = bodyHtml;
         
+        // Formatea el total general
+        const formattedTotal = total.toLocaleString('es-CL', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+        
         // Asigna eventos a los botones de agregar y quitar cantidad
-        const addButton = cartBody.querySelectorAll('#addItemBtn');
-        addButton.forEach(button => {
+        const addButtons = cartBody.querySelectorAll('#addItemBtn');
+        addButtons.forEach(button => {
             button.addEventListener('click', function(e) {
                 const index = parseInt(e.currentTarget.getAttribute('data-index'));
                 addItemQuantity(index);
             });
         });
-        const downerButton = cartBody.querySelectorAll('#removeItemBtn');
-        downerButton.forEach(button => {
+        
+        const removeButtons = cartBody.querySelectorAll('#removeItemBtn');
+        removeButtons.forEach(button => {
             button.addEventListener('click', function(e) {
                 const index = parseInt(e.currentTarget.getAttribute('data-index'));
                 removeItemQuantity(index);
             });
         });
-
+    
         // Asigna eventos a los botones de eliminación
-        const removeButtons = cartBody.querySelectorAll('.remove-item');
-        removeButtons.forEach(button => {
+        const deleteButtons = cartBody.querySelectorAll('.remove-item');
+        deleteButtons.forEach(button => {
             button.addEventListener('click', function(e) {
                 const index = parseInt(e.currentTarget.getAttribute('data-index'));
                 removeCartItem(index);
             });
         });
+        
         cartFooter.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Total: $${total}</h5>
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>Subtotal:</span>
+                    <span>$${formattedTotal}</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="fw-bold">Total:</span>
+                    <span class="fw-bold fs-5" style="color: var(--pink-dark);">$${formattedTotal}</span>
+                </div>
+                
+                <button id="checkoutBtn" class="btn w-100 py-2" 
+                    style="background-color: var(--pink-dark); border: none; color: white; font-weight: 600; border-radius: 8px;">
+                    <i class="bi bi-bag-check me-2"></i>Finalizar Compra
+                </button>
+                
+                <button id="continueShopping" class="btn btn-outline-secondary w-100 mt-2 py-2" style="border-radius: 8px;">
+                    <i class="bi bi-arrow-left me-2"></i>Seguir comprando
+                </button>
             </div>
-            <button id="checkoutBtn" class="btn btn-success w-100 mt-3" style="background-color: var(--pink-dark); border: none; font-size: 1.1rem;">
-                Finalizar Compra
-            </button>
         `;
+        
         const checkoutBtn = cartFooter.querySelector('#checkoutBtn');
         if (checkoutBtn) {
             checkoutBtn.addEventListener('click', function() {
@@ -196,6 +280,17 @@
                 } else {
                     // Si hay usuario logueado, redirigir a la página de checkout
                     window.location.href = '/html/checkout.html';
+                }
+            });
+        }
+        
+        const continueShoppingBtn = cartFooter.querySelector('#continueShopping');
+        if (continueShoppingBtn) {
+            continueShoppingBtn.addEventListener('click', function() {
+                const offcanvasElement = document.getElementById('offcanvasCart');
+                const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                if (offcanvas) {
+                    offcanvas.hide();
                 }
             });
         }
