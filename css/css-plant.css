@@ -84,3 +84,8 @@ footer {
     height: 50px;
     object-fit: contain; /* Asegura que el logo mantenga su proporción */
 }
+
+#removeItemBtn, #addItemBtn {
+    
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+}

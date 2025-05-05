@@ -50,6 +50,21 @@
         renderCart();
     }
 
+    function addItemQuantity(index) {
+        if (cart[index]) {
+            cart[index].quantity += 1;
+            saveCart();
+            renderCart();
+        }
+    }
+    function removeItemQuantity(index) {
+        if (cart[index] && cart[index].quantity > 1) {
+            cart[index].quantity -= 1;
+            saveCart();
+            renderCart();
+        }
+    }
+
     // ----------------------------
     // Configuración para productos en stock
     // ----------------------------
@@ -93,11 +108,18 @@
         cart.forEach((item, index) => {
             total += item.quantity * item.price;
             bodyHtml += `
-                <div class="cart-item d-flex align-items-center mb-3">
+                <div class="cart-item d-flex align-items-center mb-3" style="border-bottom: 1px solid #ccc; padding-bottom: 10px;">
                     <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover;" class="me-2">
                     <div class="flex-grow-1">
                         <h6 class="mb-0">${item.name}</h6>
-                        <small>${item.quantity} x $${item.price}</small>
+                        <button class="btn btn-primary" id="removeItemBtn" data-index="${index}">
+                            <i class="bi bi-dash me-2"></i>
+                        </button>
+                        <small>${item.quantity}</small>
+                        <button class="btn btn-primary" id="addItemBtn" data-index="${index}">
+                            <i class="bi bi-plus me-2"></i>
+                        </button>
+                        <small>$${total}</small>
                     </div>
                     <button class="btn btn-sm btn-danger remove-item" data-index="${index}">
                         <i class="bi bi-trash"></i>
@@ -107,6 +129,22 @@
         });
         cartBody.innerHTML = bodyHtml;
         
+        // Asigna eventos a los botones de agregar y quitar cantidad
+        const addButton = cartBody.querySelectorAll('#addItemBtn');
+        addButton.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const index = parseInt(e.currentTarget.getAttribute('data-index'));
+                addItemQuantity(index);
+            });
+        });
+        const downerButton = cartBody.querySelectorAll('#removeItemBtn');
+        downerButton.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const index = parseInt(e.currentTarget.getAttribute('data-index'));
+                removeItemQuantity(index);
+            });
+        });
+
         // Asigna eventos a los botones de eliminación
         const removeButtons = cartBody.querySelectorAll('.remove-item');
         removeButtons.forEach(button => {
