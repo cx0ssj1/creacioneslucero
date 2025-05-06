@@ -1,7 +1,5 @@
 (function(){
-
     function sendConsultEmail(){
-
         // Datos de contacto ingresados en el formulario de contacto
         const phone = document.getElementById('phonee').value.trim();
         const userEmail = document.getElementById('emaill').value.trim();
@@ -32,7 +30,7 @@
             const phone = document.getElementById('phonee').value.trim();
             const email = document.getElementById('emaill').value.trim();
             // Validar formato del teléfono chileno (ejemplo: +56912345678)
-            if (!phone.match(/^\+56\d{9,}$/)) {
+            if (!phone.match(/^(\+?56)?[-\s]?\d{2}[-\s]?\d{3}[-\s]?\d{3,4}$/)) {
                 alert('Por favor, ingresa un número telefónico válido que comience con +56 9 o que contenga 9 digitos sin incluir +56 9.');
                 return;
             }
@@ -40,9 +38,7 @@
                 alert('Por favor, ingresa un correo electrónico.');
                 return;
             }
-
             const consultaEnviada = true;
-
             if (consultaEnviada) {
                 sendConsultEmail();
                 alert('Consulta enviada con éxito');
