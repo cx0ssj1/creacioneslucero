@@ -1,4 +1,3 @@
-// js/utils.js
 window.showNotification = function(message, type = 'success', duration = 4000) {
     // Crear el elemento de notificación
     const notification = document.createElement('div');
