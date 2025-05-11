@@ -8,7 +8,7 @@ fetch("/html/elements/footer.html")
     })
     .catch(error => console.error("Error al cargar el footer:", error));
 
-    fetch("/html/elements/navbar.html")
+fetch("/html/elements/navbar.html")
     .then(response => {
         if (!response.ok) {
             throw new Error(`Error HTTP: ${response.status}`);

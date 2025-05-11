@@ -18,12 +18,12 @@
     <header id="home" class="py-5 text-center position-relative">
         <div class="container position-relative z-2">
         <h1 id="bnv" class="display-4 fw-bold">
-            📚 Bienvenid@ a <span style="color: #e75480;">Creaciones Lucero</span> 🖋️
+            📚 Bienvenid@ a <span class="title-index">Creaciones Lucero</span> 🖋️
         </h1>
         <p class="lead">
             ✨ Descubre nuestra hermosa colección de objetos de papelería que inspiran creatividad. ✂️📒
         </p>
-        <a href="#products" class="btn btn-primary mt-3" id="prodcts">
+        <a href="#products" class="btn btn-primary mt-3" id="btn-view-prodcts">
             Ver Productos 📔
         </a>
         </div>
@@ -31,79 +31,57 @@
 
     <div id="modal-container"></div>
 
-    <section id="novedades" class="py-5" style="background-color: #fdf6f6; color: #333;">
-        <!-- Modal -->
-        <div class="modal fade" id="pedidos-perso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Pedidos Personalizados ✨</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Para pedidos personalizados, manda un mensaje al:<br>
-                    <b>📞 +56 9 8858 1495</b>.<br><br>
-                    ¡Estaremos encantados de ayudarte a crear algo único para ti! 🖋️
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <a href="https://wa.link/b30zyb" target="_blank" class="btn btn-primary">
-                        <i class="bi bi-whatsapp"></i> Contáctame aquí
-                    </a>
-                </div>
-            </div>
-        </div>
-        </div>
+    <section class="py-5" id="secction-novedades">
 
         <!-- Contenedor principal -->
-        <div class="container" style="max-width: 800px; margin: 0 auto; text-align: center;">
-        <h2 class="mb-4 fw-bold" style="font-size: 2.5rem; color: #e75480;">🌟 Novedades 🌟</h2>
-        <p class="mb-4" style="font-size: 1.2rem; color: #555;">
-            Descubre las últimas actualizaciones y productos exclusivos de <b>Creaciones Lucero</b>. 
-            ¡No te pierdas nuestras ofertas y diseños únicos! 🖋️📒
-        </p>
+        <div class="container" id="novedades">
+            <h2 class="mb-4 fw-bold">🌟 Novedades 🌟</h2>
+            <p class="mb-4">
+                Descubre las últimas actualizaciones y productos exclusivos de <b>Creaciones Lucero</b>. 
+                ¡No te pierdas nuestras ofertas y diseños únicos! 🖋️📒
+            </p>
 
-        <!-- Carrusel -->
-        <div id="carouselExampleInterval" class="carousel slide mb-4" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active" data-bs-interval="3000">
-                    <img src="/img/index/carousel/1.jpg" class="d-block w-100 rounded" alt="Slide 1">
+            <!-- Carrusel -->
+            <div id="carouselExampleInterval" class="carousel slide mb-4" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="3000">
+                        <img src="/img/index/carousel/1.jpg" class="d-block w-100 rounded" alt="Slide 1">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="3000">
+                        <img src="/img/index/carousel/2.jpg" class="d-block w-100 rounded" alt="Slide 2">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="3000">
+                        <img src="/img/index/carousel/3.jpg" class="d-block w-100 rounded" alt="Slide 3">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="3000">
+                        <img src="/img/index/carousel/4.jpg" class="d-block w-100 rounded" alt="Slide 4">
+                    </div>
                 </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="/img/index/carousel/2.jpg" class="d-block w-100 rounded" alt="Slide 2">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="/img/index/carousel/3.jpg" class="d-block w-100 rounded" alt="Slide 3">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="/img/index/carousel/4.jpg" class="d-block w-100 rounded" alt="Slide 4">
-                </div>
+                <!-- Controles del carrusel -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
             </div>
-            <!-- Controles del carrusel -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterior</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Siguiente</span>
-            </button>
-        </div>
 
-        <!-- Botón para abrir el modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pedidos-perso" style="font-size: 1.1rem; padding: 10px 20px; border-radius: 30px; background-color: #e75480; border: none;">
-            ✂️ Pedidos Personalizados
-        </button>
+            <!-- Botón para abrir el modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pedidos-perso" id="btn-productos-perso-modal">
+                ✂️ Pedidos Personalizados
+            </button>
         </div>
     </section>
 
-    <main id="products" class="container py-5" style="background-color: var(--pink-light); border-radius: 15px;">
-        <h2 class="text-center mb-5 fw-bold" style="font-size: 2.5rem; color: var(--pink-dark);">✨ Nuestros Productos ✨</h2>
+    <main id="products-main" class="container py-5">
+        <h2 class="text-center mb-5 fw-bold" id="products-title">✨ Nuestros Productos ✨</h2>
         <div class="row row-cols-1 row-cols-md-2 g-4">
         <!-- Producto: Libretas en stock -->
         <div class="col">
             <div class="card h-100 shadow-sm">
-            <div class="card-header text-center" style="background-color: var(--pink-dark); color: white;">
+            <div class="card-header text-center" id="card-title">
                 <h3 class="fw-bold mb-0">Libretas en stock</h3>
             </div>
             <div class="card-body text-center">
@@ -117,19 +95,20 @@
                         </div> 
                     </div>
                 </div>
-                <p style="color: var(--gray-text);">
+                <p id="text-index">
                 Anota tus pensamientos con estilo con nuestras hermosas libretas de notas.
                 </p>
-                <a href="/html/libretas-stk.html" class="btn" style="background-color: var(--pink-dark); color: white;">
+                <a href="/html/libretas-stk.html" class="btn btn-products">
                 Comprar Libretas
                 </a>
             </div>
             </div>
         </div>
+
         <!-- Producto: Cuadernos en stock -->
         <div class="col">
             <div class="card h-100 shadow-sm">
-                <div class="card-header text-center" style="background-color: var(--pink-medium); color: var(--navbar-text);">
+                <div class="card-header text-center" id="card-title">
                     <h3 class="fw-bold mb-0">Cuadernos en stock</h3>
                 </div>
                 <div class="card-body text-center">
@@ -143,10 +122,10 @@
                             </div> 
                         </div>
                     </div>
-                    <p style="color: var(--gray-text);">
+                    <p id="text-index">
                     Organiza tus ideas maravillosamente en nuestros elegantes cuadernos.
                     </p>
-                    <a href="/html/cuadernos-stk.html" class="btn" style="background-color: var(--pink-dark); color: white;">
+                    <a href="/html/cuadernos-stk.html" class="btn btn-products">
                     Comprar Cuadernos
                     </a>
                 </div>
@@ -156,10 +135,10 @@
 
     <section id="about" class="py-5 bg-white">
         <div class="container">
-        <h2 class="text-center mb-4 fw-bold" style="font-size: 2.5rem; color: #e75480;">💡 Sobre Nosotros</h2>
-        <p class="text-center" style="font-size: 1.2rem; color: #555; max-width: 800px; margin: 0 auto; line-height: 1.8;">
+        <h2 class="text-center mb-4 fw-bold">💡 Sobre Nosotros</h2>
+        <p class="text-center">
             En <b>Creaciones Lucero</b>, nos dedicamos a dar vida a tus ideas a través de 
-            <span style="color: #e75480;">productos únicos y de alta calidad</span>. 
+            <span>productos únicos y de alta calidad</span>. 
             Nuestra misión es inspirar creatividad y organización con cada artículo que ofrecemos. 
             ✂️ <b>Desde libretas personalizadas hasta cuadernos exclusivos</b>, hacemos que cada detalle cuente para llenar tu día de color, estilo y funcionalidad. 🖋️
         </p>
@@ -167,39 +146,39 @@
     </section>
 
     <!-- Sección de contacto -->
-    <section id="contact" class="py-5" style="background-color: #fdf6f6;">
+    <section id="contact" class="py-5">
         <div class="container">
-        <h2 class="text-center mb-4 fw-bold" style="font-size: 2.5rem; color: #e75480;">📞 Contáctanos</h2>
-        <p class="text-center mb-4" style="font-size: 1.2rem; color: #555;">
-            ¿Tienes alguna consulta o idea especial en mente? ¡Estamos aquí para ayudarte! 💌
-        </p>
-        <form id="contactForm">
-            <div class="mb-3">
-                <label for="name" class="form-label fw-bold contact">Nombre</label>
-                <input type="text" id="namee" name="name" class="form-control shadow-sm" placeholder="Tu nombre completo" required>
+            <h2 class="text-center mb-4 fw-bold">📞 Contáctanos</h2>
+            <p class="text-center mb-4">
+                ¿Tienes alguna consulta o idea especial en mente? ¡Estamos aquí para ayudarte! 💌
+            </p>
+            <form id="contactForm">
+                <div class="mb-3">
+                    <label for="name" class="form-label fw-bold contact">Nombre</label>
+                    <input type="text" id="namee" name="name" class="form-control shadow-sm" placeholder="Tu nombre completo" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-bold contact">Email</label>
+                    <input type="email" id="emaill" name="email" class="form-control shadow-sm" placeholder="Tu correo electrónico" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label fw-bold contact">Teléfono</label>
+                    <input type="tel" id="phonee" name="phone" class="form-control shadow-sm" placeholder="Tu número de teléfono" required>
+                </div>                
+                <div class="mb-3">
+                    <label for="message" class="form-label fw-bold contact">Mensaje</label>
+                    <textarea id="messagee" name="messagee" class="form-control shadow-sm" rows="4" placeholder="Escribe tu mensaje aquí" required></textarea>
+                </div>
+                <button type="submit" id="button" value="Send Email" class="btn btn-primary w-100 btn-submit">
+                    ✉️ Enviar mensaje
+                </button>
+            </form>
+            <div class="text-center mt-5">
+                <p>O contáctanos directamente por WhatsApp:</p>
+                <a href="https://wa.link/b09gzf" target="_blank" class="btn btn-success" id="btn-whatsapp">
+                    <i class="bi bi-whatsapp"></i> Enviar mensaje por WhatsApp
+                </a>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label fw-bold contact">Email</label>
-                <input type="email" id="emaill" name="email" class="form-control shadow-sm" placeholder="Tu correo electrónico" required>
-            </div>
-            <div class="mb-3">
-                <label for="phone" class="form-label fw-bold contact">Teléfono</label>
-                <input type="tel" id="phonee" name="phone" class="form-control shadow-sm" placeholder="Tu número de teléfono" required>
-            </div>                
-            <div class="mb-3">
-                <label for="message" class="form-label fw-bold contact">Mensaje</label>
-                <textarea id="messagee" name="messagee" class="form-control shadow-sm" rows="4" placeholder="Escribe tu mensaje aquí" required></textarea>
-            </div>
-            <button type="submit" id="button" value="Send Email" class="btn btn-primary w-100 btn-submit">
-                ✉️ Enviar mensaje
-            </button>
-        </form>
-        <div class="text-center mt-5">
-            <p style="font-size: 1.1rem; color: #555;">O contáctanos directamente por WhatsApp:</p>
-            <a href="https://wa.link/b09gzf" target="_blank" class="btn btn-success" style="font-size: 1.2rem; padding: 10px 20px; border-radius: 30px;">
-                <i class="bi bi-whatsapp"></i> Enviar mensaje por WhatsApp
-            </a>
-        </div>
         </div>
     </section>
 
@@ -225,6 +204,30 @@
         </div>
     </div>
 
+
+    <!-- Modal de pedidos personalizados -->
+    <div class="modal fade" id="pedidos-perso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Pedidos Personalizados ✨</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Para pedidos personalizados, manda un mensaje al:<br>
+                    <b>📞 +56 9 8858 1495</b>.<br><br>
+                    ¡Estaremos encantados de ayudarte a crear algo único para ti! 🖋️
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <a href="https://wa.link/b30zyb" target="_blank" class="btn btn-primary">
+                        <i class="bi bi-whatsapp"></i> Contáctame aquí
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/script-index.js"></script>
     <script src="/js/script-carrito.js"></script>
