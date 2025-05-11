@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libretas en Stock - Creaciones Lucero</title>
+    <link rel="shortcut icon" href="/img/logo/logo-no-png.png"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/css-plant.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/libretas-stk.css">
-    <link rel="stylesheet" href="/css/carrito.css">
-    <link rel="shortcut icon" href="/img/logo/logo-no-png.png"/>
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/products-stk.css">
+    <link rel="stylesheet" href="/css/carrito-btn.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -21,8 +20,8 @@
 
     <!-- Main Content -->
     <main class="container my-4">
-        <h1 class="text-center mb-4 fw-bold" style="font-size: 2.5rem; color: #e75480;">📚 Libretas en Stock</h1>
-        <p class="text-center mb-5" style="font-size: 1.2rem; color: #555;">
+        <h1 class="text-center mb-4 fw-bold" id="title-page">📚 Libretas en Stock</h1>
+        <p class="text-center mb-5" id="subtitle-page">
             Descubre nuestra selección de libretas para todas tus necesidades creativas y profesionales.
         </p>
         <!-- Products Grid -->
@@ -46,7 +45,7 @@
                         </p>
                     </div>
                     <div class="card-footer bg-transparent border-0">
-                        <button class="btn btn-primary w-100" style="background-color: #e75480; border: none; font-size: 1.1rem;">
+                        <button class="btn btn-primary w-100" id="btn-add-to-cart">
                             <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                         </button>
                     </div>
@@ -72,7 +71,7 @@
                         </p>
                     </div>
                     <div class="card-footer bg-transparent border-0">
-                        <button class="btn btn-primary w-100" style="background-color: #e75480; border: none; font-size: 1.1rem;">
+                        <button class="btn btn-primary w-100" id="btn-add-to-cart">
                             <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                         </button>
                     </div>
@@ -98,7 +97,7 @@
                         </p>
                     </div>
                     <div class="card-footer bg-transparent border-0">
-                        <button class="btn btn-primary w-100" style="background-color: #e75480; border: none; font-size: 1.1rem;">
+                        <button class="btn btn-primary w-100" id="btn-add-to-cart">
                             <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                         </button>
                     </div>
@@ -124,7 +123,7 @@
                         </p>
                     </div>
                     <div class="card-footer bg-transparent border-0">
-                        <button class="btn btn-primary w-100" style="background-color: #e75480; border: none; font-size: 1.1rem;">
+                        <button class="btn btn-primary w-100" id="btn-add-to-cart">
                             <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                         </button>
                     </div>
@@ -150,7 +149,7 @@
                         </p>
                     </div>
                     <div class="card-footer bg-transparent border-0">
-                        <button class="btn btn-primary w-100" style="background-color: #e75480; border: none; font-size: 1.1rem;">
+                        <button class="btn btn-primary w-100" id="btn-add-to-cart">
                             <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                         </button>
                     </div>
@@ -176,7 +175,7 @@
                         </p>
                     </div>
                     <div class="card-footer bg-transparent border-0">
-                        <button class="btn btn-primary w-100" style="background-color: #e75480; border: none; font-size: 1.1rem;">
+                        <button class="btn btn-primary w-100" id="btn-add-to-cart">
                             <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                         </button>
                     </div>
@@ -207,8 +206,8 @@
             <!-- Aquí se inyecta el total y el botón de checkout -->
         </div>
     </div>
-    <script src="/js/utils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/utils.js"></script>
     <script src="/js/script-carrito.js"></script>
     <script src="/js/script-login.js"></script>
     <script src="/js/elements/load-elements.js"></script>

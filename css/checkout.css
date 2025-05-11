@@ -17,7 +17,9 @@
     background-color: var(--pink-dark);
     border: none;
     font-size: 1.1rem;
+    color: white;
 }
 .btn-pagar:hover {
+    color: white;
     background-color: var(--pink-hover);
 }
