@@ -240,8 +240,8 @@ function vetificarEmail() {
     btnVerificarHelp.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const email = document.getElementById("register-email").value.trim();
-        const codigo = document.getElementById("codigo-verificacion").value.trim();
+        const email = document.getElementById("register-emaill").value.trim();
+        const codigo = document.getElementById("codigo-verificacionn").value.trim();
         fetch(`https://creacioneslucero.onrender.com/api/auth/verify-email`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
