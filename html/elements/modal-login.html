@@ -28,6 +28,9 @@
                     <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-registro">¿No tienes cuenta? Regístrate aquí</a>
                     <br>
                     <a type="button" class="text-danger" href="/html/recuperar.html">¿Olvidaste tu contraseña?</a>
+                    <br>
+                    <a type="button" class="text-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-verifi">¿Deseas Verificar tu correo?</a>
+                    <br>
                     <button type="button" id="guest-button" class="btn btn-secondary w-100 mt-2">Continuar como invitado</button>
                 </form>
             </div>
@@ -92,8 +95,42 @@
 
                 <br>
                 <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-login">¿Ya tienes cuenta? Inicia sesión aquí</a>
+                <br>
+                <a type="button" class="text-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-verifi">¿Deseas Verificar tu correo?</a>
             </div>
 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal verificar-->
+<div class="modal fade" id="modal-verifi" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="registerLabel">Verifica tu email ✨</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-verificacion">
+                    <div id="verificacion-usuario">
+                        <div class="alert alert-success">
+                            Hemos enviado un código de verificación a tu correo. Ingrésalo a continuación:
+                        </div>
+                        <div class="mb-3">
+                            <label for="codigo-verificacion" class="form-label">Código de verificación</label>
+                            <input type="text" name="codigo" class="form-control" id="codigo-verificacion" placeholder="Ej: 123456" required>
+                        </div>
+                        <button type="submit" id="btn-verificar-codigo" class="btn btn-success w-100">Verificar correo</button>
+                    </div>
+                </form>
+
+                <br>
+                <a type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-login">¿Ya tienes cuenta? Inicia sesión aquí</a>
+                <br>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>

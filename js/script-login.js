@@ -234,13 +234,13 @@ document.addEventListener("click", function (event) {
     }
 });
 
+
 function register() {
     const registerForm = document.querySelector("#form-registro");
     if (!registerForm) return;
 
     const pasoRegistro = document.getElementById("registro-usuario");
     const pasoVerificacion = document.getElementById("form-verificacion");
-
     registerForm.addEventListener("submit", function (event) {
         event.preventDefault();
 
