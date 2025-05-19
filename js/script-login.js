@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
             inicializarLogin();
             inicializarFormularios(); // << Aquí inicializamos formularios SOLO después de cargar modal
             register();
+            vetificarEmail()
         })
         .catch(error => {
             console.error("Error al cargar modales:", error);
@@ -234,41 +235,30 @@ document.addEventListener("click", function (event) {
     }
 });
 
-function helpVerification() {
-    const verificationHelp = document.getElementById("form-verificacion-help");
-    verificationHelp.addEventListener("click", function (event) {
+function vetificarEmail() {
+    const btnVerificarHelp = document.querySelector("#form-verificacion-help");
+    btnVerificarHelp.addEventListener("submit", function (event) {
         event.preventDefault();
+
         const email = document.getElementById("register-email").value.trim();
-        const btnVerificar = document.getElementById("btn-verificar-codigo-help");
-            if (btnVerificar) {
-                btnVerificar.addEventListener("click", function () {
-                    const codigo = document.getElementById("codigo-verificacion").value.trim();
-                    fetch(`https://creacioneslucero.onrender.com/api/auth/verify-email`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ email, codigo })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.error) {
-                            showNotification(data.error, "error");
-                        } else {
-                            showNotification("Correo verificado correctamente. ¡Ya puedes iniciar sesión!", "success");
-                            sessionStorage.removeItem("verificacionEmail");
-                            
-                            // Cerrar el modal después de un breve retraso
-                            setTimeout(() => {
-                                const modal = bootstrap.Modal.getInstance(document.getElementById("modal-registro"));
-                                if (modal) modal.hide();
-                            }, 1500);
-                        }
-                    })
-                    .catch(err => {
-                        console.error("Error al verificar correo:", err);
-                        showNotification("Ocurrió un error al verificar tu código", "error");
-                    });
-                });
+        const codigo = document.getElementById("codigo-verificacion").value.trim();
+        fetch(`https://creacioneslucero.onrender.com/api/auth/verify-email`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, codigo })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) {
+                showNotification(data.error, "error");
+            } else {
+                showNotification("Correo verificado correctamente. ¡Ya puedes iniciar sesión!", "success");
             }
+        })
+        .catch(err => {
+            console.error("Error al verificar correo:", err);
+            showNotification("Ocurrió un error al verificar tu código", "error");
+        });
     });
 }
 
