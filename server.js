@@ -7,7 +7,7 @@ const path = require("path");
 const authRoutes = require("./controllers/authController");
 const orderRoutes = require("./controllers/orderController");
 const contactRoutes = require("./controllers/contactController");
-const productRoutes = require("./controllers/productController"); // Nueva línea
+const productRoutes = require("./controllers/productsController"); // Nueva línea
 
 const app = express();
 const PORT = process.env.PORT || 3000;
